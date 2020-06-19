@@ -754,7 +754,7 @@
     fields: [ga_sessions.visits_total, ga_sessions.source, ga_sessions.all_confirmation_completions,
       ga_sessions.all_confirmations_conversion_rate]
     filters:
-      ga_sessions.source: "-%looker.com%"
+      ga_sessions.source: ""
       ga_sessions.channel_grouping: Referral
     sorts: [ga_sessions.visits_total desc]
     limit: 500
@@ -814,7 +814,7 @@
   - name: Landing Hostname
     title: Landing Hostname
     type: field_filter
-    default_value: looker.com
+    #default_value: looker.com
     allow_multiple_values: true
     required: false
     model: marketing

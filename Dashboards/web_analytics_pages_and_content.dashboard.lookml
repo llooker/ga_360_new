@@ -4,13 +4,13 @@
 #   elements:
 #   - title: Most viewed pages
 #     name: Most viewed pages
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     type: table
-#     fields: [hits_page.pagePath, totals.pageviews_total, hits.unique_page_count, hits.entrance_rate,
+#     fields: [hits.pagePath, ga_sessions.pageviews_total, hits.unique_page_count, hits.entrance_rate,
 #       hits.exit_rate]
 #     filters: {}
-#     sorts: [totals.pageviews_total desc]
+#     sorts: [ga_sessions.pageviews_total desc]
 #     limit: 500
 #     query_timezone: America/Los_Angeles
 #     show_view_names: true
@@ -32,14 +32,14 @@
 #     y_axes: []
 #     listen:
 #       Date Range: ga_sessions.partition_date
-#       Hostname: hits_page.hostName
+#       Hostname: hits.host_name
 #     row: 0
 #     col: 0
 #     width: 24
 #     height: 10
 #   - title: 'Pages: Scroll Through Rate'
 #     name: 'Pages: Scroll Through Rate'
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     type: looker_funnel
 #     fields: [hits.count, scroll_through]
@@ -81,14 +81,14 @@
 #     listen:
 #       'Pages: Scroll Through Rate': hits_eventInfo.eventLabel
 #       Date Range: ga_sessions.partition_date
-#       Hostname: hits_page.hostName
+#       Hostname: hits.host_name
 #     row: 30
 #     col: 0
 #     width: 12
 #     height: 11
 #   - title: 'Video: View Through Rate'
 #     name: 'Video: View Through Rate'
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     type: looker_funnel
 #     fields: [hits.count, video_actions]
@@ -162,26 +162,26 @@
 #       \ & name of video (ex. A Data-Driven Day)"
 #     listen:
 #       Date Range: ga_sessions.partition_date
-#       Hostname: hits_page.hostName
+#       Hostname: hits.host_name
 #     row: 30
 #     col: 12
 #     width: 12
 #     height: 11
 #   - title: Top Page Paths
 #     name: Top Page Paths
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     type: sankey
 #     fields: [ga_session_page_facts.landing_page_path, ga_session_page_facts.second_page_path,
-#       ga_session_page_facts.third_page_path, totals.visits_total]
+#       ga_session_page_facts.third_page_path, ga_sessions.visits_total]
 #     filters:
 #       ga_session_page_facts.second_page_path: "-NULL"
-#     sorts: [totals.visits_total desc]
+#     sorts: [ga_sessions.visits_total desc]
 #     limit: 20
 #     column_limit: 50
 #     total: true
 #     dynamic_fields: [{table_calculation: of_total_sessions, label: "% of Total Sessions",
-#         expression: "${totals.visits_total}/${totals.visits_total:total}", value_format: !!null '',
+#         expression: "${ga_sessions.visits_total}/${ga_sessions.visits_total:total}", value_format: !!null '',
 #         value_format_name: percent_0, _kind_hint: measure, _type_hint: number}]
 #     series_types: {}
 #     hidden_fields: [of_total_sessions]
@@ -193,14 +193,14 @@
 #       Open Look if you want to see page paths as % of total
 #     listen:
 #       Date Range: ga_sessions.partition_date
-#       Hostname: hits_page.hostName
+#       Hostname: hits.hostName
 #     row: 10
 #     col: 0
 #     width: 24
 #     height: 12
 #   - title: Navigation Clicks
 #     name: Navigation Clicks
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     type: looker_bar
 #     fields: [hits_eventInfo.eventAction, hits.count]
@@ -254,7 +254,7 @@
 #     height: 8
 #   - title: Homepage Clicks
 #     name: Homepage Clicks
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     type: looker_bar
 #     fields: [clicked_on, hits_eventInfo.eventAction, hits.count]
@@ -316,7 +316,7 @@
 #     height: 8
 #   - title: Pageviews by Content Group
 #     name: Pageviews by Content Group
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     type: looker_column
 #     fields: [content_group, hits.page_count]
@@ -324,19 +324,19 @@
 #       ga_sessions.partition_date: 7 days ago for 7 days
 #     limit: 50
 #     column_limit: 50
-#     dynamic_fields: [{dimension: content_group, label: Content Group, expression: "if(contains(${hits_page.pagePathLevel1},\
-#           \ \"solutions\"), \"Solutions\",\nif(contains(${hits_page.pagePathLevel1},\
-#           \ \"product\") OR contains(${hits_page.pagePathLevel1}, \"professional-services\"\
-#           ), \"Product\",\nif(contains(${hits_page.pagePathLevel1}, \"platform\")\
-#           \ OR contains(${hits_page.pagePathLevel1}, \"partner-network\"), \"Platform\"\
-#           ,\nif(contains(${hits_page.pagePathLevel1}, \"blog\"), \"Blog\",\nif(contains(${hits_page.pagePathLevel1},\
-#           \ \"blocks\"), \"Blocks\",\nif(contains(${hits_page.pagePathLevel1}, \"\
-#           customers\"), \"Customer Content\",\nif(contains(${hits_page.pagePathLevel1},\
-#           \ \"company\") OR contains(${hits_page.pagePathLevel1}, \"news\") OR contains(${hits_page.pagePathLevel1},\
-#           \ \"events\"), \"Company\",\nif(contains(${hits_page.pagePathLevel1}, \"\
-#           demo\") OR contains(${hits_page.pagePathLevel1}, \"learn\") OR contains(${hits_page.hostName},\
-#           \ \"discover.looker.com\"), \"LP\",\nif(contains(${hits_page.pagePathLevel1},\
-#           \ \"data-topics\"), \"Data Topics\",\nif(contains(${hits_page.hostName},\
+#     dynamic_fields: [{dimension: content_group, label: Content Group, expression: "if(contains(${hits.pagePathLevel1},\
+#           \ \"solutions\"), \"Solutions\",\nif(contains(${hits.pagePathLevel1},\
+#           \ \"product\") OR contains(${hits.pagePathLevel1}, \"professional-services\"\
+#           ), \"Product\",\nif(contains(${hits.pagePathLevel1}, \"platform\")\
+#           \ OR contains(${hits.pagePathLevel1}, \"partner-network\"), \"Platform\"\
+#           ,\nif(contains(${hits.pagePathLevel1}, \"blog\"), \"Blog\",\nif(contains(${hits.pagePathLevel1},\
+#           \ \"blocks\"), \"Blocks\",\nif(contains(${hits.pagePathLevel1}, \"\
+#           customers\"), \"Customer Content\",\nif(contains(${hits.pagePathLevel1},\
+#           \ \"company\") OR contains(${hits.pagePathLevel1}, \"news\") OR contains(${hits.pagePathLevel1},\
+#           \ \"events\"), \"Company\",\nif(contains(${hits.pagePathLevel1}, \"\
+#           demo\") OR contains(${hits.pagePathLevel1}, \"learn\") OR contains(${hits.hostName},\
+#           \ \"discover.looker.com\"), \"LP\",\nif(contains(${hits.pagePathLevel1},\
+#           \ \"data-topics\"), \"Data Topics\",\nif(contains(${hits.hostName},\
 #           \ \"info.looker.com\"), \"Uberflip\",\"Other content\"\n\t))))))))))", value_format: !!null '',
 #         value_format_name: !!null '', _kind_hint: dimension, _type_hint: string}]
 #     x_axis_gridlines: false
@@ -386,27 +386,27 @@
 #     default_value: ''
 #     allow_multiple_values: true
 #     required: false
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     listens_to_filters: []
-#     field: hits_eventInfo.eventLabel
+#     field: hits.event_label
 #   - name: 'Video: View Through Rate'
 #     title: 'Video: View Through Rate'
 #     type: field_filter
 #     default_value: "%Video:%"
 #     allow_multiple_values: true
 #     required: false
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     listens_to_filters: []
-#     field: hits_eventInfo.eventCategory
+#     field: hits.event_category
 #   - name: Date Range
 #     title: Date Range
 #     type: field_filter
 #     default_value: 7 days ago for 7 days
 #     allow_multiple_values: true
 #     required: false
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     listens_to_filters: []
 #     field: ga_sessions.partition_date
@@ -416,7 +416,7 @@
 #     default_value: looker.com,info.looker.com,discover.looker.com
 #     allow_multiple_values: true
 #     required: false
-#     model: bq_pinger
+#     model: marketing
 #     explore: ga_sessions
 #     listens_to_filters: []
-#     field: hits_page.hostName
+#     field: hits.hostName
