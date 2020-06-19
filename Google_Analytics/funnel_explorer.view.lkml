@@ -9,64 +9,43 @@ view: funnel_explorer {
         , MIN(
             CASE WHEN
               {% condition event_1 %} event_type {% endcondition %}
-              THEN TIMESTAMP(CONCAT(CAST(session_date AS STRING)," ",time))
+              THEN session_time
               ELSE NULL END
             ) AS event_1
         , MIN(
             CASE WHEN
               {% condition event_2 %} event_type {% endcondition %}
-              THEN TIMESTAMP(CONCAT(CAST(session_date AS STRING)," ",time))
+              THEN session_time
               ELSE NULL END
-            ) AS event_2_first
-        , MAX(
-            CASE WHEN
-              {% condition event_2 %} event_type {% endcondition %}
-              THEN TIMESTAMP(CONCAT(CAST(session_date AS STRING)," ",time))
-              ELSE NULL END
-            ) AS event_2_last
+            ) AS event_2
         , MIN(
             CASE WHEN
               {% condition event_3 %} event_type {% endcondition %}
-              THEN TIMESTAMP(CONCAT(CAST(session_date AS STRING)," ",time))
+              THEN session_time
               ELSE NULL END
-            ) AS event_3_first
-        , MAX(
-            CASE WHEN
-              {% condition event_3 %} event_type {% endcondition %}
-              THEN TIMESTAMP(CONCAT(CAST(session_date AS STRING)," ",time))
-              ELSE NULL END
-            ) AS event_3_last
+            ) AS event_3
         , MIN(
             CASE WHEN
               {% condition event_4 %} event_type {% endcondition %}
-              THEN TIMESTAMP(CONCAT(CAST(session_date AS STRING)," ",time))
+              THEN session_time
               ELSE NULL END
-            ) AS event_4_first
-          , MAX(
-            CASE WHEN
-              {% condition event_4 %} event_type {% endcondition %}
-              THEN TIMESTAMP(CONCAT(CAST(session_date AS STRING)," ",time))
-              ELSE NULL END
-            ) AS event_4_last
-          , MAX(
-              event_1_before_event_2
-            ) AS event_1_before_event_2
-          , COUNT(CASE WHEN {% condition event_2 %} event_type {% endcondition %} THEN 1 ELSE NULL END) as count_event_2
+            ) AS event_4
       FROM (
-        SELECT sessions.session_id as session_id
-        , sessions.user_identifier as user_id
-        , sessions.session_date AS session_date
-        , session_events.event_type as event_type
-        , session_events.time
-        , session_events.session_event_index
-        , (CASE WHEN
-              {% condition event_2 %} session_events.event_type {% endcondition %}
-              THEN COUNTIF({% condition event_1 %} event_type {% endcondition %})
-              OVER (PARTITION BY session_id ORDER BY session_event_index ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
-              ELSE NULL END) AS event_1_before_event_2
+        SELECT CONCAT(
+          CAST(fullvisitorid AS STRING)
+          , '|'
+          , COALESCE(CAST(visitid AS STRING),'')
+          , '|'
+          , CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
+        )  as session_id
+        , sessions.userid as user_id
+        , sessions.date AS session_date
+        , TIMESTAMP_MILLIS(visitStarttime*1000 + time) as session_time
+        , hits.eventInfo.eventAction as event_type
+        , hits.hitnumber as event_sequence_number
         FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` AS sessions
-        LEFT JOIN UNNEST(sessions.session_events) as session_events
-        WHERE {% condition sessions.session_date %} sessions.session_date {% endcondition %}
+        LEFT JOIN UNNEST(hits) as hits
+        WHERE {% condition sessions_date %} _TABLE_SUFFIX {% endcondition %}
         GROUP BY 1,2,3,4,5,6
       )
       GROUP BY 1,2,3
@@ -74,28 +53,31 @@ view: funnel_explorer {
       persist_for: "24 hours"
   }
 
+  filter: sessions_date {
+    type: date
+  }
+
+
   filter: event_1 {
     group_label: "Funnel Events"
-    suggest_explore: event_type_suggest
-    suggest_dimension: event_type_suggest.event_type
+    suggest_explore: event_actions
+    suggest_dimension: event_actions.hits_event
   }
 
   filter: event_2 {
     group_label: "Funnel Events"
-    suggest_explore: event_type_suggest
-    suggest_dimension: event_type_suggest.event_type
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
   }
 
   filter: event_3 {
     group_label: "Funnel Events"
-    suggest_explore: event_type_suggest
-    suggest_dimension: event_type_suggest.event_type
+    suggest_dimension: event_type
   }
 
   filter: event_4 {
     group_label: "Funnel Events"
-    suggest_explore: event_type_suggest
-    suggest_dimension: event_type_suggest.event_type
+    suggest_dimension: event_type
   }
 
   dimension: session_id {
@@ -109,6 +91,11 @@ view: funnel_explorer {
     type: string
     hidden: yes
     sql: ${TABLE}.user_id ;;
+  }
+
+  dimension: event_type {
+    type: string
+    sql: ${TABLE}.event_type ;;
   }
 
   dimension_group: session_date {
@@ -129,106 +116,77 @@ view: funnel_explorer {
     sql: ${TABLE}.event_1 ;;
   }
 
-  dimension_group: event_2_first {
+  dimension_group: event_2 {
     group_label: "Funnel Events"
     description: "First occurrence of event 2"
     type: time
     convert_tz: no
     timeframes: [time]
 #     hidden: yes
-    sql: ${TABLE}.event_2_first ;;
+    sql: ${TABLE}.event_2 ;;
   }
 
-  dimension_group: event_2_last {
-    group_label: "Funnel Events"
-    description: "Last occurrence of event 2"
-    type: time
-    convert_tz: no
-    timeframes: [time]
-#     hidden: yes
-    sql: ${TABLE}.event_2_last ;;
-  }
 
-  dimension_group: event_3_first {
+  dimension_group: event_3 {
     group_label: "Funnel Events"
     description: "First occurrence of event 3"
     type: time
     convert_tz: no
     timeframes: [time]
 #     hidden: yes
-    sql: ${TABLE}.event_3_first ;;
+    sql: ${TABLE}.event_3 ;;
   }
 
-  dimension_group: event_3_last {
-    group_label: "Funnel Events"
-    description: "Last occurrence of event 3"
-    type: time
-    convert_tz: no
-    timeframes: [time]
-#     hidden: yes
-    sql: ${TABLE}.event_3_last ;;
-  }
-
-  dimension_group: event_4_first {
+  dimension_group: event_4 {
     group_label: "Funnel Events"
     description: "First occurrence of event 4"
     type: time
     convert_tz: no
     timeframes: [time]
 #     hidden: yes
-    sql: ${TABLE}.event_4_first ;;
-  }
-
-  dimension_group: event_4_last {
-    group_label: "Funnel Events"
-    description: "Last occurrence of event 4"
-    type: time
-    convert_tz: no
-    timeframes: [time]
-#     hidden: yes
-    sql: ${TABLE}.event_4_last ;;
+    sql: ${TABLE}.event_4 ;;
   }
 
   dimension: event1_before_event2 {
     group_label: "Order of Events"
     type: yesno
     hidden: yes
-    sql: ${event_1_time} < ${event_2_last_time} ;;
+    sql: ${event_1_time} < ${event_2_time} ;;
   }
 
   dimension: event1_before_event3 {
     group_label: "Order of Events"
     type: yesno
     hidden: yes
-    sql: ${event_1_time} < ${event_3_last_time} ;;
+    sql: ${event_1_time} < ${event_3_time} ;;
   }
 
   dimension: event1_before_event4 {
     group_label: "Order of Events"
     type: yesno
     hidden: yes
-    sql: ${event_1_time} < ${event_4_last_time} ;;
+    sql: ${event_1_time} < ${event_4_time} ;;
   }
 
   dimension: event2_before_event3 {
     group_label: "Order of Events"
     type: yesno
     hidden: yes
-    sql: ${event_2_first_time} < ${event_3_last_time};;
+    sql: ${event_2_time} < ${event_3_time};;
   }
 
   dimension: event2_before_event4 {
     group_label: "Order of Events"
     type: yesno
     hidden: yes
-    sql: ${event_2_first_time} < ${event_4_last_time} ;;
+    sql: ${event_2_time} < ${event_4_time} ;;
   }
 
   dimension: event3_before_event4 {
     group_label: "Order of Events"
     type: yesno
     hidden: yes
-    sql: ${event_3_first_time} < ${event_4_last_time} ;;
+    sql: ${event_3_time} < ${event_4_time} ;;
   }
 
   dimension: reached_event_1 {
@@ -241,23 +199,23 @@ view: funnel_explorer {
   dimension: reached_event_2 {
     hidden: yes
     type: yesno
-    sql: (${event_1_time} IS NOT NULL AND ${event_2_first_time} IS NOT NULL AND ${event_1_time} < ${event_2_last_time})
+    sql: (${event_1_time} IS NOT NULL AND ${event_2_time} IS NOT NULL AND ${event_1_time} < ${event_2_time})
       ;;
   }
 
   dimension: reached_event_3 {
     hidden: yes
     type: yesno
-    sql: (${event_1_time} IS NOT NULL AND ${event_2_last_time} IS NOT NULL AND ${event_3_last_time}  IS NOT NULL
-      AND ${event_1_time} < ${event_2_last_time} AND ${event_1_time} < ${event_3_last_time} AND ${event_2_first_time} < ${event_3_last_time})
+    sql: (${event_1_time} IS NOT NULL AND ${event_2_time} IS NOT NULL AND ${event_3_time}  IS NOT NULL
+      AND ${event_1_time} < ${event_2_time} AND ${event_1_time} < ${event_3_time} AND ${event_2_time} < ${event_3_time})
        ;;
   }
 
   dimension: reached_event_4 {
     hidden: yes
     type: yesno
-    sql: (${event_1_time} IS NOT NULL AND ${event_2_last_time} IS NOT NULL AND ${event_3_last_time}  IS NOT NULL AND ${event_4_last_time} IS NOT NULL
-      AND ${event_1_time} < ${event_2_last_time} AND ${event_1_time} < ${event_3_last_time} AND ${event_1_time} < ${event_4_last_time} AND ${event_2_first_time} < ${event_3_last_time} AND ${event_2_first_time} < ${event_4_last_time} AND ${event_3_first_time} < ${event_4_last_time})
+    sql: (${event_1_time} IS NOT NULL AND ${event_2_time} IS NOT NULL AND ${event_3_time}  IS NOT NULL AND ${event_4_time} IS NOT NULL
+      AND ${event_1_time} < ${event_2_time} AND ${event_1_time} < ${event_3_time} AND ${event_1_time} < ${event_4_time} AND ${event_2_time} < ${event_3_time} AND ${event_2_time} < ${event_4_time} AND ${event_3_time} < ${event_4_time})
  ;;
   }
 
@@ -378,13 +336,17 @@ view: funnel_explorer {
     }
   }
 
+  measure: count {
+    type: count
+  }
+
   set: detail {
     fields: [sessions.user_identifier
       , sessions.session_index
       , session_date_date
       , event_1_time
-      , event_2_last_time
-      , event_3_last_time
-      , event_4_last_time]
+      , event_2_time
+      , event_3_time
+      , event_4_time]
   }
 }

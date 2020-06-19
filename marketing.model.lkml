@@ -2,7 +2,8 @@ connection: "ga_generated"
 
 # include: "/datagroups.lkml"
 include: "/Google_Analytics/*.view.lkml"
-include: "/Dashboards/*.dashboard.lookml"
+include: "*.dashboard"
+
 
 # aggregate_awareness: yes
 
@@ -11,18 +12,19 @@ explore: ga_sessions {
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions merged with Salesforce data."
 
-  always_filter: {
-    filters: {
-      field: ga_sessions.partition_date
-      value: "7 days ago for 7 days"
-    }
-  }
+  # always_filter: {
+  #   filters: {
+  #     field: ga_sessions.partition_date
+  #     value: "7 days ago for 7 days"
+  #   }
+  # }
 
   join: hits {
     type: left_outer
     sql: LEFT JOIN UNNEST(${ga_sessions.hits}) AS hits ;;
     relationship: one_to_many
   }
+
 
   join: asset_facts {
     type: left_outer
@@ -48,6 +50,7 @@ explore: ga_sessions {
     sql_on: ${ga_sessions.full_visitor_id} = ${session_page_sequence.full_visitor_id}
           AND ${ga_sessions.visit_id} = ${session_page_sequence.visit_id}
           AND ${hits.page_title} = ${session_page_sequence.page_title} ;;
+    sql_where:  ${hits.type} = 'PAGE' ;;
   }
 
   join: session_page_facts {
@@ -64,7 +67,9 @@ explore: ga_sessions {
   }
 }
 
-# explore: funnel_explorer {}
+explore: funnel_explorer {
+}
+
 
 # explore: campaign_analytics {
 #   description: "Explores Marketing touches and attribution models by merging Campaign Member data with Salesforce Opportunity data."

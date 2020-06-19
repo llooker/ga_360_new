@@ -8,7 +8,7 @@
 view: asset_facts{
   view_label: "Behavior"
   derived_table: {
-    persist_for: "1 hour"
+    # persist_for: "1 hour"
     sql: SELECT
           SPLIT(hits.page.pagePath, '?')[OFFSET(0)] as page
          , MIN(TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) as first_visit

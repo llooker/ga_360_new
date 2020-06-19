@@ -13,7 +13,7 @@ constant: CONNECTION_NAME {
 
 # Used in ga_sessions.view sql_table_name
 constant: SCHEMA_NAME {
-  value: "ga360_generated_2"
+  value: "bigquery-public-data.google_analytics_sample"
   export: override_required
 }
 
