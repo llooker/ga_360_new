@@ -2,7 +2,7 @@ connection: "ga_generated"
 
 # include: "/datagroups.lkml"
 include: "/Google_Analytics/*.view.lkml"
-include: "*.dashboard"
+include: "/Dashboards/*.dashboard"
 
 
 # aggregate_awareness: yes

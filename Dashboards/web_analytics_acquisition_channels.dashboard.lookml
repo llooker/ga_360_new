@@ -622,9 +622,9 @@
     fields: [hits.event_action, hits.event_label, ga_sessions.visits_total,
       ga_sessions.page_views_total, hits.count]
     filters:
-      hits.event_category: "%btn%"
+      hits.event_category: "-Null"
       hits.event_label: "-%careers%"
-      hits.event_action: "-Accept,-ACCEPT"
+      hits.event_action: "-Null"
     sorts: [hits.count desc]
     limit: 10
     dynamic_fields: [{table_calculation: ctr, label: CTR, expression: "${ga_sessions.hits_total}/${ga_sessions.pageviews_total}",
@@ -656,7 +656,7 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    hidden_fields: [ga_sessions.visits_total, ga_sessions.page_views_total, hits_eventInfo.eventLabel,
+    hidden_fields: [ga_sessions.visits_total, ga_sessions.page_views_total, hits.event_label,
       ga_sessions.total_events]
     series_types: {}
     y_axes: []
@@ -804,7 +804,7 @@
   - name: Partition Date
     title: Partition Date
     type: field_filter
-    default_value: 28 days
+    default_value: 1 years
     allow_multiple_values: true
     required: false
     model: marketing
