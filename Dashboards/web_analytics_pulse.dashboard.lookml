@@ -12,7 +12,7 @@
     sorts: [ga_sessions.visits_total desc]
     limit: 500
     total: true
-    dynamic_fields: [{table_calculation: of_total, label: "% of Total", expression: "${totals.visits_total}/${totals.visits_total:total}",
+    dynamic_fields: [{table_calculation: of_total, label: "% of Total", expression: "${ga_sessions.visits_total}/${ga_sessions.visits_total:total}",
         value_format: !!null '', value_format_name: percent_0, is_disabled: false,
         _kind_hint: measure, _type_hint: number}]
     query_timezone: America/Los_Angeles
@@ -68,10 +68,10 @@
     height: 9
   - title: 'Top 15 Countries: Conversions'
     name: 'Top 15 Countries: Conversions'
-    model: bq_pinger
+    model: marketing
     explore: ga_sessions
     type: looker_column
-    fields: [geoNetwork.country, ga_sessions.goal_completions]
+    fields: [ga_sessions.country, ga_sessions.goal_completions]
     filters: {}
     sorts: [ga_sessions.goal_completions desc]
     limit: 500
@@ -133,26 +133,26 @@
     height: 9
   - title: 'Company Size: Traffic'
     name: 'Company Size: Traffic'
-    model: bq_pinger
+    model: marketing
     explore: ga_sessions
     type: looker_column
     fields: [segment, ga_sessions.visits_total]
     filters:
-      hits_customDimensions.index: '4'
-      hits_customDimensions.value: "-ghostery"
+      custom_dimensions.index: '4'
+      custom_dimensions.value: "-ghostery"
     sorts: [segment]
     limit: 15
     total: true
-    dynamic_fields: [{dimension: segment, label: Segment, expression: "if(contains(${hits_customDimensions.value},\"\
-          1-10\") OR contains(${hits_customDimensions.value},\"11-50\"),\"1. SMB\"\
-          ,\nif(contains(${hits_customDimensions.value},\"51-250\") OR contains(${hits_customDimensions.value},\"\
-          251-1K\") \n\tOR contains(${hits_customDimensions.value},\"251-1000\"),\"\
-          2. MM\",\nif(contains(${hits_customDimensions.value},\"1K-5K\") OR contains(${hits_customDimensions.value},\"\
-          1000+\"),\"3. COM\",\nif(contains(${hits_customDimensions.value},\"5K-10K\"\
-          ) OR contains(${hits_customDimensions.value},\"10K-50K\") \n\tOR contains(${hits_customDimensions.value},\"\
-          50K-100K\") OR contains(${hits_customDimensions.value},\"100K+\"),\"4. ENT\"\
+    dynamic_fields: [{dimension: segment, label: Segment, expression: "if(contains(${custom_dimensions.value},\"\
+          1-10\") OR contains(${custom_dimensions.value},\"11-50\"),\"1. SMB\"\
+          ,\nif(contains(${custom_dimensions.value},\"51-250\") OR contains(${custom_dimensions.value},\"\
+          251-1K\") \n\tOR contains(${custom_dimensions.value},\"251-1000\"),\"\
+          2. MM\",\nif(contains(${custom_dimensions.value},\"1K-5K\") OR contains(${custom_dimensions.value},\"\
+          1000+\"),\"3. COM\",\nif(contains(${custom_dimensions.value},\"5K-10K\"\
+          ) OR contains(${custom_dimensions.value},\"10K-50K\") \n\tOR contains(${custom_dimensions.value},\"\
+          50K-100K\") OR contains(${custom_dimensions.value},\"100K+\"),\"4. ENT\"\
           ,null))))", value_format: !!null '', value_format_name: !!null '', _kind_hint: dimension,
-        _type_hint: string}, {table_calculation: total, label: "% Total", expression: "${totals.visits_total}/${totals.visits_total:total}",
+        _type_hint: string}, {table_calculation: total, label: "% Total", expression: "${ga_sessions.visits_total}/${ga_sessions.visits_total:total}",
         value_format: !!null '', value_format_name: percent_0, _kind_hint: measure,
         _type_hint: number}]
     query_timezone: America/Los_Angeles
@@ -166,7 +166,7 @@
     point_style: circle
     series_types: {}
     limit_displayed_rows: false
-    hidden_series: [ga_sessions.percent_new_sessions, ga_sessions.session_count, totals.visits_total]
+    hidden_series: [ga_sessions.percent_new_sessions, ga_sessions.session_count, ga_sessions.visits_total]
     y_axes: [{label: '', orientation: left, series: [{id: ga_sessions.session_count,
             name: Session Session Count, axisId: ga_sessions.session_count}], showLabels: true,
         showValues: true, unpinAxis: false, tickDensity: default, type: linear}, {
@@ -212,24 +212,24 @@
     height: 9
   - title: 'Company Size: Conversions'
     name: 'Company Size: Conversions'
-    model: bq_pinger
+    model: marketing
     explore: ga_sessions
     type: looker_column
     fields: [segment, ga_sessions.goal_completions]
     filters:
-      hits_customDimensions.index: '4'
-      hits_customDimensions.value: "-ghostery"
+      custom_dimensions.index: '4'
+      custom_dimensions.value: "-ghostery"
     sorts: [segment]
     limit: 500
     total: true
-    dynamic_fields: [{dimension: segment, label: Segment, expression: "if(contains(${hits_customDimensions.value},\"\
-          1-10\") OR contains(${hits_customDimensions.value},\"11-50\"),\"1. SMB\"\
-          ,\nif(contains(${hits_customDimensions.value},\"51-250\") OR contains(${hits_customDimensions.value},\"\
-          251-1K\") \n\tOR contains(${hits_customDimensions.value},\"251-1000\"),\"\
-          2. MM\",\nif(contains(${hits_customDimensions.value},\"1K-5K\") OR contains(${hits_customDimensions.value},\"\
-          1000+\"),\"3. COM\",\nif(contains(${hits_customDimensions.value},\"5K-10K\"\
-          ) OR contains(${hits_customDimensions.value},\"10K-50K\") \n\tOR contains(${hits_customDimensions.value},\"\
-          50K-100K\") OR contains(${hits_customDimensions.value},\"100K+\"),\"4. ENT\"\
+    dynamic_fields: [{dimension: segment, label: Segment, expression: "if(contains(${custom_dimensions.value},\"\
+          1-10\") OR contains(${custom_dimensions.value},\"11-50\"),\"1. SMB\"\
+          ,\nif(contains(${custom_dimensions.value},\"51-250\") OR contains(${custom_dimensions.value},\"\
+          251-1K\") \n\tOR contains(${custom_dimensions.value},\"251-1000\"),\"\
+          2. MM\",\nif(contains(${custom_dimensions.value},\"1K-5K\") OR contains(${custom_dimensions.value},\"\
+          1000+\"),\"3. COM\",\nif(contains(${custom_dimensions.value},\"5K-10K\"\
+          ) OR contains(${custom_dimensions.value},\"10K-50K\") \n\tOR contains(${custom_dimensions.value},\"\
+          50K-100K\") OR contains(${custom_dimensions.value},\"100K+\"),\"4. ENT\"\
           ,null))))", value_format: !!null '', value_format_name: !!null '', _kind_hint: dimension,
         _type_hint: string}, {table_calculation: total, label: "% Total", expression: "${ga_sessions.goal_completions}/${ga_sessions.goal_completions:total}",
         value_format: !!null '', value_format_name: percent_0, is_disabled: false,
@@ -293,12 +293,12 @@
     height: 9
   - title: Traffic
     name: Traffic
-    model: bq_pinger
+    model: marketing
     explore: ga_sessions
     type: looker_area
-    fields: [ga_sessions.visitStart_week, ga_sessions.landing_page_hostname, ga_sessions.visits_total]
+    fields: [ga_sessions.visit_start_week, ga_sessions.landing_page_hostname, ga_sessions.visits_total]
     pivots: [ga_sessions.landing_page_hostname]
-    fill_fields: [ga_sessions.visitStart_week]
+    fill_fields: [ga_sessions.visit_start_week]
     filters: {}
     sorts: [ga_sessions.visits_total desc 8]
     limit: 500
@@ -355,7 +355,7 @@
     height: 10
   - title: New vs Returning Users
     name: New vs Returning Users
-    model: bq_pinger
+    model: marketing
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.user_type, ga_sessions.landing_page_hostname, ga_sessions.unique_visitors]
@@ -425,13 +425,13 @@
     height: 10
   - title: Traffic Sources
     name: Traffic Sources
-    model: bq_pinger
+    model: marketing
     explore: ga_sessions
     type: looker_bar
-    fields: [ga_sessions.landing_page_hostname, ga_sessions.channelGrouping, ga_sessions.visits_total]
-    pivots: [ga_sessions.channelGrouping]
+    fields: [ga_sessions.landing_page_hostname, ga_sessions.channel_grouping, ga_sessions.visits_total]
+    pivots: [ga_sessions.channel_grouping]
     filters: {}
-    sorts: [totals.visits_total desc 9, ga_sessions.channelGrouping 0]
+    sorts: [ga_sessions.visits_total desc 9, ga_sessions.channel_grouping 0]
     limit: 500
     column_limit: 50
     row_total: right
@@ -501,7 +501,7 @@
     fields: [ga_sessions.landing_page_hostname, ga_sessions.visits_total, ga_sessions.first_time_sessions,
       ga_sessions.timeonsite_average_per_session, ga_sessions.page_views_session, ga_sessions.bounce_rate]
     filters: {}
-    sorts: [totals.visits_total desc]
+    sorts: [ga_sessions.visits_total desc]
     limit: 500
     column_limit: 50
     series_types: {}
