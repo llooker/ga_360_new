@@ -3,7 +3,7 @@ connection: "ga_generated"
 # include: "/datagroups.lkml"
 include: "/Google_Analytics/*.view.lkml"
 include: "/Dashboards/*.dashboard"
-
+include: "/Google_Analytics/Attribution_Models/attribution_model_ndt.view.lkml"
 
 # aggregate_awareness: yes
 
@@ -24,7 +24,6 @@ explore: ga_sessions {
     sql: LEFT JOIN UNNEST(${ga_sessions.hits}) AS hits ;;
     relationship: one_to_many
   }
-
 
   join: asset_facts {
     type: left_outer
@@ -63,6 +62,12 @@ explore: ga_sessions {
   join: time_on_page {
     type: left_outer
     sql_on: ${time_on_page.hit_id} = ${hits.id} ;;
+    relationship: one_to_one
+  }
+
+  join: attribution_model_ndt {
+    type: inner
+    sql_on: ${ga_sessions.id} = ${attribution_model_ndt.id};;
     relationship: one_to_one
   }
 }
