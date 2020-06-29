@@ -7,7 +7,7 @@
 #############################################################################################################
 
 view: custom_variables {
-  view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Custom Dimensions"
+  view_label: "Custom Dimensions"
 
   ########## DIMENSIONS ##########
   dimension: custom_var_name {
