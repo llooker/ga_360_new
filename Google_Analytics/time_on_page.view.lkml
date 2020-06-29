@@ -57,7 +57,6 @@ view: time_on_page {
   ########## DIMENSIONS ##########
 
   dimension: time_on_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
     group_label: "Page Timing"
     description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last interaction on the page"
     type: number
@@ -68,7 +67,6 @@ view: time_on_page {
   ########## MEASURES ##########
 
   measure: average_time_on_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
     group_label: "Pages"
     label: "Avg Time on Page"
     description: "Avg time a user spent on a specific page."
