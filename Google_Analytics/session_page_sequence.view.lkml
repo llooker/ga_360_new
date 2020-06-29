@@ -122,7 +122,7 @@ view: session_page_sequence {
   ########## DIMENSIONS ##########
 
   dimension: cumulative_navigation_path {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Pages Visited"
     description: "Cumulative page path to reach current page."
     type: string
@@ -130,7 +130,7 @@ view: session_page_sequence {
   }
 
   dimension: cumulative_navigation_path_title {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Pages Visited"
     description: "Cumulative page path to reach current page (displays Page Titles)."
     type: string
@@ -166,7 +166,7 @@ view: session_page_sequence {
   }
 
   dimension: page_sequence {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Flow"
     description: "Order number of the page visit in the session"
     type: number
@@ -181,7 +181,7 @@ view: session_page_sequence {
   }
 
   dimension: previous_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Flow"
     description: "Prior page visited"
     type: string
@@ -189,7 +189,7 @@ view: session_page_sequence {
   }
 
   dimension: previous_page_title {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Flow"
     description: "Prior page visited"
     type: string
@@ -197,7 +197,7 @@ view: session_page_sequence {
   }
 
   dimension: subsequent_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Flow"
     description: "Next Page Visited"
     type: string
@@ -205,7 +205,7 @@ view: session_page_sequence {
   }
 
   dimension: subsequent_page_title {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Flow"
     description: "Next Page Visited"
     type: string

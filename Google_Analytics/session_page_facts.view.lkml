@@ -52,7 +52,7 @@ view: session_page_facts {
   ########## DIMENSIONS ##########
 
   dimension: fourth_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Title"
     label: "4th Page Title"
     description: "Fourth Page Title Visited in Session"
@@ -60,7 +60,7 @@ view: session_page_facts {
   }
 
   dimension: fourth_page_path {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Path"
     label: "4th Page Path"
     description: "Fourth Page Path Visited in Session"
@@ -68,21 +68,21 @@ view: session_page_facts {
   }
 
   dimension: full_page_history  {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Pages Visited"
     description: "Full Path of Pages Visited in Session"
     sql: ${TABLE}.full_page_path_history  ;;
   }
 
   dimension: full_page_title_history  {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Pages Visited"
     description: "Full Path of Pages Visited in Session"
     sql: ${TABLE}.full_page_title_history  ;;
   }
 
   dimension: landing_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Title"
     label: "1st Page Title"
     description: "Landing Page Title in the Session"
@@ -90,7 +90,7 @@ view: session_page_facts {
   }
 
   dimension: landing_page_path {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Path"
     label: "1st Page Path"
     description: "Landing Page Path in Session"
@@ -98,7 +98,7 @@ view: session_page_facts {
   }
 
   dimension: pages_visited {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Pages Visited"
     label: "Number of Pages Visited"
     description: "Total Pages Visited in Session"
@@ -106,7 +106,7 @@ view: session_page_facts {
   }
 
   dimension: second_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Title"
     label: "2nd Page Title"
     description: "Second Page Title Visited in Session"
@@ -114,7 +114,7 @@ view: session_page_facts {
   }
 
   dimension: second_page_path {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Path"
     label: "2nd Page Path"
     description: "Second Page Path Visited in Session"
@@ -122,7 +122,7 @@ view: session_page_facts {
   }
 
   dimension: third_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Title"
     label: "3rd Page Title"
     description: "Third Page Title Visited in Session"
@@ -130,7 +130,7 @@ view: session_page_facts {
   }
 
   dimension: third_page_path {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Page Flow"
+    view_label: "Page Flow"
     group_label: "Page Path"
     label: "3rd Page Path"
     description: "Third Page Path Visited in Session"
