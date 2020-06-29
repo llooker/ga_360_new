@@ -132,11 +132,7 @@ view: hits {
     hidden: yes
     description: "Did the visitor complete any of the targeted goals?"
     type: yesno
-    sql: (${has_completed_dashboard_demo}
-          OR ${has_completed_discover_lp}
-          OR ${is_adwords_completion}
-          OR ${is_data_topic}
-          OR ${is_subscribed_to_blog}) ;;
+    sql: (${ga_sessions.is_transacted}) ;;
   }
 
   dimension: has_seen_demo_confirmation_page {

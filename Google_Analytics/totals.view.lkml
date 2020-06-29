@@ -20,6 +20,11 @@ view: totals {
     style: integer
   }
 
+  dimension: is_transacted {
+    type: yesno
+    sql: ${TABLE}.totals.transactions = 1 ;;
+  }
+
   ########## MEASURES ############
 
   measure: bounce_rate {
