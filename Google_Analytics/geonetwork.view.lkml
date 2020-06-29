@@ -12,7 +12,7 @@ view: geonetwork {
   ########## DIMENSIONS ##########
 
   dimension: approximate_network_location {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     label: "Approx. Network Location"
     description: "Approximate location based on rounded latitude and longitude returned by IP address."
@@ -23,7 +23,7 @@ view: geonetwork {
   }
 
   dimension: city {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "Users' city, derived from their IP addresses or Geographical IDs."
     sql: ${TABLE}.geoNetwork.city ;;
@@ -31,14 +31,14 @@ view: geonetwork {
   }
 
   dimension: city_id {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "Users' city ID, derived from their IP addresses or Geographical IDs. The city IDs are the same as the Criteria IDs found at https://developers.google.com/analytics/devguides/collection/protocol/v1/geoid."
     sql: ${TABLE}.geoNetwork.cityid ;;
   }
 
   dimension: continent {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "Users' continent, derived from users' IP addresses or Geographical IDs."
     sql: ${TABLE}.geoNetwork.continent ;;
@@ -46,7 +46,7 @@ view: geonetwork {
   }
 
   dimension: country {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "Users' country, derived from their IP addresses or Geographical IDs."
     map_layer_name: countries
@@ -55,7 +55,7 @@ view: geonetwork {
   }
 
   dimension: latitude {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "The approximate latitude of users' city, derived from their IP addresses or Geographical IDs. Locations north of the equator have positive latitudes and locations south of the equator have negative latitudes."
     type: number
@@ -64,7 +64,7 @@ view: geonetwork {
   }
 
   dimension: location {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "Location based on latitude and longitude returned by IP address."
     type: location
@@ -73,7 +73,7 @@ view: geonetwork {
   }
 
   dimension: longitude {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "The approximate longitude of users' city, derived from their IP addresses or Geographical IDs. Locations east of the prime meridian have positive longitudes and locations west of the prime meridian have negative longitudes."
     type: number
@@ -82,7 +82,7 @@ view: geonetwork {
   }
 
   dimension: metro {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "The Designated Market Area (DMA) from where traffic arrived."
     sql: ${TABLE}.geoNetwork.metro ;;
@@ -90,14 +90,14 @@ view: geonetwork {
   }
 
   dimension: network_domain {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "The domain name of users' ISP, derived from the domain name registered to the ISP's IP address."
     sql: ${TABLE}.geoNetwork.networkDomain ;;
   }
 
   dimension: network_location {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     label: "Service Provider"
     description: "The names of the service providers used to reach the property. For example, if most users of the website come via the major cable internet service providers, its value will be these service providers' names."
@@ -105,7 +105,7 @@ view: geonetwork {
   }
 
   dimension: region {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "Users' region, derived from their IP addresses or Geographical IDs. In U.S., a region is a state, New York, for example."
     sql: ${TABLE}.geoNetwork.region ;;
@@ -113,7 +113,7 @@ view: geonetwork {
   }
 
   dimension: subcontinent {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Audience"
+    view_label: "Audience"
     group_label: "Geo"
     description: "Users' sub-continent, derived from their IP addresses or Geographical IDs. For example, Polynesia or Northern Europe."
     sql: ${TABLE}.geoNetwork.subcontinent ;;

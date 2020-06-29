@@ -7,12 +7,12 @@
 #############################################################################################################
 
 view: hits {
-  view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Hits"
+  view_label: "Hits"
   ########## PRIMARY KEYS ##########
 
   dimension: id {
     primary_key: yes
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     label: "Hit ID"
     group_label: "ID"
     description: "Unique Session ID | Hit Number"
@@ -41,7 +41,7 @@ view: hits {
   }
 
   dimension: event_action {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Event Tracking"
     description: "Action tied to event"
     type: string
@@ -51,7 +51,7 @@ view: hits {
   }
 
   dimension: event_category {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Event Tracking"
     description: "The event category"
     type: string
@@ -61,7 +61,7 @@ view: hits {
   }
 
   dimension: event_label {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Event Tracking"
     description: "Label tied to event"
     type: string
@@ -70,7 +70,7 @@ view: hits {
     drill_fields: [event_action, event_category, event_value]
   }
   dimension: event_value {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Event Tracking"
     description: "Total value of web events for the profile."
     type: number
@@ -80,7 +80,7 @@ view: hits {
   }
 
   dimension: full_page_url {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Full Page URL"
     description: "The full URL including the hostname and path."
@@ -94,7 +94,7 @@ view: hits {
   }
 
   dimension: full_page_url_parameters {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages (with Parameters)"
     label: "Full Page URL"
     description: "The full URL including the hostname and path."
@@ -143,7 +143,7 @@ view: hits {
   }
 
   dimension: has_social_source_referral {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Acquisition"
+    view_label: "Acquisition"
     group_label: "Traffic Sources"
     description: "Indicates whether sessions to the property are from a social source."
     type: yesno
@@ -164,7 +164,7 @@ view: hits {
   }
 
   dimension: host_name {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Hostname"
     description: "The hostname from which the tracking request was made."
@@ -177,7 +177,7 @@ view: hits {
   }
 
   dimension: hour {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Time"
     description: "A two-digit hour of the day ranging from 00-23 in the timezone configured for the account. This value is also corrected for daylight savings time. If the timezone follows daylight savings time, there will be an apparent bump in the number of sessions during the changeover hour (e.g., between 1:00 and 2:00) for the day per year when that hour repeats. A corresponding hour with zero sessions will occur at the opposite changeover. (Google Analytics does not track user time more precisely than hours.)"
     type: number
@@ -206,7 +206,7 @@ view: hits {
   }
 
   dimension: is_drift {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Event Filters"
     description: "Use with Event Tracking dimension(s)"
     type: yesno
@@ -214,7 +214,7 @@ view: hits {
   }
 
   dimension: is_entrance {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Filters"
     label: "Is Landing Page"
     description: "Use to filter for first pageview of a session. Use with Page dimensions."
@@ -223,7 +223,7 @@ view: hits {
   }
 
   dimension: is_exit {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Filters"
     description: "If this hit was the last pageview or screenview hit of a session, this is set to true."
     type: yesno
@@ -231,7 +231,7 @@ view: hits {
   }
 
   dimension: is_interaction {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Page Filters"
     description: "If this hit was an interaction, this is set to true. If this was a non-interaction hit (i.e., an event with interaction set to false), this is false."
     type: yesno
@@ -241,7 +241,7 @@ view: hits {
   dimension: is_scroll {
     hidden: yes
     label: "Is Scroll Tracking"
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Event Filters"
     description: "Use with Event Tracking dimension(s). Scroll tracking monitors the length of the page scrolled by users."
     type: yesno
@@ -257,7 +257,7 @@ view: hits {
 
   dimension: is_video {
     hidden: yes
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Event Filters"
     description: "Use with Event Tracking dimension(s). Tracks the player state (play, pause, and the % of video played of single/multiple videos embedded on the page."
     type: yesno
@@ -265,7 +265,7 @@ view: hits {
   }
 
   dimension: minute {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Time"
     description: "Returns the minutes, between 00 and 59, in the hour."
     type: number
@@ -273,7 +273,7 @@ view: hits {
   }
 
   dimension: page_path {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages (with Parameters)"
     label: "Page"
     description: "A page on the website specified by path and/or query parameters. Use this with hostname to get the page's full URL."
@@ -288,7 +288,7 @@ view: hits {
   }
 
   dimension: page_path_formatted {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Page"
     description: "The url of the page."
@@ -304,35 +304,35 @@ view: hits {
   }
 
   dimension: page_path_level_1 {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     description: "This dimension rolls up all the page paths in the first hierarchical level in pagePath."
     sql: ${TABLE}.page.pagePathLevel1 ;;
   }
 
   dimension: page_path_level_2 {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     description: "This dimension rolls up all the page paths in the second hierarchical level in pagePath."
     sql: ${TABLE}.page.pagePathLevel2 ;;
   }
 
   dimension: page_path_level_3 {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     description: "This dimension rolls up all the page paths in the third hierarchical level in pagePath."
     sql: ${TABLE}.page.pagePathLevel3 ;;
   }
 
   dimension: page_path_level_4 {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     description: "This dimension rolls up all the page paths into hierarchical levels. Up to 4 pagePath levels maybe specified. All additional levels in the pagePath hierarchy are also rolled up in this dimension."
     sql: ${TABLE}.page.pagePathLevel4 ;;
   }
 
   dimension: page_title {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     description: "The page's title. Multiple pages might have the same page title."
     sql: ${TABLE}.page.pageTitle ;;
@@ -342,7 +342,7 @@ view: hits {
 
   dimension: is_play {
     label: "Is Played"
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Video"
     description: "Yes if a video is played. NULL if the event action is not related to a video"
     type: yesno
@@ -357,7 +357,7 @@ view: hits {
   }
 
   dimension: search_category {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Internal Site Search"
     label: "Site Search Category"
     description: "The category used for the internal search if site search categories are enabled in the view. For example, the product category may be electronics, furniture, or clothing."
@@ -365,7 +365,7 @@ view: hits {
   }
 
   dimension: scroll_tracking_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Scroll"
     description: "Use with Event measure(s). Scroll tracking monitors the length of the page scrolled by users."
     type: string
@@ -381,7 +381,7 @@ view: hits {
   }
 
   dimension: scroll_percent {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Scroll"
     description: "Use with Event measure(s). % of the page scrolled."
     type: number
@@ -394,7 +394,7 @@ view: hits {
   }
 
   dimension: search_keyword {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Internal Site Search"
     label: "Search Term"
     description: "Search term used within the property."
@@ -428,7 +428,7 @@ view: hits {
   }
 
   dimension: social_network {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Acquisition"
+    view_label: "Acquisition"
     group_label: "Traffic Sources"
     description: "The social network name. This is related to the referring social network for traffic sources; e.g., Google+, Blogger."
     type: string
@@ -465,7 +465,7 @@ view: hits {
   }
 
   dimension: video_page {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Video"
     description: "Use with Event measure(s). Page where the video is embedded."
     type: string
@@ -481,7 +481,7 @@ view: hits {
   }
 
   dimension: video_percent_watched{
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Video"
     description: "Use with Event measure(s). % of video watched on "
     type: number
@@ -494,7 +494,7 @@ view: hits {
   }
 
   dimension: video_title {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Video"
     description: "Use with Event measure(s). Title of Video."
     type: string
@@ -517,7 +517,7 @@ view: hits {
   }
 
   measure: entrance_pageviews_total {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Entrances"
     description: "The number of entrances to the property measured as the first pageview in a session, typically used with landingPagePath."
@@ -530,7 +530,7 @@ view: hits {
     }
   }
   measure: entrance_rate {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     description: "The percentage of pageviews in which this page was the entrance."
     type: number
@@ -539,7 +539,7 @@ view: hits {
   }
 
   measure: event_count {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Events"
     label: "Total Events"
     description: "The total number of web events for the event."
@@ -555,7 +555,7 @@ view: hits {
   }
 
   measure: exit_pageviews_total {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Exits"
     description: "The number of exits from the property."
@@ -569,7 +569,7 @@ view: hits {
   }
 
   measure: exit_rate {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Exit Rate"
     description: "Exit is (number of exits) / (number of pageviews) for the page or set of pages. It indicates how often users exit from that page or set of pages when they view the page(s)."
@@ -579,7 +579,7 @@ view: hits {
   }
 
   measure: page_count {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Pageviews"
     description: "The total number of pageviews for the property."
@@ -595,7 +595,7 @@ view: hits {
   }
 
   measure: page_value {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     description: "The average value of this page or set of pages, which is equal to (ga:transactionRevenue + ga:goalValueAll) / ga:uniquePageviews."
     type: number
@@ -613,7 +613,7 @@ view: hits {
   }
 
   measure: sessions_with_events {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Session"
+    view_label: "Session"
     group_label: "Session"
     description: "The total number of sessions with web events."
     type: count_distinct
@@ -626,7 +626,7 @@ view: hits {
   }
 
   measure: unique_page_count {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Pages"
     label: "Unique Pageviews"
     description: "Unique Pageviews are the number of sessions during which the specified page was viewed at least once. A unique pageview is counted for each page URL + page title combination."
@@ -642,7 +642,7 @@ view: hits {
   }
 
   measure: unique_event_count {
-    view_label: "{% if _explore._name == 'campaign_analytics' %}Web {% else %}{%endif%}Behavior"
+    view_label: "Behavior"
     group_label: "Events"
     label: "Unique Events"
     description: "Unique Events are interactions with content by a single user within a single session that can be tracked separately from pageviews or screenviews."
