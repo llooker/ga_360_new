@@ -151,7 +151,7 @@ view: hits {
   }
 
   dimension_group: hit {
-    timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
+    timeframes: [time, date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
     type: time
     sql: TIMESTAMP_MILLIS(${ga_sessions.visit_start_seconds}*1000 + ${time}) ;;
     convert_tz: no

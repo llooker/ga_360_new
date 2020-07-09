@@ -1,12 +1,18 @@
 connection: "ga_generated"
 
 # include: "/datagroups.lkml"
-include: "/Google_Analytics/*.view.lkml"
+include: "/*/*.view.lkml"
 include: "/Dashboards/*.dashboard"
 
-
+datagroup: bqml_datagroup {
+  #retrain model every day
+  max_cache_age: "1 hour"
+  sql_trigger: SELECT CURRENT_DATE() ;;
+}
 # aggregate_awareness: yes
+explore: funnel_explorer_new {}
 
+explore: hit_facts {}
 
 explore: ga_sessions {
   label: "Google Analytics Sessions"
@@ -64,6 +70,12 @@ explore: ga_sessions {
     type: left_outer
     sql_on: ${time_on_page.hit_id} = ${hits.id} ;;
     relationship: one_to_one
+  }
+  join: user_label {
+    type: left_outer
+    sql_on: ${ga_sessions.full_visitor_id} = ${user_label.fullvisitorId} ;;
+    relationship: many_to_one
+    sql_where:  TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')))  BETWEEN {% date_start user_label.date_range_filter %} AND {% date_end user_label.date_range_filter %} AND geoNetwork.Country="United States" AND ${ga_sessions.visit_start_seconds} < ifnull(${user_label.event_session_seconds}, 0) OR ${user_label.event_session_seconds} is NULL  ;;
   }
 }
 
