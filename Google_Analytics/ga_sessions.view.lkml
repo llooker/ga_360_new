@@ -90,26 +90,6 @@ view: ga_sessions {
     sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 11) ;;
   }
 
-  dimension: date {
-    hidden: yes
-    view_label: "Session"
-    group_label: "Time"
-    label: "Date"
-    description: "The date of the session formatted as YYYYMMDD."
-  }
-
-  dimension: date_hour_and_minute {
-    view_label: "Session"
-    group_label: "Time"
-    description: "Combined values of ga:date, ga:hour and ga:minute formated as YYYYMMDDHHMM."
-    type: string
-    sql: CASE
-           WHEN LENGTH(CAST(${hits.minute} AS STRING)) = 1
-              THEN CONCAT(${hour_of_day},'0', CAST(${hits.minute} AS STRING))
-           ELSE CONCAT(${hour_of_day},CAST(${hits.minute} AS STRING))
-         END;;
-  }
-
   dimension: domain {
     view_label: "Audience"
     group_label: "Clearbit"
@@ -124,14 +104,6 @@ view: ga_sessions {
     description: "The range of number of employees (custom dimension index 4)"
     type: string
     sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 4) ;;
-  }
-
-  dimension: hour_of_day {
-    view_label: "Session"
-    group_label: "Time"
-    description: "Combined values of ga:date and ga:hour formated as YYYYMMDDHH."
-    type: string
-    sql: CONCAT(${date}, CAST(${hits.hour} AS STRING)) ;;
   }
 
   dimension: hits {
@@ -172,28 +144,10 @@ view: ga_sessions {
     sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=19) ;;
   }
 
-  dimension: is_cust_ed_resource_hostname {
-    view_label: "Behavior"
-    group_label: "Page Filters"
-    label: "Is Customer Education Host"
-    description: "Flags pages where the hostname is related to Customer Education content."
-    type: yesno
-    sql: ${hits.host_name} IN ("docs.looker.com", "help.looker.com","training.looker.com", "discourse.looker.com")
-      OR (${hits.host_name} = "looker.com" AND ${hits.page_path} LIKE "%/guide%");;
-  }
-
   dimension: is_first_time_visitor {
     hidden: yes
     type: yesno
     sql: ${visit_number} = 1 ;;
-  }
-
-  dimension: is_user_guide_host {
-    view_label: "Behavior"
-    group_label: "Page Filters"
-    description: "Flags pages where the hostname is related to User Guide content."
-    type: yesno
-    sql: ${hits.host_name} = "looker.com" AND ${hits.page_path} LIKE "%/guide%" ;;
   }
 
   dimension: is_weekend {
@@ -343,6 +297,7 @@ view: ga_sessions {
     type: time
     timeframes: [
       raw,
+      hour_of_day,
       date,
       day_of_week,
       fiscal_quarter,
@@ -359,219 +314,29 @@ view: ga_sessions {
 
   ########## MEASURES ##############
 
-  measure: adwords_lp_completions {
+  measure: total_conversions {
     view_label: "Conversions"
     group_label: "Goal Conversions"
-    label: "AdWords LP: Completions"
-    description: "Hits URL with tyvmflds. Tyvmflds is a random string of letters that we apply to ppc confirmation pages to track for goals/conversions in adwords & GA."
-    type: count_distinct
-    sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
-    filters: {
-      field: hits.is_adwords_completion
-      value: "Yes"
-    }
-  }
-
-  measure: adwords_lp_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "AdWords LP: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: (1.0*${adwords_lp_completions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
-# Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
-  measure: adwords_lp_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "AdWords LP: Value"
-    description: "The total numeric value for the requested goal number."
-    type: number
-    sql: ${adwords_lp_completions}+5 ;;
-  }
-
-  measure: all_confirmation_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "All Confirmations: Completions"
+    label: "Total Conversions"
     description: "Hits URL /confirmation/."
     type: count_distinct
     sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
+    drill_fields: [full_visitor_id, visit_number]
+
     filters: {
-      field: hits.is_any_confirmation
+      field: hits.has_completed_goal
       value: "Yes"
     }
   }
 
-  measure: all_confirmations_conversion_rate {
+  measure: total_conversions_conversion_rate {
     view_label: "Conversions"
     group_label: "Goal Conversions"
-    label: "All Confirmations: Conversion Rate"
+    label: "Total Conversions: Conversion Rate"
     description: "Percentage of sessions resulting in a conversion to the requested goal number."
     type: number
-    sql: (1.0*${all_confirmation_completions})/NULLIF(${visits_total}, 0) ;;
+    sql: (1.0*${total_conversions})/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
-  }
-
-# Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
-  measure: all_confirmations_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "All Confirmations: Value"
-    description: "The total numeric value for the requested goal number."
-    type: number
-    sql: ${all_confirmation_completions}+100 ;;
-  }
-
-  measure: blog_subscribe_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Blog Subscribes: Completions"
-    description: "The total number of completions for the requested goal number."
-    type: count_distinct
-    sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
-    filters: {
-      field: hits.is_subscribed_to_blog
-      value: "Yes"
-    }
-  }
-
-  measure: blog_subscribe_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Blog Subscribes: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: (1.0*${blog_subscribe_completions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
-  measure: blog_subscribe_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Blog Subscribes: Value"
-    description: "The total numeric value for the requested goal number."
-    type: number
-    sql: ${discover_lp_completions}+140 ;;
-  }
-
-  measure: dashboard_demo_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Dashboard Demo: Completions"
-    description: "The total number of completions for the requested goal number."
-    type: count_distinct
-    sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
-    filters: {
-      field: hits.has_completed_dashboard_demo
-      value: "Yes"
-    }
-  }
-
-  measure: dashboard_demo_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Dashboard Demo: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: (1.0*${dashboard_demo_completions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
-  measure: data_topic_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Data Topics: Completions"
-    description: "The total number of completions for the requested goal number."
-    type: count_distinct
-    sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number, totals.transactions_count, totals.transaction_revenue_total]
-    filters: {
-      field: hits.is_data_topic
-      value: "Yes"
-    }
-  }
-
-  measure: data_topic_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Data Topics: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: (1.0*${data_topic_completions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
-  measure: demo_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Demo: Completions"
-    description: "The total number of completions for the requested goal number."
-    type: count_distinct
-    sql: ${id} ;;
-    filters: {
-      field: hits.has_seen_demo_confirmation_page
-      value: "Yes"
-    }
-  }
-
-  measure: demo_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Demo: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: CAST(${demo_completions} AS FLOAT64)/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_2
-  }
-
-# Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
-  measure: demo_conversion_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Demo: Value"
-    description: "The total numeric value for the requested goal number."
-    type: number
-    sql: ${demo_completions}+400 ;;
-  }
-
-  measure: discover_lp_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Discover LP: Completions"
-    description: "Hits URL SmartInsights-5StepsKPIs-Conf.html"
-    type: count_distinct
-    sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
-    filters: {
-      field: hits.has_completed_discover_lp
-      value: "Yes"
-    }
-  }
-
-  measure: discover_lp_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Discover LP: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: (1.0*${discover_lp_completions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
-  measure: discover_lp_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Discover LP: Value"
-    description: "The total numeric value for the requested goal number."
-    type: number
-    sql: ${discover_lp_completions}+100 ;;
   }
 
   measure: first_time_sessions {
@@ -599,69 +364,6 @@ view: ga_sessions {
     }
   }
 
-  measure: free_trial_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Free Trial: Completions"
-    description: "The total number of completions for the requested goal number."
-    type: count_distinct
-    sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
-    filters: {
-      field: hits.has_completed_free_trial
-      value: "Yes"
-    }
-  }
-
-  measure: free_trial_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Free Trial: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: (1.0*${free_trial_completions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
-# Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
-  measure: free_trial_completion_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Free Trial: Value"
-    description: "The total numeric value for the requested goal number."
-    type: number
-    sql: ${free_trial_completions}+220 ;;
-  }
-
-  measure: goal_completions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    description: "Total number of completions for all goals defined in the profile."
-    type: count_distinct
-    sql: ${id};;
-
-    filters: [hits.has_goal_completed: "Yes"]
-  }
-
-  measure: goal_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    description: "The percentage of sessions which resulted in a conversion to at least one of the goals."
-    type: number
-    sql: (1.0*${goal_completions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
-  measure: goal_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    description: "Total numeric value for all goals defined in the profile."
-    type: number
-    sql: ${demo_conversion_value} + ${discover_lp_value} + ${blog_subscribe_value}
-            + ${free_trial_completion_value} + ${adwords_lp_value}
-            + ${all_confirmations_value};;
-  }
-
   measure: percent_new_sessions {
     view_label: "Audience"
     group_label: "User"
@@ -670,14 +372,6 @@ view: ga_sessions {
     type: number
     sql: ${first_time_visitors}/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
-  }
-
-  measure: per_session_goal_value {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    description: "The average goal value of a session."
-    type: number
-    sql: ${goal_value}/NULLIF(${visits_total}, 0) ;;
   }
 
   measure: returning_visitors {
@@ -714,3 +408,312 @@ view: ga_sessions {
     drill_fields: [person.person_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
   }
 }
+
+### CUSTOM
+
+# dimension: date {
+#   hidden: yes
+#   view_label: "Session"
+#   group_label: "Time"
+#   label: "Date"
+#   description: "The date of the session formatted as YYYYMMDD."
+# }
+#
+# dimension: date_hour_and_minute {
+#   view_label: "Session"
+#   group_label: "Time"
+#   description: "Combined values of ga:date, ga:hour and ga:minute formated as YYYYMMDDHHMM."
+#   type: string
+#   sql: CASE
+#            WHEN LENGTH(CAST(${hits.minute} AS STRING)) = 1
+#               THEN CONCAT(${hour_of_day},'0', CAST(${hits.minute} AS STRING))
+#            ELSE CONCAT(${hour_of_day},CAST(${hits.minute} AS STRING))
+#          END;;
+# }
+#
+# dimension: hour_of_day {
+#   view_label: "Session"
+#   group_label: "Time"
+#   description: "Combined values of ga:date and ga:hour formated as YYYYMMDDHH."
+#   type: string
+#   sql: CONCAT(${date}, CAST(${hits.hour} AS STRING)) ;;
+# }
+
+# measure: adwords_lp_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "AdWords LP: Completions"
+#   description: "Hits URL with tyvmflds. Tyvmflds is a random string of letters that we apply to ppc confirmation pages to track for goals/conversions in adwords & GA."
+#   type: count_distinct
+#   sql: ${id} ;;
+#   drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
+#   filters: {
+#     field: hits.is_adwords_completion
+#     value: "Yes"
+#   }
+# }
+#
+# measure: adwords_lp_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "AdWords LP: Conversion Rate"
+#   description: "Percentage of sessions resulting in a conversion to the requested goal number."
+#   type: number
+#   sql: (1.0*${adwords_lp_completions})/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_1
+# }
+#
+# # Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
+# measure: adwords_lp_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "AdWords LP: Value"
+#   description: "The total numeric value for the requested goal number."
+#   type: number
+#   sql: ${adwords_lp_completions}+5 ;;
+# }
+#
+# # Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
+# measure: all_confirmations_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "All Confirmations: Value"
+#   description: "The total numeric value for the requested goal number."
+#   type: number
+#   sql: ${all_confirmation_completions}+100 ;;
+# }
+#
+# measure: blog_subscribe_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Blog Subscribes: Completions"
+#   description: "The total number of completions for the requested goal number."
+#   type: count_distinct
+#   sql: ${id} ;;
+#   drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
+#   filters: {
+#     field: hits.is_subscribed_to_blog
+#     value: "Yes"
+#   }
+# }
+#
+# measure: blog_subscribe_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Blog Subscribes: Conversion Rate"
+#   description: "Percentage of sessions resulting in a conversion to the requested goal number."
+#   type: number
+#   sql: (1.0*${blog_subscribe_completions})/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_1
+# }
+#
+# measure: blog_subscribe_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Blog Subscribes: Value"
+#   description: "The total numeric value for the requested goal number."
+#   type: number
+#   sql: ${discover_lp_completions}+140 ;;
+# }
+#
+# measure: dashboard_demo_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Dashboard Demo: Completions"
+#   description: "The total number of completions for the requested goal number."
+#   type: count_distinct
+#   sql: ${id} ;;
+#   drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
+#   filters: {
+#     field: hits.has_completed_dashboard_demo
+#     value: "Yes"
+#   }
+# }
+#
+# measure: dashboard_demo_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Dashboard Demo: Conversion Rate"
+#   description: "Percentage of sessions resulting in a conversion to the requested goal number."
+#   type: number
+#   sql: (1.0*${dashboard_demo_completions})/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_1
+# }
+#
+# measure: data_topic_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Data Topics: Completions"
+#   description: "The total number of completions for the requested goal number."
+#   type: count_distinct
+#   sql: ${id} ;;
+#   drill_fields: [full_visitor_id, visit_number, totals.transactions_count, totals.transaction_revenue_total]
+#   filters: {
+#     field: hits.is_data_topic
+#     value: "Yes"
+#   }
+# }
+#
+# measure: data_topic_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Data Topics: Conversion Rate"
+#   description: "Percentage of sessions resulting in a conversion to the requested goal number."
+#   type: number
+#   sql: (1.0*${data_topic_completions})/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_1
+# }
+#
+# measure: demo_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Demo: Completions"
+#   description: "The total number of completions for the requested goal number."
+#   type: count_distinct
+#   sql: ${id} ;;
+#   filters: {
+#     field: hits.has_seen_demo_confirmation_page
+#     value: "Yes"
+#   }
+# }
+#
+# measure: demo_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Demo: Conversion Rate"
+#   description: "Percentage of sessions resulting in a conversion to the requested goal number."
+#   type: number
+#   sql: CAST(${demo_completions} AS FLOAT64)/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_2
+# }
+#
+# # Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
+# measure: demo_conversion_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Demo: Value"
+#   description: "The total numeric value for the requested goal number."
+#   type: number
+#   sql: ${demo_completions}+400 ;;
+# }
+#
+# measure: discover_lp_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Discover LP: Completions"
+#   description: "Hits URL SmartInsights-5StepsKPIs-Conf.html"
+#   type: count_distinct
+#   sql: ${id} ;;
+#   drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
+#   filters: {
+#     field: hits.has_completed_discover_lp
+#     value: "Yes"
+#   }
+# }
+#
+# measure: discover_lp_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Discover LP: Conversion Rate"
+#   description: "Percentage of sessions resulting in a conversion to the requested goal number."
+#   type: number
+#   sql: (1.0*${discover_lp_completions})/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_1
+# }
+#
+# measure: discover_lp_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Discover LP: Value"
+#   description: "The total numeric value for the requested goal number."
+#   type: number
+#   sql: ${discover_lp_completions}+100 ;;
+# }
+#
+#
+# measure: free_trial_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Free Trial: Completions"
+#   description: "The total number of completions for the requested goal number."
+#   type: count_distinct
+#   sql: ${id} ;;
+#   drill_fields: [full_visitor_id, visit_number, transactions_count, transaction_revenue_total]
+#   filters: {
+#     field: hits.has_completed_free_trial
+#     value: "Yes"
+#   }
+# }
+#
+# measure: free_trial_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Free Trial: Conversion Rate"
+#   description: "Percentage of sessions resulting in a conversion to the requested goal number."
+#   type: number
+#   sql: (1.0*${free_trial_completions})/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_1
+# }
+#
+# # Tech debt: Connor to discuss with SME why these values are hardcoded and if there's a way to make this dynamic.
+# measure: free_trial_completion_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   label: "Free Trial: Value"
+#   description: "The total numeric value for the requested goal number."
+#   type: number
+#   sql: ${free_trial_completions}+220 ;;
+# }
+#
+# measure: goal_completions {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   description: "Total number of completions for all goals defined in the profile."
+#   type: count_distinct
+#   sql: ${id};;
+#
+#   filters: [hits.has_goal_completed: "Yes"]
+# }
+#
+# measure: goal_conversion_rate {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   description: "The percentage of sessions which resulted in a conversion to at least one of the goals."
+#   type: number
+#   sql: (1.0*${goal_completions})/NULLIF(${visits_total}, 0) ;;
+#   value_format_name: percent_1
+# }
+#
+# measure: goal_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   description: "Total numeric value for all goals defined in the profile."
+#   type: number
+#   sql: ${demo_conversion_value} + ${discover_lp_value} + ${blog_subscribe_value}
+#             + ${free_trial_completion_value} + ${adwords_lp_value}
+#             + ${all_confirmations_value};;
+# }
+#
+# measure: per_session_goal_value {
+#   view_label: "Conversions"
+#   group_label: "Goal Conversions"
+#   description: "The average goal value of a session."
+#   type: number
+#   sql: ${goal_value}/NULLIF(${visits_total}, 0) ;;
+# }
+# dimension: is_cust_ed_resource_hostname {
+#   view_label: "Behavior"
+#   group_label: "Page Filters"
+#   label: "Is Customer Education Host"
+#   description: "Flags pages where the hostname is related to Customer Education content."
+#   type: yesno
+#   sql: ${hits.host_name} IN ("docs.looker.com", "help.looker.com","training.looker.com", "discourse.looker.com")
+#     OR (${hits.host_name} = "looker.com" AND ${hits.page_path} LIKE "%/guide%");;
+# }
+# dimension: is_user_guide_host {
+#   view_label: "Behavior"
+#   group_label: "Page Filters"
+#   description: "Flags pages where the hostname is related to User Guide content."
+#   type: yesno
+#   sql: ${hits.host_name} = "looker.com" AND ${hits.page_path} LIKE "%/guide%" ;;
+# }

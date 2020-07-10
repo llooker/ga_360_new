@@ -11,6 +11,13 @@ view: totals {
 
   ########## DIMENSIONS ############
 
+  dimension: time_on_screen_total_unique {
+    label: "Time On Screen Total"
+    hidden: yes
+    type: number
+    sql: ${TABLE}.totals.timeOnScreen ;;
+  }
+
   dimension: time_on_site_tier {
     label: "Session Duration Tiers"
     description: "The length (returned as a string) of a session measured in seconds and reported in second increments."
@@ -20,9 +27,9 @@ view: totals {
     style: integer
   }
 
-  dimension: is_transacted {
+  dimension: has_transaction {
     type: yesno
-    sql: ${TABLE}.totals.transactions = 1 ;;
+    sql: ${TABLE}.totals.transactions >= 1 ;;
   }
 
   ########## MEASURES ############
@@ -38,7 +45,7 @@ view: totals {
     group_label: "Session"
     label: "Bounces"
     type: sum_distinct
-    sql_distinct_key: ${ga_sessions.id} ;;
+    sql_distinct_key: ${id} ;;
     sql: ${TABLE}.totals.bounces ;;
   }
 
@@ -89,13 +96,6 @@ view: totals {
     sql: ${TABLE}.totals.screenViews ;;
   }
 
-  dimension: time_on_screen_total_unique {
-    label: "Time On Screen Total"
-    hidden: yes
-    type: number
-    sql: ${TABLE}.totals.timeOnScreen ;;
-  }
-
   measure: time_on_site_total {
     hidden: yes
     label: "Time On Site"
@@ -141,8 +141,15 @@ view: totals {
     label: "Transactions"
     description: "Total number of ecommerce transactions within the session."
     type: sum_distinct
-    sql_distinct_key: ${ga_sessions.id};;
+    sql_distinct_key: ${id};;
     sql: ${TABLE}.totals.transactions ;;
+  }
+
+  measure: transaction_conversion_rate {
+    type: number
+    group_label: "Rates"
+    sql: 1.0 * (${transactions_count}/NULLIF(${visits_total},0)) ;;
+    value_format_name: percent_2
   }
 
   measure: transaction_revenue_total {
