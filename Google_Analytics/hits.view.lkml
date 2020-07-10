@@ -511,6 +511,7 @@ view: hits {
       , event_action
       , event_label
       , event_value
+      , ga_sessions.session_count
     ]
   }
 }
