@@ -108,6 +108,7 @@ view: geonetwork {
     view_label: "Audience"
     group_label: "Geo"
     description: "Users' region, derived from their IP addresses or Geographical IDs. In U.S., a region is a state, New York, for example."
+    map_layer_name: us_states
     sql: ${TABLE}.geoNetwork.region ;;
     drill_fields: [metro,city,approximate_networkLocation,networkLocation]
   }
