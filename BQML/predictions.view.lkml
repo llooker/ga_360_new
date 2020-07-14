@@ -12,8 +12,6 @@ view: training_input {
     {{updated_sql}}
     ;;
   }
-  dimension: fullvisitorid {}
-  measure: count {}
 }
 
 view: testing_input {
