@@ -5,9 +5,9 @@ view: training_input {
   derived_table: {
     sql:
 {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'START_DATE',"'2017-02-01 12:00:00'"  %}
+    {% assign updated_start_sql = x | replace: 'START_DATE',"'2018-01-01 12:00:00'"  %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2018-07-01 14:00:00'"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2018-03-01 14:00:00'"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
@@ -18,9 +18,9 @@ view: testing_input {
   extends: [user_facts]
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'START_DATE',"'2017-02-01 12:00:00'"  %}
+    {% assign updated_start_sql = x | replace: 'START_DATE',"'2018-03-01 12:00:00'"  %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2018-07-01 14:00:00'"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2018-03-01 14:00:00'"  %}
      /*updated_end_date*/
     {{updated_sql}}
      ;;
