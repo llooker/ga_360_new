@@ -35,7 +35,7 @@ view: first_touch_attribution {
     view_label: "Attribution Models"
     description: "Counts unique first touch sessions."
     type: count_distinct
-    sql: ${visit_id};;
+    sql: ${id};;
 
     filters: {
       field: is_first_touch

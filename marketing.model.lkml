@@ -72,9 +72,9 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
-  join: attribution_model_ndt {
+  join: attribution_model_pdt {
     type: inner
-    sql_on: ${ga_sessions.id} = ${attribution_model_ndt.id};;
+    sql_on: ${ga_sessions.id} = ${attribution_model_pdt.id};;
     relationship: one_to_one
   }
 
