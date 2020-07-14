@@ -2,12 +2,13 @@ view: user_label {
   derived_table: {
     sql: SELECT fullvisitorId, max(case when totals.transactions = 1 then 1 else 0 end) as label, min(case when totals.transactions = 1 then visitStartTime end) as event_session
         FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`
-        WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN {% date_start date_range_filter %} AND {% date_end date_range_filter %} AND geoNetwork.Country="United States"
+        WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN {% date_start date_range_filter %} AND {% date_end date_range_filter %}
         GROUP BY fullvisitorId
         ;;
       # sql_trigger_value: SELECT CURRENT_DATE ;;
-      publish_as_db_view: yes
+
     }
+
 
 
     filter: date_range_filter {

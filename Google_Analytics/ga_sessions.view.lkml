@@ -351,6 +351,7 @@ view: ga_sessions {
       year,
       month_name,
       month_num,
+      hour_of_day,
       week_of_year
     ]
     sql: TIMESTAMP_SECONDS(${TABLE}.visitStarttime);;
@@ -722,7 +723,7 @@ view: ga_sessions {
   dimension: x_days_future_purchases {
     type: number
     sql: (SELECT COALESCE(SUM(totals.transactions),0)
-          FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` as subquery_table
+          FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` as subquery_table
           LEFT JOIN UNNEST([subquery_table.totals]) as totals
           WHERE subquery_table.fullvisitorid = ${TABLE}.fullvisitorid
             AND subquery_table.visitStarttime > ${TABLE}.visitStarttime

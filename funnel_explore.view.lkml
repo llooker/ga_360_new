@@ -44,7 +44,7 @@ view: funnel_explore {
                 , '|'
                 , CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
               )  as session_id
-      FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`  AS ga_sessions
+      FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`  AS ga_sessions
       LEFT JOIN UNNEST(ga_sessions.hits) AS hits
       GROUP BY 2,3,4,5,6,  ga_sessions.visitStarttime, hits.time
       ORDER BY 3 ASC

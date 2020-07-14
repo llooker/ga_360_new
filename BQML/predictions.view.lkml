@@ -1,35 +1,31 @@
 ######################## TRAINING/TESTING INPUTS #############################
+include: "/**/user_facts.view"
 view: training_input {
+  extends: [user_facts]
   derived_table: {
-    explore_source: ga_sessions {
-
-      column: will_purchase_in_future {}
-      filters: {
-        field: ga_sessions.partition_date
-        value: "900 days ago for 360 days"
-      }
-      filters: {
-        field: ga_sessions.prediction_window_days
-        value: "180"
-      }
-    }
+    sql:
+{% assign x  = "${EXTENDED}" %}
+    {% assign updated_start_sql = x | replace: 'START_DATE',"'2017-02-01 12:00:00'"  %}
+    /*updated_start_date*/
+    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2018-07-01 14:00:00'"  %}
+     /*updated_end_date*/
+    {{updated_sql}}
+    ;;
   }
+  dimension: fullvisitorid {}
+  measure: count {}
 }
 
 view: testing_input {
+  extends: [user_facts]
   derived_table: {
-    explore_source: ga_sessions {
-
-      column: will_purchase_in_future {}
-      filters: {
-        field: ga_sessions.partition_date
-        value: "540 days ago for 180 days"
-      }
-      filters: {
-        field: ga_sessions.prediction_window_days
-        value: "180"
-      }
-    }
+    sql: {% assign x  = "${EXTENDED}" %}
+    {% assign updated_start_sql = x | replace: 'START_DATE',"'2017-02-01 12:00:00'"  %}
+    /*updated_start_date*/
+    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2018-07-01 14:00:00'"  %}
+     /*updated_end_date*/
+    {{updated_sql}}
+     ;;
   }
 }
 ######################## MODEL #############################
@@ -49,9 +45,15 @@ view: future_purchase_model {
 }
 
 ######################## TRAINING INFORMATION #############################
-explore:  future_purchase_model_evaluation {}
-explore: future_purchase_model_training_info {}
-explore: roc_curve {}
+explore:  future_purchase_model_evaluation {
+  hidden: yes
+}
+explore: future_purchase_model_training_info {
+  hidden: yes
+}
+explore: roc_curve {
+  hidden: yes
+}
 
 # VIEWS:
 view: future_purchase_model_evaluation {
@@ -145,23 +147,15 @@ view: future_purchase_model_training_info {
 }
 ########################################## PREDICT FUTURE ############################
 view: future_input {
+  extends: [user_facts]
   derived_table: {
-    explore_source: ga_sessions {
-      column: visitId {}
-      column: fullVisitorId {}
-      column: medium { field: trafficSource.medium }
-      column: channelGrouping {}
-      column: isMobile { field: device.isMobile }
-      column: country { field: geoNetwork.country }
-      column: bounces_total { field: totals.bounces_total }
-      column: pageviews_total { field: totals.pageviews_total }
-      column: transactions_count { field: totals.transactions_count }
-      column: first_time_visitors {}
-      filters: {
-        field: ga_sessions.partition_date
-        value: "360 days"
-      }
-    }
+    sql: {% assign x  = "${EXTENDED}" %}
+    {% assign updated_start_sql = x | replace: 'START_DATE',"'2017-02-01 12:00:00'"  %}
+    /*updated_start_date*/
+    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2018-07-01 14:00:00'"  %}
+    /*updated_end_date*/
+    {{updated_sql}}
+    ;;
   }
 }
 

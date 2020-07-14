@@ -2,7 +2,7 @@ view: event_actions {
   derived_table: {
     sql: SELECT
         hits.eventInfo.eventAction  AS hits_event_action
-      FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`  AS ga_sessions
+      FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`  AS ga_sessions
       LEFT JOIN UNNEST(ga_sessions.hits) AS hits
 
       GROUP BY 1
