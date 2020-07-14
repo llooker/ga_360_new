@@ -647,13 +647,14 @@ view: hits {
     label: "Unique Events"
     description: "Unique Events are interactions with content by a single user within a single session that can be tracked separately from pageviews or screenviews."
     type: count_distinct
-    sql: CONCAT(${ga_sessions.id}, ${event_action}, ${event_category}, ${event_label}) ;;
+    sql: CONCAT(${ga_sessions.id}, COALESCE(${event_action},""), COALESCE(${event_category},""), COALESCE(${event_label},"")) ;;
+
     filters: {
       field: type
       value: "EVENT"
     }
 
-    drill_fields: [ga_sessions.visit_start_date, page_count, entrance_pageviews_total, exit_pageviews_total, time_on_page.average_time_on_page]
+    drill_fields: [detail*]
   }
 
   ########## SETS ##########
@@ -663,7 +664,8 @@ view: hits {
       ga_sessions.id
       , ga_sessions.visitnumber
       , ga_sessions.session_count
-      , page_path, page_title
+      , page_path
+      , page_title
     ]
   }
 }
