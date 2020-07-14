@@ -32,13 +32,17 @@ view: future_purchase_model {
   derived_table: {
     datagroup_trigger: bqml_datagroup
     sql_create:
-      CREATE OR REPLACE MODEL ${SQL_TABLE_NAME}
-      OPTIONS(model_type='logistic_reg'
-        , labels=['will_purchase_in_future']
-        ) AS
-      SELECT
-         * EXCEPT(fullVisitorId, visitId)
-      FROM ${training_input.SQL_TABLE_NAME};;
+    CREATE OR REPLACE MODEL ${SQL_TABLE_NAME}
+    OPTIONS(model_type='logistic_reg'
+    , labels=['label']
+    , L1_REG = 1
+    , DATA_SPLIT_METHOD = 'RANDOM'
+    , DATA_SPLIT_EVAL_FRACTION = 0.20
+    , CLASS_WEIGHTS=[('1',1), ('0',0.05)]
+    ) AS
+    SELECT
+    * EXCEPT(fullVisitorId)
+    FROM ${training_input.SQL_TABLE_NAME};;
   }
 }
 
@@ -160,21 +164,27 @@ view: future_input {
 
 view: future_purchase_prediction {
   derived_table: {
-    sql: SELECT * FROM ml.PREDICT(
+    sql: SELECT fullVisitorId,
+          pred.prob as user_propensity_score,
+          NTILE(10) OVER (ORDER BY pred.prob DESC) as user_propensity_decile
+        FROM ml.PREDICT(
           MODEL ${future_purchase_model.SQL_TABLE_NAME},
-          (SELECT * FROM ${future_input.SQL_TABLE_NAME}));;
+          (SELECT * FROM ${future_input.SQL_TABLE_NAME})),
+        UNNEST(predicted_label_probs) as pred
+        WHERE pred.label = 1
+       ;;
   }
-  dimension: predicted_will_purchase_in_future {type: number}
-  dimension: visitId {type: number hidden:yes}
+  dimension: user_propensity_score {type: number}
+  dimension: user_propensity_decile {type: number}
   dimension: fullVisitorId {type: number hidden: yes}
-  measure: max_predicted_score {
+  measure: max_user_propensity_score {
     type: max
     value_format_name: percent_2
-    sql: ${predicted_will_purchase_in_future} ;;
+    sql: ${user_propensity_score} ;;
   }
-  measure: average_predicted_score {
-    type: average
+  measure: max_user_propensity_decile {
+    type:  max
     value_format_name: percent_2
-    sql: ${predicted_will_purchase_in_future} ;;
+    sql:  ${user_propensity_decile} ;;
   }
 }

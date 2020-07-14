@@ -48,20 +48,20 @@ view: user_facts {
     sum(case when trafficSource.medium = 'cpm' then 1 else 0 end) as visits_traffic_source_cpm,
     sum(case when trafficSource.medium = 'affiliate' then 1 else 0 end) as visits_traffic_source_affiliate,
     sum(case when trafficSource.medium = 'referral' then 1 else 0 end) as visits_traffic_source_referral
-        FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid
+        FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid
         @{QUERY_FILTER_2}   GROUP BY 1 )
 
 
       SELECT user_label.fullvisitorid, label,ga_sessions_visit_start_hour_of_day, metro, ga_sessions_visit_start_day_of_week,ga_sessions_browser, ga_sessions_source,
       total_sessions, pageviews, bounce_rate, avg_session_depth, visits_traffic_source_none, visits_traffic_source_organic, visits_traffic_source_cpc,  visits_traffic_source_cpm, visits_traffic_source_affiliate,
       visits_traffic_source_referral, distinct_dmas
-      FROM agg_metrics
-      LEFT JOIN unique_hour_of_day ON agg_metrics.fullvisitorid = unique_hour_of_day.fullvisitorid
-      LEFT JOIN unique_dma ON agg_metrics.fullvisitorid = unique_dma.fullvisitorid
-      LEFT JOIN unique_day_of_week ON agg_metrics.fullvisitorid = unique_day_of_week.fullvisitorid
-      LEFT JOIN unique_browser ON agg_metrics.fullvisitorid = unique_browser.fullvisitorid
-      LEFT JOIN unique_traffic_source ON unique_traffic_source.fullvisitorid = agg_metrics.fullvisitorid
-      LEFT JOIN user_label ON agg_metrics.fullvisitorid = user_label.fullvisitorid
+      FROM user_label
+      LEFT JOIN unique_hour_of_day ON user_label.fullvisitorid = unique_hour_of_day.fullvisitorid
+      LEFT JOIN unique_dma ON user_label.fullvisitorid = unique_dma.fullvisitorid
+      LEFT JOIN unique_day_of_week ON user_label.fullvisitorid = unique_day_of_week.fullvisitorid
+      LEFT JOIN unique_browser ON user_label.fullvisitorid = unique_browser.fullvisitorid
+      LEFT JOIN unique_traffic_source ON unique_traffic_source.fullvisitorid = user_label.fullvisitorid
+      LEFT JOIN agg_metrics ON agg_metrics.fullvisitorid = user_label.fullvisitorid
        ;;
       persist_for: "24 hours"
   }
