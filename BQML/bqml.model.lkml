@@ -1,4 +1,4 @@
-connection: "ga_generated"
+connection: "db-platform-sol-ga"
 
 include: "/BQML/*.view.lkml"                # include all views in the views/ folder in this project
 # include: "/**/view.lkml"                   # include all views in this project

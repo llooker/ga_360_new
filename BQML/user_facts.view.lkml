@@ -1,7 +1,7 @@
 view: user_facts {
   derived_table: {
     sql: WITH filtered_base AS (
-        SELECT * FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`
+        SELECT * FROM `ComcastGA360.@{GA360_TABLE_NAME}`
         WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN START_DATE AND END_DATE),
 
     user_label AS (
