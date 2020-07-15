@@ -308,14 +308,6 @@ view: funnel_explorer_new {
     hidden: yes
   }
 
-  dimension: test {
-    sql: {% if event_2._in_query %}
-          1
-          {% else %}
-          0
-          {% endif %};;
-  }
-
   measure: count_of_event_1 {
     type: count_distinct
     sql: ${event1_hit_id_tagged} ;;
