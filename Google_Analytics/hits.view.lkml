@@ -141,34 +141,41 @@ view: hits {
     sql: ${TABLE}.hour ;;
   }
 
-  parameter: goal_type {
+  filter: event_goal_selection {
+    label: "Event Action"
     view_label: "Conversions"
+    group_label: "Goal Selection"
+    description: "Enter Event Action to be used with Total Conversion measures."
     type: string
-    suggestions: [
-      , "Event Action"
-      , "Page"
-    ]
-    allowed_value: {value: "Event Action"}
-    allowed_value: {value: "Page"}
-    allowed_value: {value: "None"}
-    default_value: "None"
+    suggest_explore: event_actions
+    suggest_dimension: event_actions.hits_event
   }
 
-  filter: goal_selection {
+  filter: page_goal_selection {
+    label: "Page"
     view_label: "Conversions"
+    group_label: "Goal Selection"
     description: "Enter Page Path for the confirmation page to be used with Total Conversion measures (format should be: /<page>)."
     type: string
+    suggest_dimension: page_path
   }
 
   dimension: has_completed_goal {
+    view_label: "Conversions"
     description: "A session that resulted in a conversion (i.e. resulted in reaching successful point on website defined in 'Goal Selection' field)."
-    hidden: yes
+    hidden: no
     type: yesno
     sql: CASE
-          WHEN {% parameter goal_type %} = 'Event Action'
-            THEN {% condition goal_selection %} ${event_action} {% endcondition %}
-          WHEN {% parameter goal_type %} = 'Page'
-            THEN {% condition goal_selection %} ${page_path_formatted} {% endcondition %}
+          WHEN {{ event_goal_selection._in_query }} AND {{ page_goal_selection._in_query }}
+            THEN (
+              {% condition event_goal_selection %} ${event_action} {% endcondition %}
+              AND {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
+            )
+          WHEN {{ page_goal_selection._in_query }}
+            THEN {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
+          WHEN {{ event_goal_selection._in_query }}
+            THEN {% condition event_goal_selection %} ${event_action} {% endcondition %}
+          ELSE FALSE
         END;;
   }
 
@@ -225,11 +232,6 @@ view: hits {
     description: "The url of the page."
     type: string
     sql: SPLIT(${page_path}, '?')[OFFSET(0)];;
-
-    link: {
-      label: "Go To Link"
-      url: "https://{{host_name._value }}{{ value }}"
-    }
   }
 
   dimension: page_path_level_1 {

@@ -28,6 +28,7 @@ view: totals {
   }
 
   dimension: has_transaction {
+    view_label: "Conversions"
     type: yesno
     sql: ${TABLE}.totals.transactions >= 1 ;;
   }
