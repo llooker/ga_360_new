@@ -38,7 +38,7 @@ view: future_purchase_model {
     , L1_REG = 1
     , DATA_SPLIT_METHOD = 'RANDOM'
     , DATA_SPLIT_EVAL_FRACTION = 0.20
-    , CLASS_WEIGHTS=[('1',1), ('0',0.05)]
+    --, CLASS_WEIGHTS=[('1',1), ('0',0.05)] -- Consider adding class weights or downsampling if you have imbalanced classes
     ) AS
     SELECT
     * EXCEPT(fullVisitorId)
@@ -177,14 +177,12 @@ view: future_purchase_prediction {
   dimension: user_propensity_score {type: number}
   dimension: user_propensity_decile {type: number}
   dimension: fullVisitorId {type: number hidden: yes}
-  measure: max_user_propensity_score {
-    type: max
-    value_format_name: percent_2
+  measure: average_user_propensity_score {
+    type: average
     sql: ${user_propensity_score} ;;
   }
-  measure: max_user_propensity_decile {
-    type:  max
-    value_format_name: percent_2
+  measure: average_user_propensity_decile {
+    type:  average
     sql:  ${user_propensity_decile} ;;
   }
 }
