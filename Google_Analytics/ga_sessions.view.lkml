@@ -416,7 +416,7 @@ view: ga_sessions {
   dimension: x_days_future_purchases {
     type: number
     sql: (SELECT COALESCE(SUM(totals.transactions),0)
-          FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*` as subquery_table
+          FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` as subquery_table
           LEFT JOIN UNNEST([subquery_table.totals]) as totals
           WHERE subquery_table.fullvisitorid = ${TABLE}.fullvisitorid
             AND subquery_table.visitStarttime > ${TABLE}.visitStarttime
@@ -429,7 +429,6 @@ view: ga_sessions {
     sql: IF(${x_days_future_purchases} >0,1,0) ;;
   }
 ##################################### END - GA360 BQML fields ########################
-}
 
 ### CUSTOM
 
@@ -739,3 +738,4 @@ view: ga_sessions {
 #   type: yesno
 #   sql: ${hits.host_name} = "looker.com" AND ${hits.page_path} LIKE "%/guide%" ;;
 # }
+}

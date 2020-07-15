@@ -1,13 +1,14 @@
 view: hit_facts {
   derived_table: {
     explore_source: ga_sessions {
-#       bind_all_filters: yes
       column: hit_number { field: hits.hit_number }
       column: hit_time { field: hits.hit_time }
       column: full_visitor_id {}
       column: id {}
       column: event_action { field: hits.event_action }
-      derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC);;}
+      derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC) ;;}
+      derived_column: hit_id {sql:CONCAT(${id}, '|',CAST(${hit_number} as string));;}
+      filters: [hits.event_action: "-NULL"]
     }
     persist_for: "24 hours"
   }
@@ -26,10 +27,17 @@ view: hit_facts {
     label: "Session User/Session ID"
     description: "Unique ID for Session: Full User ID | Session ID | Session Start Date"
   }
+
+  dimension: hit_id {
+    type: number
+
+  }
  dimension: event_action {
   label: "Behavior Event Action"
   description: "Action tied to event"
 }
 
-  dimension: hit_sequence_number {}
+  dimension: hit_sequence_number {
+    type: number
+  }
 }

@@ -10,14 +10,36 @@ datagroup: bqml_datagroup {
   max_cache_age: "1 hour"
   sql_trigger: SELECT CURRENT_DATE() ;;
 }
-# aggregate_awareness: yes
-explore: funnel_explorer_new {}
+aggregate_awareness: yes
+# explore: funnel_explorer_new {}
 
 explore: hit_facts {}
 
+explore: user_facts {}
+
+
+
+explore: training_input {
+  # always_filter: {
+  #   filters:[  user_facts.date_range_filter: "2017-02-01 12:00:00 to
+  #   2018-07-01 14:00:00"]
+  # }
+  join: user_facts {
+    sql: ;;
+    relationship: one_to_one
+    fields: [user_facts.date_range_filter]
+  }
+}
+
+
+
 explore: ga_sessions {
+  # aggregate_table: hits_by_date {
+  #   query: {
+  #   }
+  # }
   label: "Google Analytics Sessions"
-  description: "Explores Google Analytics sessions merged with Salesforce data."
+  description: "Explores Google Analytics sessions  data."
 
   # always_filter: {
   #   filters: {
@@ -82,9 +104,12 @@ explore: ga_sessions {
     type: left_outer
     sql_on: ${ga_sessions.full_visitor_id} = ${user_label.fullvisitorId} ;;
     relationship: many_to_one
-    sql_where:  TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')))  BETWEEN {% date_start user_label.date_range_filter %} AND {% date_end user_label.date_range_filter %} AND geoNetwork.Country="United States" AND ${ga_sessions.visit_start_seconds} < ifnull(${user_label.event_session_seconds}, 0) OR ${user_label.event_session_seconds} is NULL  ;;
+    sql_where:  geoNetwork.Country="United States" AND ${ga_sessions.visit_start_seconds} < ifnull(${user_label.event_session_seconds}, 0) OR ${user_label.event_session_seconds} is NULL  ;;
   }
 }
 
-explore: funnel_explorer {
-}
+
+
+explore: funnel_explorer_new {}
+
+explore: funnel_explorer {}
