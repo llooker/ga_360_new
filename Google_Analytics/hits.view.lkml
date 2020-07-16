@@ -108,7 +108,7 @@ view: hits {
   }
 
   dimension_group: hit {
-    timeframes: [time, date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
+    timeframes: [time, date]
     type: time
     sql: TIMESTAMP_MILLIS(${ga_sessions.visit_start_seconds}*1000 + ${time}) ;;
     convert_tz: no
@@ -134,9 +134,9 @@ view: hits {
   }
 
   dimension: hour {
-    view_label: "Session"
-    group_label: "Time"
-    description: "A two-digit hour of the day ranging from 00-23 in the timezone configured for the account. This value is also corrected for daylight savings time. If the timezone follows daylight savings time, there will be an apparent bump in the number of sessions during the changeover hour (e.g., between 1:00 and 2:00) for the day per year when that hour repeats. A corresponding hour with zero sessions will occur at the opposite changeover. (Google Analytics does not track user time more precisely than hours.)"
+    view_label: "Hits"
+    group_label: "Hit Date"
+    description: "The hour in which the hit occurred (0 to 23) in the timezone configured for the account."
     type: number
     sql: ${TABLE}.hour ;;
   }
@@ -205,8 +205,8 @@ view: hits {
   }
 
   dimension: minute {
-    view_label: "Session"
-    group_label: "Time"
+    view_label: "Hits"
+    group_label: "Hit Date"
     description: "Returns the minutes, between 00 and 59, in the hour."
     type: number
     sql: ${TABLE}.minute ;;

@@ -8,11 +8,12 @@ include: "geonetwork.view.lkml"
 include: "totals.view.lkml"
 include: "traffic_source.view.lkml"
 include: "device.view.lkml"
+include: "calendar.view.lkml"
 
 view: ga_sessions {
   view_label: "Session"
   sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
-  extends: [geonetwork, totals, traffic_source, device]
+  extends: [calendar, geonetwork, totals, traffic_source, device]
 
   ########## PRIMARY KEYS ##########
   dimension: id {
@@ -150,14 +151,6 @@ view: ga_sessions {
     sql: ${visit_number} = 1 ;;
   }
 
-  dimension: is_weekend {
-    view_label: "Session"
-    group_label: "Time"
-    description: "Use this field to exclude Saturday and Sundays from analysis"
-    type: yesno
-    sql: ${visit_start_day_of_week} IN ('Saturday', 'Sunday') ;;
-  }
-
   # Investigate performance impact below (tech debt)
   dimension: landing_page {
     view_label: "Behavior"
@@ -222,7 +215,6 @@ view: ga_sessions {
 
   dimension: partition_date {
     view_label: "Session"
-    group_label: "Time"
     description: "Date that is parsed from the table name. Required as a filter to avoid accidental massive queries."
     type: date_time
     sql: TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')))  ;;
@@ -300,13 +292,17 @@ view: ga_sessions {
       hour_of_day,
       date,
       day_of_week,
+      day_of_week_index,
       fiscal_quarter,
+      fiscal_quarter_of_year,
       week,
       month,
-      year,
       month_name,
       month_num,
-      week_of_year
+      quarter,
+      quarter_of_year,
+      week_of_year,
+      year
     ]
     sql: TIMESTAMP_SECONDS(${TABLE}.visitStarttime);;
     convert_tz: no
