@@ -17,29 +17,6 @@ view: first_touch_attribution {
 
 ########### MEASURES ###########
 
-  measure: first_touch_visitors {
-    label: "First Touch Visitors"
-    view_label: "Attribution Models"
-    group_label: "First Touch Counts"
-    description: "Counts unique first touch visitors."
-    type: count_distinct
-    sql: ${full_visitor_id};;
-
-    filters: {
-      field: is_first_touch
-      value: "yes"
-    }
-  }
-
-  measure: first_touch_visitors_pct {
-    label: "First Touch Visitors % of Total"
-    view_label: "Attribution Models"
-    group_label: "First Touch % of Total"
-    description: "Calculates % of total first touch Visitor based on dimension grouping."
-    type: percent_of_total
-    sql: ${first_touch_transactions};;
-  }
-
   measure: first_touch_sessions {
     label: "First Touch Sessions"
     view_label: "Attribution Models"
@@ -87,6 +64,29 @@ view: first_touch_attribution {
     view_label: "Attribution Models"
     group_label: "First Touch % of Total"
     description: "Calculates % of total first touch transactions based on dimension grouping."
+    type: percent_of_total
+    sql: ${first_touch_transactions};;
+  }
+
+  measure: first_touch_visitors {
+    label: "First Touch Visitors"
+    view_label: "Attribution Models"
+    group_label: "First Touch Counts"
+    description: "Counts unique first touch visitors."
+    type: count_distinct
+    sql: ${full_visitor_id};;
+
+    filters: {
+      field: is_first_touch
+      value: "yes"
+    }
+  }
+
+  measure: first_touch_visitors_pct {
+    label: "First Touch Visitors % of Total"
+    view_label: "Attribution Models"
+    group_label: "First Touch % of Total"
+    description: "Calculates % of total first touch Visitor based on dimension grouping."
     type: percent_of_total
     sql: ${first_touch_transactions};;
   }
