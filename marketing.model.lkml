@@ -16,19 +16,15 @@ aggregate_awareness: yes
 
 
 explore: ga_sessions {
-  # aggregate_table: hits_by_date {
-  #   query: {
-  #   }
-  # }
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions  data."
 
-  # always_filter: {
-  #   filters: {
-  #     field: ga_sessions.partition_date
-  #     value: "7 days ago for 7 days"
-  #   }
-  # }
+  always_filter: {
+    filters: {
+      field: partition_date
+      value: "7 days ago for 7 days"
+    }
+  }
 
   join: future_purchase_prediction {
     type: left_outer
