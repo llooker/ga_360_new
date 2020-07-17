@@ -27,18 +27,9 @@ constant: CONFIG_PROJECT_NAME {
   export: override_required
 }
 
-constant: QUERY_FILTER {
-  value: " WHERE (
- TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN {% date_start date_range_filter %} AND {% date_end date_range_filter %}
-  AND geoNetwork.Country= 'United States'
-  AND (a.visitStartTime < IFNULL(event_session, 0)
-      or event_session is null) )"
-}
 
-constant: QUERY_FILTER_2 {
+constant: QUERY_FILTER {
   value: " WHERE (
  (ga_sessions.visitStartTime < IFNULL(event_session, 0)
   or event_session is null) )"
 }
-
-# TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN {% date_start date_range_filter %} AND {% date_end date_range_filter %}
