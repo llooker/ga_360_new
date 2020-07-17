@@ -11,7 +11,6 @@ datagroup: bqml_datagroup {
   sql_trigger: SELECT CURRENT_DATE() ;;
 }
 aggregate_awareness: yes
-# explore: funnel_explorer_new {}
 
 
 
@@ -30,11 +29,6 @@ explore: ga_sessions {
   #   }
   # }
 
-  join: future_purchase_prediction {
-    type: left_outer
-    sql_on: ${future_purchase_prediction.fullVisitorId} = ${ga_sessions.full_visitor_id} ;;
-    relationship: one_to_many
-  }
 
   join: hits {
     type: left_outer
@@ -103,6 +97,12 @@ explore: ga_sessions {
 #                   {% else %}
 #                     1=1
 #                   {% endif %};;
+#   }
+
+#   join: future_purchase_prediction {
+#     type: left_outer
+#     sql_on: ${future_purchase_prediction.fullVisitorId} = ${ga_sessions.full_visitor_id} ;;
+#     relationship: one_to_many
 #   }
 }
 
