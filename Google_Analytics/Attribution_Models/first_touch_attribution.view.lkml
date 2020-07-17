@@ -17,10 +17,10 @@ view: first_touch_attribution {
 
 ########### MEASURES ###########
 
-  measure: first_touch {
+  measure: first_touch_visitors {
     label: "First Touch Visitors"
     view_label: "Attribution Models"
-    group_label: "First Touch"
+    group_label: "First Touch Counts"
     description: "Counts unique first touch visitors."
     type: count_distinct
     sql: ${full_visitor_id};;
@@ -31,11 +31,20 @@ view: first_touch_attribution {
     }
   }
 
+  measure: first_touch_visitors_pct {
+    label: "First Touch Visitors % of Total"
+    view_label: "Attribution Models"
+    group_label: "First Touch % of Total"
+    description: "Calculates % of total first touch Visitor based on dimension grouping."
+    type: percent_of_total
+    sql: ${first_touch_transactions};;
+  }
+
   measure: first_touch_sessions {
     label: "First Touch Sessions"
     view_label: "Attribution Models"
-    group_label: "First Touch"
-    description: "Counts unique first touch sessions."
+    group_label: "First Touch Counts"
+    description: "Counts unique first touch sessions (i.e. visitNumber = 1)."
     type: count_distinct
     sql: ${id};;
 
@@ -45,10 +54,19 @@ view: first_touch_attribution {
     }
   }
 
+  measure: first_touch_sessions_pct {
+    label: "First Touch Sessions % of Total"
+    view_label: "Attribution Models"
+    group_label: "First Touch % of Total"
+    description: "Calculates % of total first touch sessions based on dimension grouping."
+    type: percent_of_total
+    sql: ${first_touch_sessions};;
+  }
+
   measure: first_touch_transactions {
     label: "First Touch Transactions"
     view_label: "Attribution Models"
-    group_label: "First Touch"
+    group_label: "First Touch Counts"
     description: "Counts unique first touch sessions with a transaction."
     type: count_distinct
     sql: ${id};;
@@ -64,12 +82,12 @@ view: first_touch_attribution {
     }
   }
 
-  measure: first_touch_sessions_pct {
-    label: "First Touch Sessions % of Total"
+  measure: first_touch_transactions_pct {
+    label: "First Touch Transactions % of Total"
     view_label: "Attribution Models"
-    group_label: "First Touch"
-    description: "Counts unique first touch sessions."
+    group_label: "First Touch % of Total"
+    description: "Calculates % of total first touch transactions based on dimension grouping."
     type: percent_of_total
-    sql: ${first_touch_sessions};;
+    sql: ${first_touch_transactions};;
   }
 }
