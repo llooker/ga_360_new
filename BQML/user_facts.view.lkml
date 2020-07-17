@@ -1,7 +1,7 @@
 view: user_facts {
   derived_table: {
     sql: WITH filtered_base AS (
-        SELECT * FROM `ComcastGA360.@{GA360_TABLE_NAME}`
+        SELECT * FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`
         WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN START_DATE AND END_DATE),
 
     user_label AS (
@@ -12,23 +12,23 @@ view: user_facts {
     unique_hour_of_day AS(
       (SELECT   ga_sessions_visit_start_hour_of_day, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_visit_start_hour_of_day
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, EXTRACT(HOUR FROM TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) AS ga_sessions_visit_start_hour_of_day, SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions  LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER_2}  GROUP BY 1,2)) WHERE row_number = 1)),
+      FROM filtered_base  AS ga_sessions  LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
 
 
       unique_dma AS(
       (SELECT   metro, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, metro
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, ga_sessions.geoNetwork.metro as metro , SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid @{QUERY_FILTER_2}  GROUP BY 1,2)) WHERE row_number = 1)),
+      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
 
       unique_day_of_week AS(
       (SELECT   ga_sessions_visit_start_day_of_week, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_visit_start_day_of_week
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, FORMAT_TIMESTAMP('%A', TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) AS ga_sessions_visit_start_day_of_week  , SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER_2} GROUP BY 1,2)) WHERE row_number = 1)),
+      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER} GROUP BY 1,2)) WHERE row_number = 1)),
 
       unique_traffic_source AS(
       (SELECT   ga_sessions_source, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_source
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, ga_sessions.trafficsource.medium  AS ga_sessions_source, SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER_2}  GROUP BY 1,2)) WHERE row_number = 1)),
+      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
 
       agg_metrics AS (  SELECT  ga_sessions.fullvisitorid, count(distinct visitId) as total_sessions,
         sum(totals.pageviews) as pageviews,
@@ -47,7 +47,7 @@ view: user_facts {
     sum(case when trafficSource.medium = 'affiliate' then 1 else 0 end) as visits_traffic_source_affiliate,
     sum(case when trafficSource.medium = 'referral' then 1 else 0 end) as visits_traffic_source_referral
         FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid
-        @{QUERY_FILTER_2}   GROUP BY 1 )
+        @{QUERY_FILTER}   GROUP BY 1 )
 
 
       SELECT user_label.fullvisitorid, label,ga_sessions_visit_start_hour_of_day, metro, ga_sessions_visit_start_day_of_week, ga_sessions_source,
@@ -57,7 +57,6 @@ view: user_facts {
       LEFT JOIN unique_hour_of_day ON user_label.fullvisitorid = unique_hour_of_day.fullvisitorid
       LEFT JOIN unique_dma ON user_label.fullvisitorid = unique_dma.fullvisitorid
       LEFT JOIN unique_day_of_week ON user_label.fullvisitorid = unique_day_of_week.fullvisitorid
-      LEFT JOIN unique_browser ON user_label.fullvisitorid = unique_browser.fullvisitorid
       LEFT JOIN unique_traffic_source ON unique_traffic_source.fullvisitorid = user_label.fullvisitorid
       LEFT JOIN agg_metrics ON agg_metrics.fullvisitorid = user_label.fullvisitorid
        ;;

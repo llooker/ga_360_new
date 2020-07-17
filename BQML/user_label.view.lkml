@@ -2,25 +2,28 @@ view: user_label {
   derived_table: {
     sql: SELECT fullvisitorId, max(case when totals.transactions = 1 then 1 else 0 end) as label, min(case when totals.transactions = 1 then visitStartTime end) as event_session
         FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`
-        WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN {% date_start date_range_filter %} AND {% date_end date_range_filter %}
         GROUP BY fullvisitorId
         ;;
-      # sql_trigger_value: SELECT CURRENT_DATE ;;
+      sql_trigger_value: SELECT CURRENT_DATE ;;
 
     }
 
 
 
-    filter: date_range_filter {
-      type: date
-      default_value: "2017-02-01 12:00:00 to
-      2018-07-01 14:00:00"
-    }
 
     dimension: fullvisitorId {
       primary_key: yes
     }
-    dimension: label {}
+    dimension: label {
+      type: number
+      sql: ${TABLE}.label ;;
+      hidden: yes
+    }
+
+    dimension: made_purchase {
+      type: yesno
+      sql: label = 1 ;;
+    }
 
     dimension: event_session_seconds {
       type: number

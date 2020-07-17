@@ -1,14 +1,14 @@
-view: hit_facts {
+view: page_facts {
   derived_table: {
     explore_source: ga_sessions {
       column: hit_number { field: hits.hit_number }
       column: hit_time { field: hits.hit_time }
       column: full_visitor_id {}
       column: id {}
-      column: event_action { field: hits.event_action }
+      column: page_path { field: hits.page_path_formatted }
       derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC) ;;}
-      derived_column: hit_id {sql:CONCAT(${id}, '|',CAST(${hit_number} as string));;}
-      filters: [hits.event_action: "-NULL"]
+      derived_column: hit_id {sql:CONCAT(${id},'|',FORMAT('%05d',${hit_number}));;}
+      filters: [hits.type: "PAGE"]
     }
     persist_for: "24 hours"
   }
@@ -32,10 +32,11 @@ view: hit_facts {
     type: number
 
   }
- dimension: event_action {
-  label: "Behavior Event Action"
-  description: "Action tied to event"
-}
+
+  dimension: page_path {
+    label: "Page"
+    description: "The url of the page."
+  }
 
   dimension: hit_sequence_number {
     type: number

@@ -13,24 +13,6 @@ datagroup: bqml_datagroup {
 aggregate_awareness: yes
 # explore: funnel_explorer_new {}
 
-explore: hit_facts {}
-
-explore: user_facts {}
-
-
-
-explore: training_input {
-  # always_filter: {
-  #   filters:[  user_facts.date_range_filter: "2017-02-01 12:00:00 to
-  #   2018-07-01 14:00:00"]
-  # }
-  join: user_facts {
-    sql: ;;
-    relationship: one_to_one
-    fields: [user_facts.date_range_filter]
-  }
-}
-
 
 
 explore: ga_sessions {
@@ -48,10 +30,22 @@ explore: ga_sessions {
   #   }
   # }
 
+  join: future_purchase_prediction {
+    type: left_outer
+    sql_on: ${future_purchase_prediction.fullVisitorId} = ${ga_sessions.full_visitor_id} ;;
+    relationship: one_to_many
+  }
+
   join: hits {
     type: left_outer
     sql: LEFT JOIN UNNEST(${ga_sessions.hits}) AS hits ;;
     relationship: one_to_many
+  }
+
+  join: page_funnel {
+    type: left_outer
+    sql_on: ${page_funnel.event1_hit_id} = ${hits.id} ;;
+    relationship: one_to_one
   }
 
   join: asset_facts {
@@ -100,16 +94,21 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
-  join: user_label {
-    type: left_outer
-    sql_on: ${ga_sessions.full_visitor_id} = ${user_label.fullvisitorId} ;;
-    relationship: many_to_one
-    sql_where:  geoNetwork.Country="United States" AND ${ga_sessions.visit_start_seconds} < ifnull(${user_label.event_session_seconds}, 0) OR ${user_label.event_session_seconds} is NULL  ;;
-  }
+#   join: user_label {
+#     type: left_outer
+#     sql_on:  ${ga_sessions.full_visitor_id} = ${user_label.fullvisitorId} ;;
+#     relationship: many_to_one
+#     sql_where:   {% if  user_label.made_purchase._value == 'Yes' %}
+#                   ${ga_sessions.visit_start_seconds} < ifnull(${user_label.event_session_seconds}, 0) OR ${user_label.event_session_seconds} is NULL
+#                   {% else %}
+#                     1=1
+#                   {% endif %};;
+#   }
 }
 
 
 
-explore: funnel_explorer_new {}
 
-explore: funnel_explorer {}
+named_value_format: hour_format {
+  value_format: "[h]:mm:ss"
+}
