@@ -213,6 +213,7 @@ view: ga_sessions {
         ) ;;
   }
 
+
   dimension_group: partition {
     view_label: "Session"
     description: "Date that is parsed from the table name. Required as a filter to avoid accidental massive queries."
