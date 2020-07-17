@@ -5,7 +5,7 @@ view: user_facts {
         WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN START_DATE AND END_DATE),
 
     user_label AS (
-      SELECT fullvisitorId, max(case when totals.transactions >= 1 then 1 else 0 end) as label, min(case when totals.transactions >= 1 then visitStartTime end) as event_session
+      SELECT fullvisitorId, max(case when totals.transactions >= 1 then 1 else 0 end) as label, max(case when totals.transactions >= 1 then visitStartTime end) as event_session
         FROM filtered_base
         GROUP BY fullvisitorId),
 
