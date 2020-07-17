@@ -4,6 +4,7 @@ connection: "ga_generated"
 
 include: "/*/*.view.lkml"
 include: "/Google_Analytics/Attribution_Models/*.view.lkml"
+include: "/Dashboards/*.dashboard"
 
 datagroup: bqml_datagroup {
   #retrain model every day
