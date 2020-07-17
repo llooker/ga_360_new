@@ -157,7 +157,8 @@ view: hits {
     group_label: "Goal Selection"
     description: "Enter Page Path for the confirmation page to be used with Total Conversion measures (format should be: /<page>)."
     type: string
-    suggest_dimension: page_path
+    suggest_explore: top_pages
+    suggest_dimension:  top_pages.page_path
   }
 
   dimension: has_completed_goal {
