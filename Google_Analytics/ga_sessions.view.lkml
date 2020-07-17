@@ -414,25 +414,5 @@ view: ga_sessions {
     drill_fields: [person.person_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
   }
 
-##################################### GA360 BQML fields ########################
-  parameter: prediction_window_days {
-    type: number
-  }
 
-  dimension: x_days_future_purchases {
-    type: number
-    sql: (SELECT COALESCE(SUM(totals.transactions),0)
-          FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` as subquery_table
-          LEFT JOIN UNNEST([subquery_table.totals]) as totals
-          WHERE subquery_table.fullvisitorid = ${TABLE}.fullvisitorid
-            AND subquery_table.visitStarttime > ${TABLE}.visitStarttime
-            AND subquery_table.visitStarttime - ${TABLE}.visitStarttime < {% parameter prediction_window_days %}*24*60*60 --X days, in seconds
-           ) ;;
-  }
-
-  dimension: will_purchase_in_future {
-    type: number
-    sql: IF(${x_days_future_purchases} >0,1,0) ;;
-  }
-##################################### END - GA360 BQML fields ########################
 }
