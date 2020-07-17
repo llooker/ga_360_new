@@ -108,7 +108,7 @@ view: hits {
   }
 
   dimension_group: hit {
-    timeframes: [time, date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
+    timeframes: [time, date]
     type: time
     sql: TIMESTAMP_MILLIS(${ga_sessions.visit_start_seconds}*1000 + ${time}) ;;
     convert_tz: no
@@ -134,9 +134,9 @@ view: hits {
   }
 
   dimension: hour {
-    view_label: "Session"
-    group_label: "Time"
-    description: "A two-digit hour of the day ranging from 00-23 in the timezone configured for the account. This value is also corrected for daylight savings time. If the timezone follows daylight savings time, there will be an apparent bump in the number of sessions during the changeover hour (e.g., between 1:00 and 2:00) for the day per year when that hour repeats. A corresponding hour with zero sessions will occur at the opposite changeover. (Google Analytics does not track user time more precisely than hours.)"
+    view_label: "Hits"
+    group_label: "Hit Date"
+    description: "The hour in which the hit occurred (0 to 23) in the timezone configured for the account."
     type: number
     sql: ${TABLE}.hour ;;
   }
@@ -205,8 +205,8 @@ view: hits {
   }
 
   dimension: minute {
-    view_label: "Session"
-    group_label: "Time"
+    view_label: "Hits"
+    group_label: "Hit Date"
     description: "Returns the minutes, between 00 and 59, in the hour."
     type: number
     sql: ${TABLE}.minute ;;
@@ -517,172 +517,3 @@ view: hits {
     ]
   }
 }
-
-# dimension: is_adwords_completion {
-#   description: "A successful form-fill that resulted in reaching a success page on looker.com that contains tyvmflds, primarily used to track successful conversion from PPC campaigns."
-#   hidden: yes
-#   type: yesno
-#   sql: REGEXP_CONTAINS(${page_path}, 'tyvmflds') ;;
-# }
-#
-# dimension: is_data_topic {
-#   description: "A successful form-fill that occurred on looker.com pages in data-topics folder. These pages were originally built as LPs for organic search traffic."
-#   hidden: yes
-#   type: yesno
-#   sql: (REGEXP_CONTAINS(${page_path}, 'looker.com/data-topics/') AND ${event_category} = "formSubmissionSuccess") ;;
-# }
-#
-# dimension: is_drift {
-#   view_label: "Behavior"
-#   group_label: "Event Filters"
-#   description: "Use with Event Tracking dimension(s)"
-#   type: yesno
-#   sql: UPPER(${event_category}) LIKE 'DRIFT%';;
-# }
-
-# dimension: is_scroll {
-#   hidden: yes
-#   label: "Is Scroll Tracking"
-#   view_label: "Behavior"
-#   group_label: "Event Filters"
-#   description: "Use with Event Tracking dimension(s). Scroll tracking monitors the length of the page scrolled by users."
-#   type: yesno
-#   sql: UPPER(${event_category}) LIKE 'SCROLL TRACKING%';;
-# }
-#
-# dimension: is_subscribed_to_blog {
-#   description: "Is the visitor subscribed to Looker blog?"
-#   hidden: yes
-#   type: yesno
-#   sql: REGEXP_CONTAINS(${page_path}, 'looker.com/blog') AND REGEXP_CONTAINS(${page_path}, 'allid=') ;;
-# }
-#
-# dimension: is_video {
-#   hidden: yes
-#   view_label: "Behavior"
-#   group_label: "Event Filters"
-#   description: "Use with Event Tracking dimension(s). Tracks the player state (play, pause, and the % of video played of single/multiple videos embedded on the page."
-#   type: yesno
-#   sql: UPPER(${event_category}) LIKE 'VIDEO%';;
-# }
-#
-#
-# dimension: is_play {
-#   label: "Is Played"
-#   view_label: "Behavior"
-#   group_label: "Video"
-#   description: "Yes if a video is played. NULL if the event action is not related to a video"
-#   type: yesno
-#   sql: ${is_video} AND (UPPER(${event_action}) LIKE "%PLAY%" OR REGEXP_CONTAINS(${event_action}, "%"));;
-# }
-# dimension: scroll_tracking_page {
-#   view_label: "Behavior"
-#   group_label: "Scroll"
-#   description: "Use with Event measure(s). Scroll tracking monitors the length of the page scrolled by users."
-#   type: string
-#   sql: CASE
-#           WHEN ${is_scroll}
-#             THEN CONCAT(${host_name}, ${event_label})
-#          END;;
-#
-#     link: {
-#       label: "Go To Link"
-#       url: "https://{{ value }}"
-#     }
-#   }
-#
-#   dimension: scroll_percent {
-#     view_label: "Behavior"
-#     group_label: "Scroll"
-#     description: "Use with Event measure(s). % of the page scrolled."
-#     type: number
-#     sql: CASE
-#           WHEN ${is_scroll}
-#             THEN SAFE_CAST(REGEXP_REPLACE(${event_action}, "%","") AS INT64)
-#          END;;
-#
-#       value_format: "0\%"
-#     }
-#
-#     dimension: video_page {
-#       view_label: "Behavior"
-#       group_label: "Video"
-#       description: "Use with Event measure(s). Page where the video is embedded."
-#       type: string
-#       sql: CASE
-#           WHEN ${is_video}
-#             THEN REGEXP_REPLACE(${event_label}, "from: ", "")
-#          END;;
-#
-#         link: {
-#           label: "Link"
-#           url: "{{ value }}"
-#         }
-#       }
-#
-#       dimension: video_percent_watched{
-#         view_label: "Behavior"
-#         group_label: "Video"
-#         description: "Use with Event measure(s). % of video watched on "
-#         type: number
-#         sql: CASE
-#           WHEN ${is_play}
-#             THEN COALESCE(SAFE_CAST(REGEXP_REPLACE(REGEXP_REPLACE(${event_action}, "Reached ", ""), "%","") AS INT64), 0)
-#          END;;
-#
-#           value_format: "0\%"
-#         }
-#
-#         dimension: video_title {
-#           view_label: "Behavior"
-#           group_label: "Video"
-#           description: "Use with Event measure(s). Title of Video."
-#           type: string
-#           sql: CASE
-#                       WHEN ${is_video}
-#                         THEN REGEXP_REPLACE(${event_category}, "Video: ", "")
-#                      END;;
-#         }
-        #dimension: has_completed_discover_lp {
-        # hidden: yes
-        # description: "Did the visitor navigate to a Discover Landing Page?"
-        # type: yesno
-        # sql: REGEXP_CONTAINS(${page_path}, 'SmartInsights-5StepsKPIs-Conf.html') ;;
-        # }
-        #
-        # dimension: has_completed_dashboard_demo {
-        #   description: "Did the visitor navigate to the Looker demo dashboard page?"
-        #   hidden: yes
-        #   type: yesno
-        #   sql: (REGEXP_CONTAINS(${page_path}, 'looker.com/demo/looker-dashboard') AND ${event_category} = "formSubmissionSuccess") ;;
-        # }
-        #
-        # dimension: has_completed_free_trial {
-        #   description: "Did the visitor complete the free trial form?"
-        #   hidden: yes
-        #   type: yesno
-        #   sql: REGEXP_CONTAINS(${page_path}, '/confirmation/trial') ;;
-        # }
-
-# dimension: has_seen_demo_confirmation_page {
-#   description: "Did the visitor navigate to the demo confirmation page?"
-#   hidden: yes
-#   type: yesno
-#   sql: REGEXP_CONTAINS(${page_path}, '/confirmation/demo') ;;
-# }
-#
-# dimension: has_social_source_referral {
-#   view_label: "Acquisition"
-#   group_label: "Traffic Sources"
-#   description: "Indicates whether sessions to the property are from a social source."
-#   type: yesno
-#   sql: ${TABLE}.social.hasSocialSourceReferral = "Yes" ;;
-# }
-#
-# measure: page_value {
-#   view_label: "Behavior"
-#   group_label: "Pages"
-#   description: "The average value of this page or set of pages, which is equal to ga:transactionRevenue / ga:uniquePageviews."
-#   type: number
-#   sql: (${ga_sessions.transaction_revenue_total})/nullif(${unique_page_count}, 0) ;;
-# }
