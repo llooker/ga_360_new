@@ -176,7 +176,11 @@ view: future_purchase_prediction {
   }
   dimension: user_propensity_score {type: number}
   dimension: user_propensity_decile {type: number}
-  dimension: fullVisitorId {type: number hidden: no}
+  dimension: fullVisitorId {
+       type: string
+      hidden: no
+      sql: TRIM(REPLACE(${TABLE}.fullVisitorId,',','')) ;;
+      }
   measure: average_user_propensity_score {
     type: average
     sql: ${user_propensity_score} ;;

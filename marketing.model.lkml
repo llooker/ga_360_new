@@ -30,11 +30,11 @@ explore: ga_sessions {
   #   }
   # }
 
-#   join: future_purchase_prediction {
-#     type: left_outer
-#     sql_on: ${future_purchase_prediction.fullVisitorId} = ${ga_sessions.full_visitor_id} ;;
-#     relationship: one_to_many
-#   }
+  join: future_purchase_prediction {
+    type: left_outer
+    sql_on: ${future_purchase_prediction.fullVisitorId} = ${ga_sessions.full_visitor_id} ;;
+    relationship: one_to_many
+  }
 
   join: hits {
     type: left_outer
@@ -107,7 +107,6 @@ explore: ga_sessions {
 }
 
 
-explore: future_purchase_prediction {}
 
 
 named_value_format: hour_format {
