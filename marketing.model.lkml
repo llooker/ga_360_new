@@ -19,12 +19,12 @@ explore: ga_sessions {
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions  data."
 
-  always_filter: {
-    filters: {
-      field: partition_date
-      value: "7 days ago for 7 days"
-    }
-  }
+#   always_filter: {
+#     filters: {
+#       field: partition_date
+#       value: "7 days ago for 7 days"
+#     }
+#   }
 
 
   join: hits {
