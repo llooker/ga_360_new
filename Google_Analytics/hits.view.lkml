@@ -141,14 +141,34 @@ view: hits {
     sql: ${TABLE}.hour ;;
   }
 
-  filter: event_goal_selection {
+  filter: event_action_goal_selection {
     label: "Event Action"
     view_label: "Conversions"
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
     suggest_explore: event_actions
-    suggest_dimension: event_actions.hits_event
+    suggest_dimension: event_actions.event_action
+  }
+
+  filter: event_label_goal_selection {
+    label: "Event Label"
+    view_label: "Conversions"
+    group_label: "Goal Selection"
+    description: "Enter Event Action to be used with Total Conversion measures."
+    type: string
+    suggest_explore: event_labels
+    suggest_dimension: event_labels.event_label
+  }
+
+  filter: event_category_goal_selection {
+    label: "Event Category"
+    view_label: "Conversions"
+    group_label: "Goal Selection"
+    description: "Enter Event Action to be used with Total Conversion measures."
+    type: string
+    suggest_explore: event_categories
+    suggest_dimension: event_categories.event_category
   }
 
   filter: page_goal_selection {
@@ -167,15 +187,15 @@ view: hits {
     hidden: no
     type: yesno
     sql: CASE
-          WHEN {{ event_goal_selection._in_query }} AND {{ page_goal_selection._in_query }}
+          WHEN {{ event_action_goal_selection._in_query }} AND {{ page_goal_selection._in_query }}
             THEN (
-              {% condition event_goal_selection %} ${event_action} {% endcondition %}
+              {% condition event_action_goal_selection %} ${event_action} {% endcondition %}
               AND {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
             )
           WHEN {{ page_goal_selection._in_query }}
             THEN {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
-          WHEN {{ event_goal_selection._in_query }}
-            THEN {% condition event_goal_selection %} ${event_action} {% endcondition %}
+          WHEN {{ event_action_goal_selection._in_query }}
+            THEN {% condition event_action_goal_selection %} ${event_action} {% endcondition %}
           ELSE FALSE
         END;;
   }

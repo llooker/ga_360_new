@@ -82,7 +82,7 @@ view: session_page_sequence {
           ) AS subsequent_page_title
         FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`  AS ga_sessions
         LEFT JOIN UNNEST(ga_sessions.hits) as hits
-        WHERE {% condition ga_sessions.partition_date %} TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d'))) {% endcondition %}
+        WHERE {% condition ga_sessions.partition_date %} TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d'))) {% endcondition %} AND (hits.type = 'PAGE')
         GROUP BY 1,2,3,4,5,6,7,8,9,10
        ;;
   }

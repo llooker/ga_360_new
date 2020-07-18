@@ -67,46 +67,6 @@ view: ga_sessions {
     sql: ${TABLE}.channelGrouping ;;
   }
 
-  dimension: client_id {
-    view_label: "Audience"
-    group_label: "User"
-    description: "Unique ID given to a user that we capture within Salesforce. A user can have multiple Client IDs"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 20) ;;
-  }
-
-  dimension: company_name {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The name of the company (custom dimension index 3)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 3) ;;
-  }
-
-  dimension: company_type {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Type of company e.g. non-profit, education, private, government (custom dimension index 11)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 11) ;;
-  }
-
-  dimension: domain {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Company's domain (custom dimension index 12)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 12) ;;
-  }
-
-  dimension: employees_range {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The range of number of employees (custom dimension index 4)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 4) ;;
-  }
-
   dimension: hits {
     description: "Is used for unnesting the hits struct, should not be used as a standalone dimension"
     hidden: yes
