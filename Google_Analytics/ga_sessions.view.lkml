@@ -178,14 +178,15 @@ view: ga_sessions {
     view_label: "Session"
     description: "Date that is parsed from the table name. Required as a filter to avoid accidental massive queries."
     type: time
-    sql: PARSE_DATE(
-          '%Y%m%d'
-          , REGEXP_EXTRACT(
-            _TABLE_SUFFIX
-            , r'^\d\d\d\d\d\d\d\d'
+    sql: TIMESTAMP(
+          PARSE_DATE(
+            '%Y%m%d'
+            , REGEXP_EXTRACT(
+              _TABLE_SUFFIX
+              , r'^\d\d\d\d\d\d\d\d'
+            )
           )
         );;
-    datatype: date
     convert_tz: no
   }
 

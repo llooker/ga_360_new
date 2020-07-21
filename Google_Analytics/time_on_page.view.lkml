@@ -1,48 +1,64 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: A derived table that calculates the time on a page for a given hit ID
+# Numbers will not match Google Analytics UI because the PDT calculates Time on Page for Exit pages, which GA does not.
+# - Time on the final page of a session is calculated by the difference between start of the final page visit and the last EVENT recorded on the page.
 #############################################################################################################
 
 view: time_on_page {
   derived_table: {
+    persist_for: "1 hour"
     sql:
-      WITH t1 AS (
+      WITH raw_hit_data AS (
         SELECT
-          CONCAT(CAST(fullVisitorId AS STRING), '|', COALESCE(CAST(visitId AS STRING),''), '|', CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)) AS id
-          , hits.hitNumber
-          , hits.type
-          , hits.isExit
-          , hits.time / 1000 AS hit_time
-          , MAX(IF(hits.isInteraction IS NOT NULL,hits.time / 1000,0))
-              OVER (PARTITION BY CONCAT(CAST(fullVisitorId AS STRING), '|', COALESCE(CAST(visitId AS STRING),''), '|', CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)))
-              AS last_interaction
+          CONCAT(
+            CAST(fullVisitorId AS STRING), '|'
+            , COALESCE(CAST(visitId AS STRING),''), '|'
+            , CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
+          ) AS session_id
+          , fullVisitorId as full_visitor_id
+          , visitStartTime as visit_start_time
+          , hits.hitNumber as hit_number
+          , hits.type as hit_type
+          , hits.isExit as is_exit
+          , hits.time AS hit_time
+          , MAX(
+              IF(
+                hits.type = "EVENT"
+                , hits.time
+                , 0
+              )
+            ) OVER (PARTITION BY fullVisitorId, visitStartTime) AS last_event
         FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` AS ga_sessions
         LEFT JOIN UNNEST(ga_sessions.hits) AS hits
         WHERE {% condition ga_sessions.partition_date %} TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d'))) {% endcondition %}
+      )
+      , pages AS (
+          SELECT
+            *
+            , CONCAT(session_id,'|',FORMAT('%05d', hit_number)) AS hit_id
+          FROM raw_hit_data
+          WHERE hit_type = 'PAGE'
         )
-      , t2 AS (
-        SELECT
-          *
-          , CONCAT(id,'|',FORMAT('%05d',hitNumber)) AS hit_id
-        FROM t1
-        WHERE type = 'PAGE'
-        )
-      , t3 AS (
-        SELECT
-          *
-          , LEAD(hit_time) OVER (PARTITION BY id ORDER BY hit_time) AS next_pageview
-        FROM t2
+      , next_pageview AS (
+          SELECT
+            *
+            , LEAD(hit_time) OVER (PARTITION BY full_visitor_id, visit_start_time ORDER BY hit_time) AS next_pageview_time
+            , IF(last_event > hit_time, true, false) as last_event_after_page_start
+          FROM pages
         )
       SELECT
         hit_id
+        , last_event
+        -- Calculate time on page
         , CASE
-            WHEN isExit IS NOT NULL
-              THEN last_interaction - hit_time
-            ELSE next_pageview - hit_time
-          END AS time_on_page
-      FROM t3 ;;
+            -- Calculate time between pages when it is not the last page
+            WHEN is_exit IS NULL
+              THEN (next_pageview_time - hit_time)
+            -- Calculate time on last page as long as last Event happened on that page
+            WHEN last_event_after_page_start
+              THEN (last_event - hit_time)
+          END / 1000 / 86400 AS time_on_page
+      FROM next_pageview ;;
   }
 
   ########## PRIMARY KEYS ##########
@@ -58,20 +74,52 @@ view: time_on_page {
 
   dimension: time_on_page {
     group_label: "Page Timing"
-    description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last interaction on the page"
+    description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last event on the page"
     type: number
-    sql: ${TABLE}.time_on_page / 86400;;
-    value_format_name: hour_format
+    sql: ${TABLE}.time_on_page;;
+    value_format: "[h]:mm:ss"
+  }
+
+  dimension: last_event {
+    alias: [last_interaction]
+    group_label: "Page Timing"
+    description: "Last event hit found during web session."
+    type: number
+    sql: ${TABLE}.last_event;;
+  }
+
+  dimension: has_time_on_page {
+    hidden: yes
+    type: yesno
+    sql: ${TABLE}.time_on_page IS NOT NULL ;;
   }
 
   ########## MEASURES ##########
+
+  measure: total_time_on_page {
+    group_label: "Pages"
+    description: "Total Time spent on page."
+    type: sum
+    sql: ${time_on_page};;
+    value_format: "[h]:mm:ss"
+  }
+
+  measure: total_pages_with_time {
+    hidden: yes
+    group_label: "Pages"
+    description: "Total pages with a time on page calculated"
+    type: count_distinct
+    sql: ${hit_id};;
+
+    filters: [has_time_on_page: "yes"]
+  }
 
   measure: average_time_on_page {
     group_label: "Pages"
     label: "Avg Time on Page"
     description: "Avg time a user spent on a specific page."
-    type: average
-    sql: ${time_on_page};;
-    value_format_name: hour_format
+    type: number
+    sql: (${total_time_on_page} / NULLIF(${total_pages_with_time}, 0));;
+    value_format: "[h]:mm:ss"
   }
 }

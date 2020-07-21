@@ -19,12 +19,12 @@ explore: ga_sessions {
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions  data."
 
-#   always_filter: {
-#     filters: {
-#       field: partition_date
-#       value: "7 days ago for 7 days"
-#     }
-#   }
+  always_filter: {
+    filters: {
+      field: partition_date
+      value: "7 days ago for 7 days"
+    }
+  }
 
 
   join: hits {
@@ -75,9 +75,15 @@ explore: ga_sessions {
 
   join: time_on_page {
     type: left_outer
-    sql_on: ${time_on_page.hit_id} = ${hits.id} ;;
+    sql_on: ${hits.id} = ${time_on_page.hit_id} ;;
     relationship: one_to_one
   }
+
+#   join: event_actions {
+#     type: inner
+#     sql_on: ${hits.event_action} = ${event_actions.event_action} ;;
+#     relationship: many_to_one
+#   }
 
   join: attribution_model_pdt {
     type: inner

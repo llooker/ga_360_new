@@ -1,17 +1,23 @@
+include: "../marketing.model"
+include: "ga_sessions.view.lkml"
+
 explore: event_actions {
-  hidden: no
+  hidden: yes
 }
 view: event_actions {
   derived_table: {
     explore_source: ga_sessions {
       column: event_action { field: hits.event_action }
 
-    # TECH DEBT: DELETE
-      filters: {
-        field: ga_sessions.partition_date
-        value: "6 years"
+      bind_filters: {
+        from_field: event_actions.partition_date
+        to_field: ga_sessions.partition_date
       }
     }
+  }
+
+  filter: partition_date {
+    type: date
   }
 
   dimension: event_action {
@@ -26,12 +32,15 @@ view: event_labels {
     explore_source: ga_sessions {
       column: event_label { field: hits.event_label }
 
-    # TECH DEBT: DELETE
-      filters: {
-        field: ga_sessions.partition_date
-        value: "6 years"
+      bind_filters: {
+        from_field: event_labels.partition_date
+        to_field: ga_sessions.partition_date
       }
     }
+  }
+
+  filter: partition_date {
+    type: date
   }
 
   dimension: event_label {
@@ -47,12 +56,15 @@ view: event_categories {
     explore_source: ga_sessions {
       column: event_category { field: hits.event_category }
 
-      # TECH DEBT: DELETE
-      filters: {
-        field: ga_sessions.partition_date
-        value: "6 years"
+      bind_filters: {
+        from_field: event_categories.partition_date
+        to_field: ga_sessions.partition_date
       }
     }
+  }
+
+  filter: partition_date {
+    type: date
   }
 
   dimension: event_category {
@@ -71,13 +83,17 @@ view: top_pages {
       column: page_count { field: hits.page_count }
 
       sorts: [hits.page_count: desc]
+      limit: 50
 
-      # TECH DEBT: DELETE
-      filters: {
-        field: ga_sessions.partition_date
-        value: "6 years"
+      bind_filters: {
+        from_field: top_pages.partition_date
+        to_field: ga_sessions.partition_date
       }
     }
+  }
+
+  filter: partition_date {
+    type: date
   }
   dimension: page_path {
   }
