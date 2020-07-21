@@ -26,6 +26,7 @@ view: totals {
 
   dimension: has_transaction {
     view_label: "Conversions"
+    description: "True if at least one transaction was completed in session."
     type: yesno
     sql: ${TABLE}.totals.transactions >= 1 ;;
   }

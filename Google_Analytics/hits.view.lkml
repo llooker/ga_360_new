@@ -178,15 +178,30 @@ view: hits {
     suggest_dimension:  top_pages.page_path
   }
 
+  dimension: goal_in_query {
+    view_label: "Conversions"
+    description: "Check to verify user has entered a value for at least one conversion filter."
+    hidden: yes
+    type: yesno
+    sql: {{ event_action_goal_selection._in_query }}
+          OR {{ event_label_goal_selection._in_query }}
+          OR {{ event_category_goal_selection._in_query }}
+          OR {{ page_goal_selection._in_query }};;
+  }
+
   dimension: has_completed_goal {
     view_label: "Conversions"
     description: "A session that resulted in a conversion (i.e. resulted in reaching successful point on website defined in 'Goal Selection' field)."
     hidden: no
     type: yesno
-    sql: {% condition event_action_goal_selection %} ${event_action} {% endcondition %}
-         AND {% condition event_label_goal_selection %} ${event_label} {% endcondition %}
-          AND {% condition event_category_goal_selection %} ${event_category} {% endcondition %}
-          AND {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %};;
+    sql:if(
+          ${goal_in_query}
+          , {% condition event_action_goal_selection %} ${event_action} {% endcondition %}
+              AND {% condition event_label_goal_selection %} ${event_label} {% endcondition %}
+              AND {% condition event_category_goal_selection %} ${event_category} {% endcondition %}
+              AND {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
+          , false
+        );;
   }
 
   dimension: is_entrance {
