@@ -1,4 +1,3 @@
-include: "../marketing.model"
 include: "ga_sessions.view.lkml"
 
 explore: event_actions {
@@ -11,6 +10,7 @@ view: event_actions {
 
       filters: [ga_sessions.partition_date: "last 7 days"]
     }
+    persist_for: "24 hours"
   }
 
   dimension: event_action {
@@ -27,6 +27,7 @@ view: event_labels {
 
       filters: [ga_sessions.partition_date: "last 7 days"]
     }
+    persist_for: "24 hours"
   }
 
   dimension: event_label {
@@ -44,6 +45,7 @@ view: event_categories {
 
       filters: [ga_sessions.partition_date: "last 7 days"]
     }
+    persist_for: "24 hours"
   }
 
   dimension: event_category {
@@ -65,6 +67,7 @@ view: top_pages {
       sorts: [hits.page_count: desc]
       limit: 50
     }
+    persist_for: "24 hours"
   }
 
   dimension: page_path {

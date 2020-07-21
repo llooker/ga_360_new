@@ -57,7 +57,8 @@ view: time_on_page {
             -- Calculate time on last page as long as last Event happened on that page
             WHEN last_event_after_page_start
               THEN (last_event - hit_time)
-          END / 1000 / 86400 AS time_on_page
+            -- Calculate time on page in Days to  value_format
+          END / 1000.0 / 86400.0 AS time_on_page
       FROM next_pageview ;;
   }
 

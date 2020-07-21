@@ -73,38 +73,6 @@ view: ga_sessions {
     sql: ${TABLE}.hits ;;
   }
 
-  dimension: industry {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The industry that the company falls into (custom dimension index 8)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 8) ;;
-  }
-
-  dimension: industry_group {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The industry group (custom dimension index 9)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 9) ;;
-  }
-
-  dimension: industry_tags {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Tags that label the company's industry (custom dimension index 5)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 5) ;;
-  }
-
-  dimension: intellimize {
-    description: "Intellimize (custom dimension index 19)"
-    view_label: "Audience"
-    group_label: "User"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=19) ;;
-  }
-
   dimension: is_first_time_visitor {
     hidden: yes
     type: yesno
@@ -197,21 +165,6 @@ view: ga_sessions {
     sql: ${TABLE}.socialEngagementType ;;
   }
 
-  dimension: sub_industry {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The sub-industry that the company falls into (custom dimension index 7)"
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 7) ;;
-  }
-
-  dimension: tech_stack {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Programming langugages, tools and frameworks used (custom dimension index 6)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 6) ;;
-  }
-
   dimension: visit_number {
     type: number
     view_label: "Audience"
@@ -284,7 +237,7 @@ view: ga_sessions {
   measure: total_conversions {
     view_label: "Conversions"
     group_label: "Goal Conversions"
-    label: "Total Conversions"
+    label: "Total Sessions with Conversion"
     description: "Hits URL /confirmation/."
     type: count_distinct
     sql: ${id} ;;
@@ -299,7 +252,7 @@ view: ga_sessions {
   measure: total_conversions_conversion_rate {
     view_label: "Conversions"
     group_label: "Goal Conversions"
-    label: "Total Conversions: Conversion Rate"
+    label: "Session Conversion Rate"
     description: "Percentage of sessions resulting in a conversion to the requested goal number."
     type: number
     sql: (1.0*${total_conversions})/NULLIF(${visits_total}, 0) ;;
