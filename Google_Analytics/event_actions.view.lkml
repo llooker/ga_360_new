@@ -9,15 +9,8 @@ view: event_actions {
     explore_source: ga_sessions {
       column: event_action { field: hits.event_action }
 
-      bind_filters: {
-        from_field: event_actions.partition_date
-        to_field: ga_sessions.partition_date
-      }
+      filters: [ga_sessions.partition_date: "last 7 days"]
     }
-  }
-
-  filter: partition_date {
-    type: date
   }
 
   dimension: event_action {
@@ -32,15 +25,8 @@ view: event_labels {
     explore_source: ga_sessions {
       column: event_label { field: hits.event_label }
 
-      bind_filters: {
-        from_field: event_labels.partition_date
-        to_field: ga_sessions.partition_date
-      }
+      filters: [ga_sessions.partition_date: "last 7 days"]
     }
-  }
-
-  filter: partition_date {
-    type: date
   }
 
   dimension: event_label {
@@ -56,15 +42,8 @@ view: event_categories {
     explore_source: ga_sessions {
       column: event_category { field: hits.event_category }
 
-      bind_filters: {
-        from_field: event_categories.partition_date
-        to_field: ga_sessions.partition_date
-      }
+      filters: [ga_sessions.partition_date: "last 7 days"]
     }
-  }
-
-  filter: partition_date {
-    type: date
   }
 
   dimension: event_category {
@@ -82,19 +61,12 @@ view: top_pages {
       column: page_path { field: hits.page_path_formatted }
       column: page_count { field: hits.page_count }
 
+      filters: [ga_sessions.partition_date: "last 7 days"]
       sorts: [hits.page_count: desc]
       limit: 50
-
-      bind_filters: {
-        from_field: top_pages.partition_date
-        to_field: ga_sessions.partition_date
-      }
     }
   }
 
-  filter: partition_date {
-    type: date
-  }
   dimension: page_path {
   }
 }
