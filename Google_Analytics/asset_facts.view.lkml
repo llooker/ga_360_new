@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Connor Sparkman
-# Created: May 2020
 # Purpose: A derived table that returns the first visit date for a web page. Used to calculate asset age. Asset and Page are the same in this context.
 #############################################################################################################
 

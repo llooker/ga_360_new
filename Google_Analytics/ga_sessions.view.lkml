@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Surfaces event data from Google Analytics
 #############################################################################################################
 include: "geonetwork.view.lkml"

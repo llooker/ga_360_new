@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Defines the fields within the hits struct in google analytics. Is joined to the ga_sessions explore
 #          by unnesting the values.
 #############################################################################################################
