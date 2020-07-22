@@ -1,3 +1,7 @@
+explore: page_facts {
+  hidden: no
+}
+
 view: page_facts {
   derived_table: {
     explore_source: ga_sessions {
@@ -8,6 +12,12 @@ view: page_facts {
       column: page_path { field: hits.page_path_formatted }
       derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC) ;;}
       derived_column: hit_id {sql:CONCAT(id,'|',FORMAT('%05d',hit_number));;}
+      derived_column: current_page_minus_1 {sql: LAG(page_path) OVER (PARTITION BY id ORDER BY hit_time DESC) ;;}
+      derived_column: current_page_minus_2 {sql: LAG(page_path,2) OVER (PARTITION BY id ORDER BY hit_time DESC) ;;}
+      derived_column: current_page_minus_3 {sql: LAG(page_path,3) OVER (PARTITION BY id ORDER BY hit_time DESC) ;;}
+      derived_column: current_page_minus_4 {sql: LAG(page_path,4) OVER (PARTITION BY id ORDER BY hit_time DESC) ;;}
+      derived_column: current_page_minus_5 {sql: LAG(page_path,5) OVER (PARTITION BY id ORDER BY hit_time DESC) ;;}
+      derived_column: current_page_minus_6 {sql: LAG(page_path,6) OVER (PARTITION BY id ORDER BY hit_time DESC) ;;}
       filters: [hits.type: "PAGE", ga_sessions.partition_date: "@{PARTITION_DATE_FILTER}"]
     }
     persist_for: "24 hours"
@@ -41,4 +51,13 @@ view: page_facts {
   dimension: hit_sequence_number {
     type: number
   }
+
+  dimension: current_page_minus_1 {}
+  dimension: current_page_minus_2 {}
+  dimension: current_page_minus_3 {}
+  dimension: current_page_minus_4 {}
+  dimension: current_page_minus_5 {}
+  dimension: current_page_minus_6 {}
+
+
 }
