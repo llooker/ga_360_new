@@ -28,7 +28,7 @@ constant: CONFIG_PROJECT_NAME {
 }
 
 constant: PARTITION_DATE_FILTER {
-  value: "last 7 days"
+  value: "last 1500 days"
   export: override_required
 }
 

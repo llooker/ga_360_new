@@ -1,30 +1,31 @@
 view: user_facts {
   derived_table: {
-    sql: WITH filtered_base AS (
+    sql:
+        --Limiting the table scans to the date ranges identified in the predictions table
+        WITH filtered_base AS (
         SELECT * FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`
-        WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN START_DATE AND END_DATE),
-
+        WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN ((TIMESTAMP_ADD(TIMESTAMP_TRUNC( CURRENT_TIMESTAMP(), DAY), INTERVAL -DAYS_BACK DAY))) AND ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -DAYS_BACK DAY), INTERVAL DAYS_FROM DAY)))),
+      -- labeling customers who have made a purchase as a 1 and customers who have not made a purchas as a 0
     user_label AS (
       SELECT fullvisitorId, max(case when totals.transactions >= 1 then 1 else 0 end) as label, max(case when totals.transactions >= 1 then visitStartTime end) as event_session
         FROM filtered_base
         GROUP BY fullvisitorId),
-
+      -- finding the most common hour of day for each user within the time period
     unique_hour_of_day AS(
       (SELECT   ga_sessions_visit_start_hour_of_day, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_visit_start_hour_of_day
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, EXTRACT(HOUR FROM TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) AS ga_sessions_visit_start_hour_of_day, SUM(ga_sessions.totals.pageviews) as pageviews
       FROM filtered_base  AS ga_sessions  LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
-
-
+      -- findiing the most common metro for the user within the time period
       unique_dma AS(
       (SELECT   metro, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, metro
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, ga_sessions.geoNetwork.metro as metro , SUM(ga_sessions.totals.pageviews) as pageviews
       FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
-
+      -- finding the most common day of week for the user within the time period
       unique_day_of_week AS(
       (SELECT   ga_sessions_visit_start_day_of_week, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_visit_start_day_of_week
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, FORMAT_TIMESTAMP('%A', TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) AS ga_sessions_visit_start_day_of_week  , SUM(ga_sessions.totals.pageviews) as pageviews
       FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorid = user_label.fullvisitorid  @{QUERY_FILTER} GROUP BY 1,2)) WHERE row_number = 1)),
-
+    -- finding the most common traffic source for the user
       unique_traffic_source AS(
       (SELECT   ga_sessions_source, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_source
       FROM (SELECT ga_sessions.fullVisitorId as fullvisitorid, ga_sessions.trafficsource.medium  AS ga_sessions_source, SUM(ga_sessions.totals.pageviews) as pageviews
