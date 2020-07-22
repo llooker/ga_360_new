@@ -27,6 +27,11 @@ constant: CONFIG_PROJECT_NAME {
   export: override_required
 }
 
+constant: PARTITION_DATE_FILTER {
+  value: "last 7 days"
+  export: override_required
+}
+
 
 constant: QUERY_FILTER {
   value: " WHERE (

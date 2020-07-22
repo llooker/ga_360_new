@@ -11,7 +11,7 @@ view: asset_facts{
          , MIN(TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) as first_visit
         FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`  AS ga_sessions
         LEFT JOIN UNNEST(ga_sessions.hits) as hits
-        WHERE hits.type = 'PAGE'
+        WHERE {% condition ga_sessions.partition_date %} TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d'))) {% endcondition %} AND hits.type = 'PAGE'
         GROUP BY page
        ;;
   }
