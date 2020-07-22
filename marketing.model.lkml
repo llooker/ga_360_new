@@ -22,7 +22,7 @@ explore: ga_sessions {
   always_filter: {
     filters: {
       field: partition_date
-      value: "7 days ago for 7 days"
+      value: "@{PARTITION_DATE_FILTER}"
     }
   }
 

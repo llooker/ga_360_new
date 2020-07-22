@@ -22,7 +22,8 @@ view: attribution_model_pdt {
               THEN True
             ELSE False
           END as is_first_touch
-      FROM ${ga_sessions.SQL_TABLE_NAME}  AS ga_sessions;;
+      FROM ${ga_sessions.SQL_TABLE_NAME}  AS ga_sessions
+       WHERE {% condition ga_sessions.partition_date %} TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d'))) {% endcondition %};;
     persist_for: "1 hour"
   }
 
