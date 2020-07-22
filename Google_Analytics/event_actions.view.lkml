@@ -1,3 +1,5 @@
+# Purpose of file is to generate distinct values from nested fields to be used in filter fields
+
 include: "ga_sessions.view.lkml"
 
 explore: event_actions {
