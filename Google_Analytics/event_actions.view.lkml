@@ -56,7 +56,7 @@ view: event_categories {
 
 
 explore: top_pages {
-  hidden: no
+  hidden: yes
 }
 
 view: top_pages {
