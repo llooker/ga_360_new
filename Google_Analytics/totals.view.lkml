@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Defines the fields within the totals struct in google analytics. Is extending into ga_sessions.view.lkml
 #          and should not be joined into GA sessions explore as an independent view file.
 #############################################################################################################
@@ -29,6 +26,7 @@ view: totals {
 
   dimension: has_transaction {
     view_label: "Conversions"
+    description: "True if at least one transaction was completed in session."
     type: yesno
     sql: ${TABLE}.totals.transactions >= 1 ;;
   }

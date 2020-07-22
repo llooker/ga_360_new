@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Defines the fields within the hits struct in google analytics. Is joined to the ga_sessions explore
 #          by unnesting the values.
 #############################################################################################################
@@ -141,43 +138,68 @@ view: hits {
     sql: ${TABLE}.hour ;;
   }
 
-  filter: event_goal_selection {
+  filter: event_action_goal_selection {
     label: "Event Action"
     view_label: "Conversions"
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
     suggest_explore: event_actions
-    suggest_dimension: event_actions.hits_event
+    suggest_dimension: event_actions.event_action
+  }
+
+  filter: event_label_goal_selection {
+    label: "Event Label"
+    view_label: "Conversions"
+    group_label: "Goal Selection"
+    description: "Enter Event Action to be used with Total Conversion measures."
+    type: string
+    suggest_explore: event_labels
+    suggest_dimension: event_labels.event_label
+  }
+
+  filter: event_category_goal_selection {
+    label: "Event Category"
+    view_label: "Conversions"
+    group_label: "Goal Selection"
+    description: "Enter Event Action to be used with Total Conversion measures."
+    type: string
+    suggest_explore: event_categories
+    suggest_dimension: event_categories.event_category
   }
 
   filter: page_goal_selection {
     label: "Page"
     view_label: "Conversions"
     group_label: "Goal Selection"
-    description: "Enter Page Path for the confirmation page to be used with Total Conversion measures (format should be: /<page>)."
+    description: "Enter Page Path to be used with Total Conversion measures (format should be: /<page>). Should not include Hostname"
     type: string
     suggest_explore: top_pages
     suggest_dimension:  top_pages.page_path
   }
 
+  dimension: goal_in_query {
+    description: "Check to verify user has entered a value for at least one conversion filter."
+    hidden: yes
+    type: yesno
+    sql: {{ event_action_goal_selection._in_query }}
+          OR {{ event_label_goal_selection._in_query }}
+          OR {{ event_category_goal_selection._in_query }}
+          OR {{ page_goal_selection._in_query }};;
+  }
+
   dimension: has_completed_goal {
     view_label: "Conversions"
     description: "A session that resulted in a conversion (i.e. resulted in reaching successful point on website defined in 'Goal Selection' field)."
-    hidden: no
     type: yesno
-    sql: CASE
-          WHEN {{ event_goal_selection._in_query }} AND {{ page_goal_selection._in_query }}
-            THEN (
-              {% condition event_goal_selection %} ${event_action} {% endcondition %}
+    sql:if(
+          ${goal_in_query}
+          , {% condition event_action_goal_selection %} ${event_action} {% endcondition %}
+              AND {% condition event_label_goal_selection %} ${event_label} {% endcondition %}
+              AND {% condition event_category_goal_selection %} ${event_category} {% endcondition %}
               AND {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
-            )
-          WHEN {{ page_goal_selection._in_query }}
-            THEN {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
-          WHEN {{ event_goal_selection._in_query }}
-            THEN {% condition event_goal_selection %} ${event_action} {% endcondition %}
-          ELSE FALSE
-        END;;
+          , false
+        );;
   }
 
   dimension: is_entrance {
@@ -219,11 +241,6 @@ view: hits {
     label: "Page"
     description: "A page on the website specified by path and/or query parameters. Use this with hostname to get the page's full URL."
     sql: ${TABLE}.page.pagePath ;;
-
-    link: {
-      label: "Go To Link"
-      url: "https://{{host_name._value }}{{ value }}"
-    }
   }
 
   dimension: page_path_formatted {
@@ -359,6 +376,20 @@ view: hits {
   }
 
   ########## MEASURES ##########
+
+  measure: conversion_count {
+    view_label: "Conversions"
+    group_label: "Goal Conversions"
+    label: "Total Conversions"
+    description: "Total number of hits (Page or Event) that are identified as converisons based on 'Goal Selection' filters."
+    type: count_distinct
+    sql: ${id} ;;
+
+    filters: {
+      field: has_completed_goal
+      value: "Yes"
+    }
+  }
 
   measure: count {
     group_label: "Hits"

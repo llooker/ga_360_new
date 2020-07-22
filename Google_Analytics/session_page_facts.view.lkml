@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: A derived table that extracts the landing page, second page, third page and fourth page for a given visitor
 #############################################################################################################
 

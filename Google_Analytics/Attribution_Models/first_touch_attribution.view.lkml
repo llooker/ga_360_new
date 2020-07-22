@@ -32,12 +32,13 @@ view: first_touch_attribution {
   }
 
   measure: first_touch_sessions_pct {
-    label: "First Touch Sessions % of Total"
+    label: "First Touch % of Total Sessions"
     view_label: "Attribution Models"
     group_label: "First Touch % of Total"
     description: "Calculates % of total first touch sessions based on dimension grouping."
-    type: percent_of_total
-    sql: ${first_touch_sessions};;
+    type: number
+    sql: 1.0 * ${first_touch_sessions} / NULLIF(${ga_sessions.visits_total},0) ;;
+    value_format_name: percent_0
   }
 
   measure: first_touch_transactions {
@@ -60,12 +61,13 @@ view: first_touch_attribution {
   }
 
   measure: first_touch_transactions_pct {
-    label: "First Touch Transactions % of Total"
+    label: "First Touch % of Total Transactions"
     view_label: "Attribution Models"
     group_label: "First Touch % of Total"
     description: "Calculates % of total first touch transactions based on dimension grouping."
-    type: percent_of_total
-    sql: ${first_touch_transactions};;
+    type: number
+    sql: 1.0 * ${first_touch_transactions} / NULLIF(${ga_sessions.transactions_count},0) ;;
+    value_format_name: percent_0
   }
 
   measure: first_touch_visitors {
@@ -83,11 +85,13 @@ view: first_touch_attribution {
   }
 
   measure: first_touch_visitors_pct {
-    label: "First Touch Visitors % of Total"
+    label: "First Touch % of Total Visitors"
     view_label: "Attribution Models"
     group_label: "First Touch % of Total"
     description: "Calculates % of total first touch Visitor based on dimension grouping."
-    type: percent_of_total
-    sql: ${first_touch_transactions};;
+    type: number
+    sql: 1.0 * ${first_touch_visitors} / NULLIF(${ga_sessions.unique_visitors},0) ;;
+    value_format_name: percent_0
+
   }
 }

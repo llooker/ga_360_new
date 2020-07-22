@@ -1,4 +1,3 @@
-
 view: page_facts {
   derived_table: {
     explore_source: ga_sessions {
@@ -9,7 +8,7 @@ view: page_facts {
       column: page_path { field: hits.page_path_formatted }
       derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC) ;;}
       derived_column: hit_id {sql:CONCAT(id,'|',FORMAT('%05d',hit_number));;}
-      filters: [hits.type: "PAGE"]
+      filters: [hits.type: "PAGE", ga_sessions.partition_date: "last 7 days"]
     }
     persist_for: "24 hours"
   }
