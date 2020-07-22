@@ -43,8 +43,7 @@ view: totals {
   measure: bounces_total {
     group_label: "Session"
     label: "Bounces"
-    type: sum_distinct
-    sql_distinct_key: ${id} ;;
+    type: sum
     sql: ${TABLE}.totals.bounces ;;
   }
 
@@ -133,8 +132,7 @@ view: totals {
     group_label: "Session"
     label: "Transactions"
     description: "Total number of ecommerce transactions within the session."
-    type: sum_distinct
-    sql_distinct_key: ${id};;
+    type: sum
     sql: ${TABLE}.totals.transactions ;;
   }
 
