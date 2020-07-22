@@ -116,14 +116,8 @@ view: totals {
     label: "Avg. Session Duration"
     description: "Total duration of users' sessions."
     type: number
-    sql: ROUND(${time_on_site_total} / NULLIF(${visits_total},0), 0);;
-    # Ideal situation would use value_format: "[h]:mm:ss" as I did above, but it was not rendering correctly.
-    # Used logic from: https://app.getguru.com/card/TBbG5zac/Converting-seconds-to-mmss-format to build liquid format below.
-    html:
-      {% assign seconds=value | modulo: 60 %}
-      {% assign minutes=value | divided_by: 60 | modulo: 60 | floor %}
-      {% assign hour=value | divided_by: 3600 | floor %}
-      {{ hour }}:{% if minutes < 10 %}0{% endif %}{{ minutes }}:{% if seconds < 10 %}0{% endif %}{{ seconds }} ;;
+    sql: (${timeonsite_total_formatted} / NULLIF(${visits_total},0));;
+    value_format: "[h]:mm:ss"
   }
 
   measure: time_on_screen_total{

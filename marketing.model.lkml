@@ -79,12 +79,6 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
-#   join: event_actions {
-#     type: inner
-#     sql_on: ${hits.event_action} = ${event_actions.event_action} ;;
-#     relationship: many_to_one
-#   }
-
   join: attribution_model_pdt {
     type: inner
     sql_on: ${ga_sessions.id} = ${attribution_model_pdt.id};;
