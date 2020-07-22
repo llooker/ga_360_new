@@ -172,14 +172,13 @@ view: hits {
     label: "Page"
     view_label: "Conversions"
     group_label: "Goal Selection"
-    description: "Enter Page Path for the confirmation page to be used with Total Conversion measures (format should be: /<page>). Should not include Hostname"
+    description: "Enter Page Path to be used with Total Conversion measures (format should be: /<page>). Should not include Hostname"
     type: string
     suggest_explore: top_pages
     suggest_dimension:  top_pages.page_path
   }
 
   dimension: goal_in_query {
-    view_label: "Conversions"
     description: "Check to verify user has entered a value for at least one conversion filter."
     hidden: yes
     type: yesno
@@ -192,7 +191,6 @@ view: hits {
   dimension: has_completed_goal {
     view_label: "Conversions"
     description: "A session that resulted in a conversion (i.e. resulted in reaching successful point on website defined in 'Goal Selection' field)."
-    hidden: no
     type: yesno
     sql:if(
           ${goal_in_query}
@@ -243,11 +241,6 @@ view: hits {
     label: "Page"
     description: "A page on the website specified by path and/or query parameters. Use this with hostname to get the page's full URL."
     sql: ${TABLE}.page.pagePath ;;
-
-    link: {
-      label: "Go To Link"
-      url: "https://{{host_name._value }}{{ value }}"
-    }
   }
 
   dimension: page_path_formatted {
