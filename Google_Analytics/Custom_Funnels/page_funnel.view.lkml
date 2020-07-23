@@ -338,26 +338,46 @@ view: page_funnel {
   measure: count_of_event_2 {
     type: count_distinct
     sql: ${event2_session_id_tagged} ;;
+    link: {
+      label: "Event Dashboard"
+      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_2']}}"
+    }
   }
 
   measure: count_of_event_3 {
     type: count_distinct
     sql: ${event3_session_id_tagged} ;;
+    link: {
+      label: "Event Dashboard"
+      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_3']}}"
+    }
   }
 
   measure: count_of_event_4 {
     type: count_distinct
     sql: ${event4_session_id_tagged} ;;
+    link: {
+      label: "Event Dashboard"
+      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_4']}}"
+    }
   }
 
   measure: count_of_event_5 {
     type: count_distinct
     sql: ${event5_session_id_tagged} ;;
+    link: {
+      label: "Event Dashboard"
+      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_5']}}"
+    }
   }
 
   measure: count_of_event_6 {
     type: count_distinct
     sql: ${event6_session_id_tagged} ;;
+    link: {
+      label: "Event Dashboard"
+      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_6']}}"
+    }
   }
 
 
