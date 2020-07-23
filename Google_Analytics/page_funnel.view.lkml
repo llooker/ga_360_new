@@ -328,6 +328,11 @@ view: page_funnel {
   measure: count_of_event_1 {
     type: count_distinct
     sql: ${event1_session_id_tagged} ;;
+    label: "Number of sessions with {{_filters['page_funnel.page_1']}}"
+    link: {
+      label: "Event Dashboard"
+      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_1']}}"
+    }
   }
 
   measure: count_of_event_2 {

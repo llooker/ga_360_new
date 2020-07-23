@@ -39,6 +39,12 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
+  join: event_action_funnel {
+    type: left_outer
+    sql_on: ${event_action_funnel.event1_hit_id} = ${hits.id} ;;
+    relationship: one_to_one
+  }
+
   join: asset_facts {
     type: left_outer
     sql_on: ${hits.page_path_formatted} = ${asset_facts.page} ;;
