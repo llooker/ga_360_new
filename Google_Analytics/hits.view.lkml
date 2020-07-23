@@ -140,7 +140,7 @@ view: hits {
 
   filter: event_action_goal_selection {
     label: "Event Action"
-    view_label: "Conversions"
+    view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
@@ -150,7 +150,7 @@ view: hits {
 
   filter: event_label_goal_selection {
     label: "Event Label"
-    view_label: "Conversions"
+    view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
@@ -160,7 +160,7 @@ view: hits {
 
   filter: event_category_goal_selection {
     label: "Event Category"
-    view_label: "Conversions"
+    view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
@@ -170,7 +170,7 @@ view: hits {
 
   filter: page_goal_selection {
     label: "Page"
-    view_label: "Conversions"
+    view_label: "Goals"
     group_label: "Goal Selection"
     description: "Enter Page Path to be used with Total Conversion measures (format should be: /<page>). Should not include Hostname"
     type: string
@@ -189,7 +189,8 @@ view: hits {
   }
 
   dimension: has_completed_goal {
-    view_label: "Conversions"
+    view_label: "Goals"
+    group_label: "Goals"
     description: "A session that resulted in a conversion (i.e. resulted in reaching successful point on website defined in 'Goal Selection' field)."
     type: yesno
     sql:if(
@@ -356,6 +357,7 @@ view: hits {
 
   dimension: time {
     label: "Time Elapsed Since Session Start"
+    group_label: "Hit Date"
     description: "The time elapsed since the Session Start Date when this hit was registered. The first hit in a session has a value of 0"
     type: number
     sql: ${TABLE}.time ;;
@@ -378,9 +380,9 @@ view: hits {
   ########## MEASURES ##########
 
   measure: conversion_count {
-    view_label: "Conversions"
+    view_label: "Goals"
     group_label: "Goal Conversions"
-    label: "Total Conversions"
+    label: "Total Goal Conversions"
     description: "Total number of hits (Page or Event) that are identified as converisons based on 'Goal Selection' filters."
     type: count_distinct
     sql: ${id} ;;
@@ -393,7 +395,7 @@ view: hits {
 
   measure: count {
     group_label: "Hits"
-    label: "Hit Count"
+    label: "Hits"
     description: "Total number of hits within the session."
     type: count
     drill_fields: [detail*]
@@ -477,10 +479,11 @@ view: hits {
     drill_fields: [ga_sessions.visit_start_date, unique_page_count, entrance_pageviews_total, exit_pageviews_total, time_on_page.average_time_on_page]
   }
 
-  measure: percent_sessions_with_event {
-    group_label: "Hits"
-    label: "Events / Sessions with Events"
-    description: "The average number of web events per session with web event."
+  measure: events_per_session {
+    view_label: "Session"
+    group_label: "Session"
+    label: "Events / Sessions"
+    description: "The average number of web events per session (with web event)."
     type: number
     sql: ${event_count}/NULLIF(${sessions_with_events},0);;
     drill_fields: [detail*]

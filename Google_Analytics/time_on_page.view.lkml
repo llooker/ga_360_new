@@ -73,29 +73,38 @@ view: time_on_page {
 
   ########## DIMENSIONS ##########
 
-  dimension: time_on_page {
-    group_label: "Page Timing"
-    description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last event on the page"
-    type: number
-    sql: ${TABLE}.time_on_page;;
-    value_format: "[h]:mm:ss"
-  }
-
-  dimension: last_event {
-    alias: [last_interaction]
-    group_label: "Page Timing"
-    description: "Last event hit found during web session."
-    type: number
-    sql: ${TABLE}.last_event;;
-  }
-
   dimension: has_time_on_page {
     hidden: yes
     type: yesno
     sql: ${TABLE}.time_on_page IS NOT NULL ;;
   }
 
+  dimension: last_event {
+    hidden: yes
+    group_label: "Time on Page"
+    description: "Last event hit found during web session."
+    type: number
+    sql: ${TABLE}.last_event;;
+  }
+
+  dimension: time_on_page {
+    group_label: "Time on Page"
+    description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last event on the page"
+    type: number
+    sql: ${TABLE}.time_on_page;;
+    value_format: "[h]:mm:ss"
+  }
+
   ########## MEASURES ##########
+
+  measure: average_time_on_page {
+    label: "Avg Time on Page"
+    group_label: "Pages"
+    description: "Avg time a user spent on a specific page."
+    type: number
+    sql: (${total_time_on_page} / NULLIF(${total_pages_with_time}, 0));;
+    value_format: "[h]:mm:ss"
+  }
 
   measure: total_time_on_page {
     group_label: "Pages"
@@ -107,20 +116,10 @@ view: time_on_page {
 
   measure: total_pages_with_time {
     hidden: yes
-    group_label: "Pages"
     description: "Total pages with a time on page calculated"
     type: count_distinct
     sql: ${hit_id};;
 
     filters: [has_time_on_page: "yes"]
-  }
-
-  measure: average_time_on_page {
-    group_label: "Pages"
-    label: "Avg Time on Page"
-    description: "Avg time a user spent on a specific page."
-    type: number
-    sql: (${total_time_on_page} / NULLIF(${total_pages_with_time}, 0));;
-    value_format: "[h]:mm:ss"
   }
 }

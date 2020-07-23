@@ -27,7 +27,12 @@ constant: CONFIG_PROJECT_NAME {
   export: override_required
 }
 
-constant: PARTITION_DATE_FILTER {
+constant: PARTITION_DATE_PDT_FILTER {
+  value: "last 1500 days"
+  export: override_required
+}
+
+constant: PARTITION_DATE_DEFAULT_EXPLORE_FILTER {
   value: "last 1500 days"
   export: override_required
 }

@@ -4,6 +4,7 @@ connection: "ga_generated"
 
 include: "/*/*.view.lkml"
 include: "/Google_Analytics/Attribution_Models/*.view.lkml"
+include: "/Google_Analytics/Custom_Funnels/*.view.lkml"
 include: "/Dashboards/*.dashboard"
 
 datagroup: bqml_datagroup {
@@ -22,27 +23,20 @@ explore: ga_sessions {
   always_filter: {
     filters: {
       field: partition_date
-      value: "@{PARTITION_DATE_FILTER}"
+      value: "@{PARTITION_DATE_DEFAULT_EXPLORE_FILTER}"
     }
-  }
-
-
-  join: hits {
-    type: left_outer
-    sql: LEFT JOIN UNNEST(${ga_sessions.hits}) AS hits ;;
-    relationship: one_to_many
-  }
-
-  join: page_funnel {
-    type: left_outer
-    sql_on: ${page_funnel.event1_hit_id} = ${hits.id} ;;
-    relationship: one_to_one
   }
 
   join: asset_facts {
     type: left_outer
     sql_on: ${hits.page_path_formatted} = ${asset_facts.page} ;;
     relationship: many_to_one
+  }
+
+  join: attribution_model_pdt {
+    type: left_outer
+    sql_on: ${ga_sessions.id} = ${attribution_model_pdt.id};;
+    relationship: one_to_one
   }
 
   join: custom_dimensions {
@@ -57,31 +51,35 @@ explore: ga_sessions {
     relationship: one_to_many
   }
 
-  join: session_page_sequence {
+  join: hits {
     type: left_outer
-    relationship: many_to_one
-    sql_on: ${ga_sessions.full_visitor_id} = ${session_page_sequence.full_visitor_id}
-          AND ${ga_sessions.visit_id} = ${session_page_sequence.visit_id}
-          AND ${hits.page_title} = ${session_page_sequence.page_title} ;;
-    sql_where:  ${hits.type} = 'PAGE' ;;
+    sql: LEFT JOIN UNNEST(${ga_sessions.hits}) AS hits ;;
+    relationship: one_to_many
   }
 
-  join: session_page_facts {
+  join: page_facts {
     type: left_outer
-    relationship: many_to_one
-    sql_on: ${ga_sessions.full_visitor_id} = ${session_page_facts.full_visitor_id}
-      AND ${ga_sessions.visit_id} = ${session_page_facts.visit_id} ;;
-  }
-
-  join: time_on_page {
-    type: left_outer
-    sql_on: ${hits.id} = ${time_on_page.hit_id} ;;
+    sql_on: ${ga_sessions.id} = ${page_facts.session_id}
+              AND (${hits.hit_number} BETWEEN ${page_facts.hit_number} AND COALESCE(${page_facts.next_page_hit_number}-1, ${page_facts.hit_number}));;
     relationship: one_to_one
   }
 
-  join: attribution_model_pdt {
-    type: inner
-    sql_on: ${ga_sessions.id} = ${attribution_model_pdt.id};;
+  join: page_flow {
+    type: left_outer
+    sql_on: ${ga_sessions.id} = ${page_flow.session_id};;
+    relationship: one_to_one
+  }
+
+  join: page_funnel {
+    type: left_outer
+    sql_on: ${hits.id} = ${page_funnel.event1_hit_id} ;;
+    relationship: one_to_one
+  }
+
+  join: time_on_page {
+    view_label: "Behavior"
+    type: left_outer
+    sql_on: ${hits.id} = ${time_on_page.hit_id} ;;
     relationship: one_to_one
   }
 

@@ -25,7 +25,8 @@ view: totals {
   }
 
   dimension: has_transaction {
-    view_label: "Conversions"
+    view_label: "Goals"
+    group_label: "Transactions"
     description: "True if at least one transaction was completed in session."
     type: yesno
     sql: ${TABLE}.totals.transactions >= 1 ;;
@@ -47,10 +48,10 @@ view: totals {
     sql: ${TABLE}.totals.bounces ;;
   }
 
-  measure: hits_average_per_session {
+  measure: hits_per_session {
     group_label: "Session"
-    label: "Average Hits per Session"
-    description: "(Total Hits) / (Total Sessions)"
+    label: "Hits / Session"
+    description: "The average number of hits per session. Includes both PAGE and EVENT hits."
     type: number
     sql: ${hits_total} / NULLIF(${visits_total},0);;
     value_format_name: decimal_2
@@ -129,7 +130,8 @@ view: totals {
   }
 
   measure: transactions_count {
-    group_label: "Session"
+    view_label: "Goals"
+    group_label: "Transactions"
     label: "Transactions"
     description: "Total number of ecommerce transactions within the session."
     type: sum
@@ -137,15 +139,17 @@ view: totals {
   }
 
   measure: transaction_conversion_rate {
+    view_label: "Goals"
+    group_label: "Transactions"
     type: number
-    group_label: "Rates"
     sql: 1.0 * (${transactions_count}/NULLIF(${visits_total},0)) ;;
     value_format_name: percent_2
   }
 
   measure: transaction_revenue_total {
-    group_label: "Session"
     label: "Transaction Revenue Total"
+    view_label: "Goals"
+    group_label: "Transactions"
     description: "Total transaction revenue, expressed as the value passed to Analytics multiplied by 10^6 (e.g., 2.40 would be given as 2400000)."
     type: sum
     sql: (${TABLE}.totals.totalTransactionRevenue/1000000) ;;
