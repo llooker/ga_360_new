@@ -232,10 +232,10 @@ view: ga_sessions {
   ########## MEASURES ##############
 
   measure: total_conversions {
-    view_label: "Conversions"
+    view_label: "Goals"
     group_label: "Goal Conversions"
-    label: "Total Sessions with Conversion"
-    description: "Hits URL /confirmation/."
+    label: "Sessions with Conversion"
+    description: "Sessions that result in a conversion based on 'Goal Selection' filters."
     type: count_distinct
     sql: ${id} ;;
     drill_fields: [full_visitor_id, visit_number]
@@ -247,10 +247,10 @@ view: ga_sessions {
   }
 
   measure: total_conversions_conversion_rate {
-    view_label: "Conversions"
+    view_label: "Goals"
     group_label: "Goal Conversions"
     label: "Session Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
+    description: "Percentage of sessions resulting in a conversion based on 'Goal Selection' filters."
     type: number
     sql: (1.0*${total_conversions})/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
@@ -259,7 +259,7 @@ view: ga_sessions {
   measure: first_time_sessions {
     group_label: "Session"
     label: "New Sessions"
-    description: "The total number of uessions for the requested time period where the visitNumber equals 1."
+    description: "The total number of sessions for the requested time period where the visitNumber equals 1."
     type: count_distinct
     sql: ${id} ;;
     filters: {

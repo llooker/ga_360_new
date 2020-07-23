@@ -8,7 +8,7 @@ view: event_action_facts {
       column: event_action { field: hits.event_action }
       derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC) ;;}
       derived_column: hit_id {sql:CONCAT(id,'|',FORMAT('%05d',hit_number));;}
-      filters: [hits.event_action: "-NULL", ga_sessions.partition_date: "@{PARTITION_DATE_FILTER}"]
+      filters: [hits.event_action: "-NULL", ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
     }
     persist_for: "24 hours"
   }

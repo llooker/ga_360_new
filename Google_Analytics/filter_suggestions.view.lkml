@@ -10,7 +10,7 @@ view: event_actions {
     explore_source: ga_sessions {
       column: event_action { field: hits.event_action }
 
-      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_FILTER}"]
+      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
     }
     persist_for: "24 hours"
   }
@@ -27,7 +27,7 @@ view: event_labels {
     explore_source: ga_sessions {
       column: event_label { field: hits.event_label }
 
-      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_FILTER}"]
+      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
     }
     persist_for: "24 hours"
   }
@@ -45,7 +45,7 @@ view: event_categories {
     explore_source: ga_sessions {
       column: event_category { field: hits.event_category }
 
-      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_FILTER}"]
+      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
     }
     persist_for: "24 hours"
   }
@@ -65,7 +65,7 @@ view: top_pages {
       column: page_path { field: hits.page_path_formatted }
       column: page_count { field: hits.page_count }
 
-      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_FILTER}"]
+      filters: [ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
       sorts: [hits.page_count: desc]
       limit: 50
     }
