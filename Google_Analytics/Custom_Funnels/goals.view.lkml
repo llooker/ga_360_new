@@ -51,11 +51,15 @@ view: goals {
     group_label: "Goals"
     description: "Goal label based on Goal selection filters."
     type: string
-    sql: CONCAT(
-          IF({{ event_category_goal_selection._in_query }}, CONCAT(${event_category}, ": "), "")
-          , IF({{ event_action_goal_selection._in_query }}, CONCAT(${event_action}, " "), "")
-          , IF({{ event_label_goal_selection._in_query }}, CONCAT(${event_label}, " "), "")
-          , IF({{ page_goal_selection._in_query }}, CONCAT("on ", ${page_path_formatted}), "")
+    sql: IF(
+          ${has_completed_goal}
+          , CONCAT(
+            IF({{ event_category_goal_selection._in_query }}, CONCAT(${event_category}, ": "), "")
+            , IF({{ event_action_goal_selection._in_query }}, CONCAT(${event_action}, " "), "")
+            , IF({{ event_label_goal_selection._in_query }}, CONCAT(${event_label}, " "), "")
+            , IF({{ page_goal_selection._in_query }}, CONCAT("on ", ${page_path_formatted}), "")
+          )
+          , null
         );;
   }
 
