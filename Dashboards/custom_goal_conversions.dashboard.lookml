@@ -15,13 +15,13 @@
     model: marketing
     explore: ga_sessions
     type: looker_line
-    fields: [ga_sessions.visit_start_date, ga_sessions.visits_total, ga_sessions.total_conversions_conversion_rate]
+    fields: [ga_sessions.visit_start_date, ga_sessions.visits_total, hits.session_conversion_rate]
     fill_fields: [ga_sessions.visit_start_date]
     filters: {}
     sorts: [ga_sessions.visit_start_date desc]
     limit: 500
     dynamic_fields: [{table_calculation: rolling_7_day_conversion_rate, label: Rolling
-          7-day Conversion Rate, expression: 'mean(offset_list(${ga_sessions.total_conversions_conversion_rate},-6,7))',
+          7-day Conversion Rate, expression: 'mean(offset_list(${hits.sessions_with_conversions_conversion_rate},-6,7))',
         value_format: !!null '', value_format_name: percent_0, _kind_hint: measure,
         _type_hint: number}]
     query_timezone: America/Los_Angeles
@@ -56,16 +56,16 @@
             name: Rolling 7-day Conversion Rate}], showLabels: true, showValues: true,
         unpinAxis: false, tickDensity: default, type: linear}]
     series_types:
-      ga_sessions.total_conversions: column
+      hits.sessions_with_conversions: column
       ga_sessions.visits_total: column
     series_colors:
       ga_sessions.visits_total: "#FBBC04"
       rolling_7_day_conversion_rate: "#4285F4"
-      ga_sessions.total_conversions_conversion_rate: "#34A853"
+      hits.sessions_with_conversions_conversion_rate: "#34A853"
     series_labels:
-      ga_sessions.total_conversions_conversion_rate: Conversion Rate
+      hits.sessions_with_conversions_conversion_rate: Conversion Rate
     defaults_version: 1
-    hidden_fields: [ga_sessions.total_conversions_conversion_rate]
+    hidden_fields: [hits.sessions_with_conversions_conversion_rate]
     listen:
       Event Action: hits.event_action_goal_selection
       Event Label: hits.event_label_goal_selection
@@ -81,7 +81,7 @@
     model: marketing
     explore: ga_sessions
     type: single_value
-    fields: [ga_sessions.total_conversions]
+    fields: [hits.sessions_with_conversions]
     filters: {}
     limit: 500
     column_limit: 50
@@ -140,7 +140,7 @@
     model: marketing
     explore: ga_sessions
     type: single_value
-    fields: [ga_sessions.total_conversions_conversion_rate]
+    fields: [hits.session_conversion_rate]
     limit: 500
     column_limit: 50
     custom_color_enabled: true
@@ -169,14 +169,14 @@
     model: marketing
     explore: ga_sessions
     type: looker_grid
-    fields: [hits.page_path, hits.conversion_count, ga_sessions.total_conversions,
-      ga_sessions.total_conversions_conversion_rate]
+    fields: [hits.page_path, hits.conversion_count, hits.sessions_with_conversions,
+      hits.session_conversion_rate]
     filters: {}
     sorts: [hits.conversion_count desc]
     column_limit: 50
     total: true
     dynamic_fields: [{table_calculation: conversions_per_page, label: Conversions
-          per Page, expression: "${hits.conversion_count}/${ga_sessions.total_conversions}",
+          per Page, expression: "${hits.conversion_count}/${hits.sessions_with_conversions}",
         value_format: !!null '', value_format_name: decimal_1, _kind_hint: measure,
         _type_hint: number}, {table_calculation: calculation_2, label: Calculation
           2, expression: 'sum(${hits.conversion_count})', value_format: !!null '',
@@ -197,13 +197,13 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
-    column_order: ["$$$_row_numbers_$$$", hits.page_path, hits.conversion_count, ga_sessions.total_conversions,
-      conversions_per_page, ga_sessions.total_conversions_conversion_rate]
+    column_order: ["$$$_row_numbers_$$$", hits.page_path, hits.conversion_count, hits.sessions_with_conversions,
+      conversions_per_page, hits.sessions_with_conversions_conversion_rate]
     show_totals: true
     show_row_totals: true
     series_labels:
       hits.conversion_count: Total Conversions
-      ga_sessions.total_conversions: Sessions with Conversion
+      hits.sessions_with_conversions: Sessions with Conversion
     series_column_widths:
       hits.page_path: 361
     series_cell_visualizations:
@@ -218,7 +218,7 @@
           options: {steps: 5, constraints: {min: {type: minimum}, mid: {type: middle},
               max: {type: percentile, value: 99}}, mirror: false, reverse: false,
             stepped: false}}, bold: false, italic: false, strikethrough: false, fields: [
-          ga_sessions.total_conversions_conversion_rate]}]
+          hits.sessions_with_conversions_conversion_rate]}]
     custom_color_enabled: true
     show_single_value_title: true
     show_comparison: false

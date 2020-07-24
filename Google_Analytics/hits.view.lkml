@@ -2,8 +2,9 @@
 # Purpose: Defines the fields within the hits struct in google analytics. Is joined to the ga_sessions explore
 #          by unnesting the values.
 #############################################################################################################
-
+include: "Custom_Funnels/goals.view.lkml"
 view: hits {
+  extends: [goals]
   view_label: "Hits"
   ########## PRIMARY KEYS ##########
 
@@ -76,6 +77,19 @@ view: hits {
     drill_fields: [event_action, event_category, event_label]
   }
 
+  dimension: full_event {
+    view_label: "Behavior"
+    group_label: "Event Tracking"
+    description: "Concatenation of Event Category, Event Label, Event Action, and Page. Each are only included if there is a value."
+    type: string
+    sql: CONCAT(
+          IF(${event_category} IS NOT NULL, CONCAT(${event_category}, ": "), "")
+          , IF(${event_action} IS NOT NULL, CONCAT(${event_action}, " "), "")
+          , IF(${event_label} IS NOT NULL, CONCAT(${event_label}, " "), "")
+          , IF(${page_path_formatted} IS NOT NULL, CONCAT("on ", ${page_path_formatted}), "")
+        );;
+  }
+
   dimension: full_page_url {
     view_label: "Behavior"
     group_label: "Pages"
@@ -136,71 +150,6 @@ view: hits {
     description: "The hour in which the hit occurred (0 to 23) in the timezone configured for the account."
     type: number
     sql: ${TABLE}.hour ;;
-  }
-
-  filter: event_action_goal_selection {
-    label: "Event Action"
-    view_label: "Goals"
-    group_label: "Goal Selection"
-    description: "Enter Event Action to be used with Total Conversion measures."
-    type: string
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
-  }
-
-  filter: event_label_goal_selection {
-    label: "Event Label"
-    view_label: "Goals"
-    group_label: "Goal Selection"
-    description: "Enter Event Action to be used with Total Conversion measures."
-    type: string
-    suggest_explore: event_labels
-    suggest_dimension: event_labels.event_label
-  }
-
-  filter: event_category_goal_selection {
-    label: "Event Category"
-    view_label: "Goals"
-    group_label: "Goal Selection"
-    description: "Enter Event Action to be used with Total Conversion measures."
-    type: string
-    suggest_explore: event_categories
-    suggest_dimension: event_categories.event_category
-  }
-
-  filter: page_goal_selection {
-    label: "Page"
-    view_label: "Goals"
-    group_label: "Goal Selection"
-    description: "Enter Page Path to be used with Total Conversion measures (format should be: /<page>). Should not include Hostname"
-    type: string
-    suggest_explore: top_pages
-    suggest_dimension:  top_pages.page_path
-  }
-
-  dimension: goal_in_query {
-    description: "Check to verify user has entered a value for at least one conversion filter."
-    hidden: yes
-    type: yesno
-    sql: {{ event_action_goal_selection._in_query }}
-          OR {{ event_label_goal_selection._in_query }}
-          OR {{ event_category_goal_selection._in_query }}
-          OR {{ page_goal_selection._in_query }};;
-  }
-
-  dimension: has_completed_goal {
-    view_label: "Goals"
-    group_label: "Goals"
-    description: "A session that resulted in a conversion (i.e. resulted in reaching successful point on website defined in 'Goal Selection' field)."
-    type: yesno
-    sql:if(
-          ${goal_in_query}
-          , {% condition event_action_goal_selection %} ${event_action} {% endcondition %}
-              AND {% condition event_label_goal_selection %} ${event_label} {% endcondition %}
-              AND {% condition event_category_goal_selection %} ${event_category} {% endcondition %}
-              AND {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
-          , false
-        );;
   }
 
   dimension: is_entrance {
@@ -378,20 +327,6 @@ view: hits {
   }
 
   ########## MEASURES ##########
-
-  measure: conversion_count {
-    view_label: "Goals"
-    group_label: "Goal Conversions"
-    label: "Total Goal Conversions"
-    description: "Total number of hits (Page or Event) that are identified as converisons based on 'Goal Selection' filters."
-    type: count_distinct
-    sql: ${id} ;;
-
-    filters: {
-      field: has_completed_goal
-      value: "Yes"
-    }
-  }
 
   measure: count {
     group_label: "Hits"
