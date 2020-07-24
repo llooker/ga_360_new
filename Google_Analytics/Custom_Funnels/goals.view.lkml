@@ -88,7 +88,7 @@ view: goals {
   measure: conversion_count {
     view_label: "Goals"
     group_label: "Goal Conversions"
-    label: "Total Goal Conversions"
+    label: "Total Conversions"
     description: "Total number of hits (Page or Event) that are identified as converisons based on 'Goal Selection' filters."
     type: count_distinct
     sql: ${id} ;;
