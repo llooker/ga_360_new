@@ -27,6 +27,8 @@ explore: ga_sessions {
     }
   }
 
+  # aggregate_table:  {}
+
 
   join: hits {
     type: left_outer
@@ -106,6 +108,7 @@ explore: ga_sessions {
 }
 
 explore: future_input {
+  label: "User Propensity Scores"
   join: future_purchase_prediction {
     type: left_outer
     sql_on: ${future_purchase_prediction.clientId} = ${future_input.clientId} ;;

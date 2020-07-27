@@ -1,5 +1,3 @@
-explore: event_action_funnel {}
-
 view: event_action_funnel {
   derived_table: {
     sql: SELECT event1.full_visitor_id as full_vistor_id,

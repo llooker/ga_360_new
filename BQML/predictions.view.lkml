@@ -1,6 +1,5 @@
 ######################## TRAINING/TESTING INPUTS #############################
 include: "/**/user_facts.view"
-explore: training_input {}
 view: training_input {
   extends: [user_facts]
   derived_table: {

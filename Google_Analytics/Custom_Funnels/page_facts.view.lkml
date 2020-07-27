@@ -1,5 +1,5 @@
 explore: page_facts {
-  hidden: no
+  hidden: yes
 }
 
 view: page_facts {
