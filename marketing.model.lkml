@@ -27,7 +27,15 @@ explore: ga_sessions {
     }
   }
 
-  # aggregate_table:  {}
+  aggregate_table: sessions_by_session_start_date {
+    query: {
+      dimensions: [visit_start_date]
+      measures: [visits_total]
+    }
+    materialization: {
+      sql_trigger_value: SELECT CURRENT_DATE() ;;
+    }
+  }
 
 
   join: hits {
