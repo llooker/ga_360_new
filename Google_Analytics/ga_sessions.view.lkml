@@ -33,6 +33,7 @@ view: ga_sessions {
     group_label: "ID"
     description: "The unique visitor ID (also known as client ID)."
     sql: ${TABLE}.fullVisitorId ;;
+    hidden: yes
   }
 
   dimension: user_id {
@@ -47,6 +48,11 @@ view: ga_sessions {
     description: "An identifier for this session. This is part of the value usually stored as the _utmb cookie. This is only unique to the user. For a completely unique ID, you should use User/Session ID"
     type: number
     sql: ${TABLE}.visitId ;;
+  }
+
+  dimension: client_id {
+    type: string
+    sql: ${TABLE}.clientId ;;
   }
 
   dimension: visitor_id {

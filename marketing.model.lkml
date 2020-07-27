@@ -103,11 +103,14 @@ explore: ga_sessions {
 #                   {% endif %};;
 #   }
 
-#   join: future_purchase_prediction {
-#     type: left_outer
-#     sql_on: ${future_purchase_prediction.fullVisitorId} = ${ga_sessions.full_visitor_id} ;;
-#     relationship: one_to_many
-#   }
+}
+
+explore: future_input {
+  join: future_purchase_prediction {
+    type: left_outer
+    sql_on: ${future_purchase_prediction.clientId} = ${future_input.clientId} ;;
+    relationship: one_to_many
+  }
 }
 
 

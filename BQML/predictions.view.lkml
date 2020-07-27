@@ -42,7 +42,7 @@ view: future_purchase_model {
     --, CLASS_WEIGHTS=[('1',1), ('0',0.05)] -- Consider adding class weights or downsampling if you have imbalanced classes
     ) AS
     SELECT
-    * EXCEPT(fullVisitorId)
+    * EXCEPT(clientId)
     FROM ${training_input.SQL_TABLE_NAME};;
   }
 }
@@ -82,7 +82,7 @@ view: roc_curve {
     type: number
     link: {
       label: "Likely Customers to Purchase"
-      url: "/explore/bqml_ga_demo/ga_sessions?fields=ga_sessions.fullVisitorId,future_purchase_prediction.max_predicted_score&f[future_purchase_prediction.predicted_will_purchase_in_future]=%3E%3D{{value}}"
+      url: "/explore/bqml_ga_demo/ga_sessions?fields=ga_sessions.clientId,future_purchase_prediction.max_predicted_score&f[future_purchase_prediction.predicted_will_purchase_in_future]=%3E%3D{{value}}"
       icon_url: "http://www.looker.com/favicon.ico"
     }
   }
@@ -153,9 +153,9 @@ view: future_input {
   extends: [user_facts]
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"6"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"30"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"7"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"31"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
@@ -165,7 +165,7 @@ view: future_input {
 
 view: future_purchase_prediction {
   derived_table: {
-    sql: SELECT fullVisitorId,
+    sql: SELECT clientId,
           pred.prob as user_propensity_score,
           NTILE(10) OVER (ORDER BY pred.prob DESC) as user_propensity_decile
         FROM ml.PREDICT(
@@ -177,10 +177,10 @@ view: future_purchase_prediction {
   }
   dimension: user_propensity_score {type: number}
   dimension: user_propensity_decile {type: number}
-  dimension: fullVisitorId {
+  dimension: clientId {
        type: string
       hidden: no
-      sql: TRIM(REPLACE(${TABLE}.fullVisitorId,',','')) ;;
+      sql: TRIM(REPLACE(${TABLE}.clientId,',','')) ;;
       }
   measure: average_user_propensity_score {
     type: average
