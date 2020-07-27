@@ -94,17 +94,6 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
-#   join: user_label {
-#     type: left_outer
-#     sql_on:  ${ga_sessions.full_visitor_id} = ${user_label.fullvisitorId} ;;
-#     relationship: many_to_one
-#     sql_where:   {% if  user_label.made_purchase._value == 'Yes' %}
-#                   ${ga_sessions.visit_start_seconds} < ifnull(${user_label.event_session_seconds}, 0) OR ${user_label.event_session_seconds} is NULL
-#                   {% else %}
-#                     1=1
-#                   {% endif %};;
-#   }
-
 }
 
 explore: future_input {
