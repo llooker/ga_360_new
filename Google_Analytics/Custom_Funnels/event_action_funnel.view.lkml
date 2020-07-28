@@ -22,6 +22,8 @@ view: event_action_funnel {
     persist_for: "24 hours"
   }
 
+### Filter Fields to create the custom funnel
+
   filter: event_1 {
     group_label: "Funnel Events"
     suggest_explore: event_actions
@@ -62,6 +64,8 @@ view: event_action_funnel {
     type: string
     sql: ${TABLE}.full_vistor_id ;;
   }
+
+### Dimensions
 
   dimension: event1_hit_sequence_number {
     type: number
@@ -244,7 +248,6 @@ view: event_action_funnel {
   }
 
 
-
   dimension: event1_hit_time_tagged {
     sql: CASE WHEN {% condition event_1 %} ${event1_event_action} {% endcondition %} THEN ${event1_hit_time_raw}
       ELSE NULL END ;;
@@ -325,40 +328,67 @@ view: event_action_funnel {
     hidden: yes
   }
 
+
+### Measures
+
   measure: count_of_event_1 {
     type: count_distinct
     sql: ${event1_session_id_tagged} ;;
-#     label: "Number of sessions with {{_filters['event_action_funnel.event_1']}}"
+    label: "{% if event_1._in_query %}
+    {{_filters['event_action_funnel.event_1']}}
+    {% else %}
+    Count of Event 1
+    {% endif %}"
   }
 
   measure: count_of_event_2 {
     type: count_distinct
     sql: ${event2_session_id_tagged} ;;
-#     label: "Number of sessions with {{_filters['event_action_funnel.event_2']}}"
+    label: "{% if event_2._in_query %}
+    {{_filters['event_action_funnel.event_2']}}
+    {% else %}
+    Count of Event 2
+    {% endif %}"
   }
 
   measure: count_of_event_3 {
     type: count_distinct
     sql: ${event3_session_id_tagged} ;;
-#     label: "Number of sessions with {{_filters['event_action_funnel.event_3']}}"
+    label: "{% if event_3._in_query %}
+    {{_filters['event_action_funnel.event_3']}}
+    {% else %}
+    Count of Event 3
+    {% endif %}"
   }
 
   measure: count_of_event_4 {
     type: count_distinct
     sql: ${event4_session_id_tagged} ;;
-#     label: "Number of sessions with {{_filters['event_action_funnel.event_4']}}"
+    label: "{% if event_4._in_query %}
+    {{_filters['event_action_funnel.event_4']}}
+    {% else %}
+    Count of Event 4
+    {% endif %}"
   }
 
   measure: count_of_event_5 {
     type: count_distinct
     sql: ${event5_session_id_tagged} ;;
-#     label: "Number of sessions with {{_filters['event_action_funnel.event_5']}}"
+    label: "{% if event_5._in_query %}
+    {{_filters['event_action_funnel.event_5']}}
+    {% else %}
+    Count of Event 5
+    {% endif %}"
   }
 
   measure: count_of_event_6 {
     type: count_distinct
     sql: ${event6_session_id_tagged} ;;
-#     label: "Number of sessions with {{_filters['event_action_funnel.event_6']}}"
+    label: "{% if event_6._in_query %}
+    {{_filters['event_action_funnel.event_6']}}
+    {% else %}
+    Count of Event 6
+    {% endif %}"
   }
 
 

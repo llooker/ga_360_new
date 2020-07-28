@@ -152,5 +152,34 @@ view: device {
     sql: ${TABLE}.device.screenResolution ;;
   }
 
+  dimension: audience_trait {
+    view_label: "Audience"
+    type: string
+    sql: CASE WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
+              WHEN {% parameter audience_selector %} = 'Metro' THEN ${ga_sessions.metro}
+              WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${ga_sessions.source_medium}
+              WHEN {% parameter audience_selector %} = 'Browser' THEN ${browser}
+              ELSE NULL END;;
+  }
+
+  ########## PARAMETERS ############
+
+  parameter: audience_selector {
+    view_label: "Audience"
+    type: string
+    allowed_value: {
+      value: "Device"
+    }
+    allowed_value: {
+      value: "Metro"
+    }
+    allowed_value: {
+      value: "Source Medium"
+    }
+    allowed_value: {
+      value: "Browser"
+    }
+  }
+
   ########## MEASURES ############
 }
