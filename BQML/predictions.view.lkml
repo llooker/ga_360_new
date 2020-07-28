@@ -159,6 +159,116 @@ view: future_input {
     {{updated_sql}}
     ;;
   }
+  measure: count {
+    type: count
+    drill_fields: [detail*]
+  }
+
+  dimension: client_id {
+    type: string
+    sql: ${TABLE}.clientId ;;
+  }
+
+  dimension: label {
+    type: number
+    sql: ${TABLE}.label ;;
+  }
+
+  dimension: ga_sessions_visit_start_hour_of_day {
+    type: number
+    sql: ${TABLE}.ga_sessions_visit_start_hour_of_day ;;
+  }
+
+  dimension: metro {
+    type: string
+    sql: ${TABLE}.metro ;;
+  }
+
+  dimension: ga_sessions_visit_start_day_of_week {
+    type: string
+    sql: ${TABLE}.ga_sessions_visit_start_day_of_week ;;
+  }
+
+  dimension: ga_sessions_source {
+    type: string
+    sql: ${TABLE}.ga_sessions_source ;;
+  }
+
+  dimension: total_sessions {
+    type: number
+    sql: ${TABLE}.total_sessions ;;
+  }
+
+  dimension: pageviews {
+    type: number
+    sql: ${TABLE}.pageviews ;;
+  }
+
+  dimension: bounce_rate {
+    type: number
+    sql: ${TABLE}.bounce_rate ;;
+  }
+
+  dimension: avg_session_depth {
+    type: number
+    sql: ${TABLE}.avg_session_depth ;;
+  }
+
+  dimension: visits_traffic_source_none {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_none ;;
+  }
+
+  dimension: visits_traffic_source_organic {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_organic ;;
+  }
+
+  dimension: visits_traffic_source_cpc {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_cpc ;;
+  }
+
+  dimension: visits_traffic_source_cpm {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_cpm ;;
+  }
+
+  dimension: visits_traffic_source_affiliate {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_affiliate ;;
+  }
+
+  dimension: visits_traffic_source_referral {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_referral ;;
+  }
+
+  dimension: distinct_dmas {
+    type: number
+    sql: ${TABLE}.distinct_dmas ;;
+  }
+
+  dimension: mobile {
+    type: number
+    sql: ${TABLE}.mobile ;;
+  }
+
+  dimension: chrome {
+    type: number
+    sql: ${TABLE}.chrome ;;
+  }
+
+  dimension: safari {
+    type: number
+    sql: ${TABLE}.safari ;;
+  }
+
+  dimension: browser_other {
+    type: number
+    sql: ${TABLE}.browser_other ;;
+  }
+
 }
 
 
