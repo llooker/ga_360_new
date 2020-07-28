@@ -6,6 +6,7 @@ include: "totals.view.lkml"
 include: "traffic_source.view.lkml"
 include: "device.view.lkml"
 include: "calendar.view.lkml"
+# include: "//@{CONFIG_PROJECT_NAME}/views/ga_sessions_config.view.lkml"
 
 view: ga_sessions {
   view_label: "Session"

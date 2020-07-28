@@ -61,6 +61,7 @@ view: page_funnel {
   dimension: full_vistor_id {
     type: string
     sql: ${TABLE}.full_vistor_id ;;
+    hidden: yes
   }
 
   dimension: event1_hit_sequence_number {
@@ -328,7 +329,12 @@ view: page_funnel {
   measure: count_of_event_1 {
     type: count_distinct
     sql: ${event1_session_id_tagged} ;;
-    label: "Number of sessions with {{_filters['page_funnel.page_1']}}"
+    group_label: "Count of Events"
+    label: "{% if page_1._in_query %}
+            {{_filters['page_funnel.page_1']}}
+            {% else %}
+            Count of Page 1
+            {% endif %}"
     link: {
       label: "Event Dashboard"
       url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_1']}}"
@@ -338,6 +344,12 @@ view: page_funnel {
   measure: count_of_event_2 {
     type: count_distinct
     sql: ${event2_session_id_tagged} ;;
+    group_label: "Count of Events"
+    label: "{% if page_2._in_query %}
+    {{_filters['page_funnel.page_2']}}
+    {% else %}
+    Count of Page 2
+    {% endif %}"
     link: {
       label: "Event Dashboard"
       url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_2']}}"
@@ -347,6 +359,12 @@ view: page_funnel {
   measure: count_of_event_3 {
     type: count_distinct
     sql: ${event3_session_id_tagged} ;;
+    group_label: "Count of Events"
+    label: "{% if page_3._in_query %}
+    {{_filters['page_funnel.page_3']}}
+    {% else %}
+    Count of Page 3
+    {% endif %}"
     link: {
       label: "Event Dashboard"
       url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_3']}}"
@@ -356,6 +374,12 @@ view: page_funnel {
   measure: count_of_event_4 {
     type: count_distinct
     sql: ${event4_session_id_tagged} ;;
+    group_label: "Count of Events"
+    label: "{% if page_4._in_query %}
+    {{_filters['page_funnel.page_4']}}
+    {% else %}
+    Count of Page 4
+    {% endif %}"
     link: {
       label: "Event Dashboard"
       url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_4']}}"
@@ -365,6 +389,12 @@ view: page_funnel {
   measure: count_of_event_5 {
     type: count_distinct
     sql: ${event5_session_id_tagged} ;;
+    group_label: "Count of Events"
+    label: "{% if page_5._in_query %}
+    {{_filters['page_funnel.page_5']}}
+    {% else %}
+    Count of Page 5
+    {% endif %}"
     link: {
       label: "Event Dashboard"
       url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_5']}}"
@@ -374,6 +404,12 @@ view: page_funnel {
   measure: count_of_event_6 {
     type: count_distinct
     sql: ${event6_session_id_tagged} ;;
+    group_label: "Count of Events"
+    label: "{% if page_6._in_query %}
+    {{_filters['page_funnel.page_6']}}
+    {% else %}
+    Count of Page 6
+    {% endif %}"
     link: {
       label: "Event Dashboard"
       url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_6']}}"

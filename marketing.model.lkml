@@ -1,7 +1,6 @@
 connection: "ga_generated"
 
 # include: "/datagroups.lkml"
-
 include: "/*/*.view.lkml"
 include: "/Google_Analytics/Custom_Funnels/*.view.lkml"
 include: "/Dashboards/*.dashboard"
@@ -26,7 +25,15 @@ explore: ga_sessions {
     }
   }
 
-  # aggregate_table:  {}
+  aggregate_table: sessions_by_session_start_date {
+    query: {
+      dimensions: [visit_start_date]
+      measures: [visits_total]
+    }
+    materialization: {
+      sql_trigger_value: SELECT CURRENT_DATE() ;;
+    }
+  }
 
 
   join: hits {
@@ -63,6 +70,13 @@ explore: ga_sessions {
     type: left_outer
     sql: LEFT JOIN UNNEST(${hits.custom_variables}) AS custom_variables ;;
     relationship: one_to_many
+  }
+
+  join: event_action_facts {
+    type: left_outer
+    sql_on: ${ga_sessions.id} = ${event_action_facts.session_id}
+    AND (${hits.hit_number} BETWEEN ${event_action_facts.hit_number} AND COALESCE(${event_action_facts.next_event_hit_number}-1, ${event_action_facts.hit_number}));;
+    relationship: one_to_one
   }
 
 
