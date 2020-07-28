@@ -11,7 +11,7 @@ view: page_facts {
       column: hit_time { field: hits.hit_time }
       column: hit_number {field:hits.hit_number}
       column: page_path { field: hits.page_path_formatted }
-      derived_column: hit_sequence_number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC) ;;}
+      derived_column: hit_sequence_number {sql:  ROW_NUMBER() OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
       derived_column: page_sequence_number {sql: ROW_NUMBER() OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
       derived_column: next_page_hit_number {sql: LEAD(hit_number) OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
       derived_column: current_page_minus_1 {sql: LAG(page_path) OVER (PARTITION BY id ORDER BY hit_time) ;;}

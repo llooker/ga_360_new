@@ -6,7 +6,7 @@ view: event_action_facts {
       column: full_visitor_id {}
       column: id {}
       column: event_action { field: hits.event_action }
-      derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY full_visitor_id ORDER BY hit_time ASC) ;;}
+      derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
       derived_column: hit_id {sql:CONCAT(id,'|',FORMAT('%05d',hit_number));;}
       derived_column: next_event_hit_number {sql: LEAD(hit_number) OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
       derived_column: current_event_minus_1 {sql: LAG(event_action) OVER (PARTITION BY id ORDER BY hit_time) ;;}
