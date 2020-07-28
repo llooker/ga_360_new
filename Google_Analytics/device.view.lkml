@@ -158,7 +158,7 @@ view: device {
     sql: CASE WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
               WHEN {% parameter audience_selector %} = 'Metro' THEN ${ga_sessions.metro}
               WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${ga_sessions.source_medium}
-              WHEN {% parameter audience_selector %} = 'Browser' THEN ${browser}
+              WHEN {% parameter audience_selector %} = 'Operating System' THEN ${operating_system}
               ELSE NULL END;;
   }
 
@@ -177,7 +177,7 @@ view: device {
       value: "Source Medium"
     }
     allowed_value: {
-      value: "Browser"
+      value: "Operating System"
     }
   }
 
