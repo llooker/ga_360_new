@@ -62,7 +62,45 @@ view: ga_sessions {
     sql: ${TABLE}.visitorId ;;
   }
 
+  ########## PARAMETERS ############
+
+  parameter: audience_selector {
+    view_label: "Audience"
+    type: string
+    allowed_value: {
+      value: "Device"
+    }
+    allowed_value: {
+      value: "Metro"
+    }
+    allowed_value: {
+      value: "Channel"
+    }
+    allowed_value: {
+      value: "Source Medium"
+    }
+    allowed_value: {
+      value: "Medium"
+    }
+    allowed_value: {
+      value: "Operating System"
+    }
+  }
   ########## DIMENSIONS ############
+
+  dimension: audience_trait {
+    view_label: "Audience"
+    type: string
+    sql: CASE
+              WHEN {% parameter audience_selector %} = 'Channel' THEN ${channel_grouping}
+              WHEN {% parameter audience_selector %} = 'Medium' THEN ${medium}
+              WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${source_medium}
+              WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
+              WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
+              WHEN {% parameter audience_selector %} = 'Operating System' THEN ${operating_system}
+        END;;
+  }
+
   dimension: channel_grouping {
     view_label: "Acquisition"
     group_label: "Traffic Sources"
@@ -83,7 +121,6 @@ view: ga_sessions {
     sql: ${visit_number} = 1 ;;
   }
 
-  # Investigate performance impact below (tech debt)
   dimension: landing_page {
     view_label: "Behavior"
     group_label: "Pages (with Parameters)"
@@ -147,9 +184,28 @@ view: ga_sessions {
 
 
   dimension_group: partition {
+    # Date that is parsed from the table name. Required as a filter to avoid accidental massive queries
+    label: ""
     view_label: "Session"
-    description: "Date that is parsed from the table name. Required as a filter to avoid accidental massive queries."
+    description: "Date based on the day the session was added to the database. Matches date in Google Analytics UI, but may not match 'Session Start Date'."
     type: time
+    timeframes: [
+      date,
+      day_of_week,
+      day_of_week_index,
+      day_of_month,
+      day_of_year,
+      fiscal_quarter,
+      fiscal_quarter_of_year,
+      week,
+      month,
+      month_name,
+      month_num,
+      quarter,
+      quarter_of_year,
+      week_of_year,
+      year
+    ]
     sql: TIMESTAMP(
           PARSE_DATE(
             '%Y%m%d'
@@ -210,8 +266,9 @@ view: ga_sessions {
   }
 
   dimension_group: visit_start {
+    # Dimension(s) are labeled with 'Visit' to match column names in database, but relabeled in Explore to match most recent Google Analytics nomenclature (i.e. 'Session' rather than 'Visit')
     label: "Session Start"
-    description: "Timestamp of the start of the Session. References visitStartTime field. Value potentially differs from 'Partition Date'"
+    description: "Timestamp of the start of the Session. References visitStartTime field. Can differ from 'Date' field based on timezone."
     type: time
     timeframes: [
       raw,
@@ -287,7 +344,6 @@ view: ga_sessions {
   }
 
   measure: sessions_per_user {
-    alias: [average_sessions_per_visitor]
     view_label: "Audience"
     group_label: "User"
     label: "Average Sessions per User"
@@ -304,7 +360,7 @@ view: ga_sessions {
     description: "The total number of users for the requested time period."
     type: count_distinct
     sql: ${full_visitor_id} ;;
-    drill_fields: [person.person_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
+    drill_fields: [visit_number, hits_total, page_views_total, time_on_site_total]
   }
 
 
