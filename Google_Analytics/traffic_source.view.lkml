@@ -95,7 +95,7 @@ view: traffic_source {
     label: "Source / Medium"
     description: "Combined values of ga:source and ga:medium."
     type: string
-    sql: CONCAT(${source}, '/', ${medium}) ;;
+    sql: CONCAT(${source}, ' / ', ${medium}) ;;
 
    drill_fields: [ad_content, campaign, keyword, source]
   }

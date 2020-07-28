@@ -3,7 +3,6 @@ connection: "ga_generated"
 # include: "/datagroups.lkml"
 
 include: "/*/*.view.lkml"
-include: "/Google_Analytics/Attribution_Models/*.view.lkml"
 include: "/Google_Analytics/Custom_Funnels/*.view.lkml"
 include: "/Dashboards/*.dashboard"
 
@@ -52,12 +51,6 @@ explore: ga_sessions {
     type: left_outer
     sql_on: ${hits.page_path_formatted} = ${asset_facts.page} ;;
     relationship: many_to_one
-  }
-
-  join: attribution_model_pdt {
-    type: left_outer
-    sql_on: ${ga_sessions.id} = ${attribution_model_pdt.id};;
-    relationship: one_to_one
   }
 
   join: custom_dimensions {

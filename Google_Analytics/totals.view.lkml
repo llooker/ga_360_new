@@ -20,7 +20,7 @@ view: totals {
     description: "The length (returned as a string) of a session measured in seconds and reported in second increments."
     type: tier
     sql: ${TABLE}.totals.timeonsite ;;
-    tiers: [0,15,30,60,120,180,240,300,600]
+    tiers: [10,30,60,120,180,240,300,600]
     style: integer
   }
 
