@@ -8,6 +8,7 @@ view: custom_variables {
 
   ########## DIMENSIONS ##########
   dimension: custom_var_name {
+    hidden: yes
     group_label: "Custom Variables"
     label: "Custom Variable (Key XX)"
     description: "The name for the requested custom variable."
@@ -16,6 +17,7 @@ view: custom_variables {
   }
 
   dimension: custom_var_value {
+    hidden: yes
     group_label: "Custom Variables"
     label: "Custom Variable (Value XX)"
     description: "The value for the requested custom variable."
@@ -24,6 +26,7 @@ view: custom_variables {
   }
 
   dimension: index {
+    hidden: yes
     description: "The index number associated to the custom variable"
     type: number
     sql: ${TABLE}.index ;;

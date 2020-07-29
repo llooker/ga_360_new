@@ -54,12 +54,6 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
-  join: asset_facts {
-    type: left_outer
-    sql_on: ${hits.page_path_formatted} = ${asset_facts.page} ;;
-    relationship: many_to_one
-  }
-
   join: custom_dimensions {
     type: left_outer
     sql: LEFT JOIN UNNEST(${hits.custom_dimensions}) AS custom_dimensions ;;

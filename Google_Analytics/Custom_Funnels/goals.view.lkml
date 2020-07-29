@@ -46,7 +46,7 @@ view: goals {
 
   ########## DIMENSIONS ##########
 
-  dimension: dynanmic_goal {
+  dimension: dynamic_goal {
     view_label: "Goals"
     group_label: "Goals"
     description: "Goal label based on Goal selection filters."
