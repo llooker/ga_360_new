@@ -95,6 +95,12 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
+  join: days_in_period {
+    type: inner
+    sql_on: ${ga_sessions.partition_date} = ${days_in_period.partition_date};;
+    relationship: one_to_one
+  }
+
 }
 
 explore: future_input {
