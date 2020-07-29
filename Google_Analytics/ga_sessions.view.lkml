@@ -77,10 +77,13 @@ view: ga_sessions {
       value: "Channel"
     }
     allowed_value: {
-      value: "Source Medium"
+      value: "Medium"
     }
     allowed_value: {
-      value: "Medium"
+      value: "Source"
+    }
+    allowed_value: {
+      value: "Source Medium"
     }
     allowed_value: {
       value: "Operating System"
@@ -94,6 +97,7 @@ view: ga_sessions {
     sql: CASE
               WHEN {% parameter audience_selector %} = 'Channel' THEN ${channel_grouping}
               WHEN {% parameter audience_selector %} = 'Medium' THEN ${medium}
+              WHEN {% parameter audience_selector %} = 'Source' THEN ${source}
               WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${source_medium}
               WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
               WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
