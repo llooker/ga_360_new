@@ -66,6 +66,7 @@ view: ga_sessions {
 
   parameter: audience_selector {
     view_label: "Audience"
+    description: "Use to set 'Audience Trait' field to dynamically choose a user cohort."
     type: string
     allowed_value: {
       value: "Device"
@@ -77,10 +78,13 @@ view: ga_sessions {
       value: "Channel"
     }
     allowed_value: {
-      value: "Source Medium"
+      value: "Medium"
     }
     allowed_value: {
-      value: "Medium"
+      value: "Source"
+    }
+    allowed_value: {
+      value: "Source Medium"
     }
     allowed_value: {
       value: "Operating System"
@@ -89,11 +93,13 @@ view: ga_sessions {
   ########## DIMENSIONS ############
 
   dimension: audience_trait {
+    description: "Dynamic cohort field based on value set in 'Audience Selector' filter."
     view_label: "Audience"
     type: string
     sql: CASE
               WHEN {% parameter audience_selector %} = 'Channel' THEN ${channel_grouping}
               WHEN {% parameter audience_selector %} = 'Medium' THEN ${medium}
+              WHEN {% parameter audience_selector %} = 'Source' THEN ${source}
               WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${source_medium}
               WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
               WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
