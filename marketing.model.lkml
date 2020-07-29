@@ -85,6 +85,12 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
+  join: user_segment {
+    type: left_outer
+    sql_on: ${ga_sessions.full_visitor_id} = ${user_segment.full_visitor_id} ;;
+    relationship: many_to_one
+  }
+
 #   join: user_label {
 #     type: left_outer
 #     sql_on:  ${ga_sessions.full_visitor_id} = ${user_label.fullvisitorId} ;;
