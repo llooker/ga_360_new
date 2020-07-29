@@ -3,13 +3,14 @@ view: user_segment_filters {
   filter: user_segment_timeframe {
     type: date
   }
-  filter: user_segment_page_title {
+  filter: user_segment_page_path {
     type: string
-    suggest_dimension: hits.page_title
+    suggest_dimension: hits.page_path_formatted
   }
-  filter: user_segment_first_page_title {
+  filter: user_segment_landing_page {
     type: string
-    suggest_dimension: session_page_facts.landing_page
+    suggest_explore: ga_sessions
+    suggest_dimension: ga_sessions.landing_page
   }
 }
 
@@ -26,12 +27,12 @@ view: user_segment {
         to_field: ga_sessions.partition_date   #bind filters to filter the table when the view is created
       }
       bind_filters: {
-        from_field: user_segment.user_segment_page_title
-        to_field: hits.page_title
+        from_field: user_segment.user_segment_page_path
+        to_field: hits.page_path_formatted
       }
       bind_filters: {
-        from_field: user_segment.user_segment_first_page_title
-        to_field: session_page_facts.landing_page
+        from_field: user_segment.user_segment_landing_page
+        to_field: ga_sessions.landing_page
       }
     }
   }

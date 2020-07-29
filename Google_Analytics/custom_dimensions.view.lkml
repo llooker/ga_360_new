@@ -1,9 +1,6 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
-# Purpose: Defines the fields within the `custom_dimensions` struct in google analytics. Is joined to the ga_sessions explore
-#          by unnesting the values.
+# Purpose: Defines the fields within the `custom_dimensions` struct in google analytics.
+# Joined to the ga_sessions explore but by unnesting values.
 #############################################################################################################
 
 view: custom_dimensions {
@@ -11,6 +8,7 @@ view: custom_dimensions {
   ########## DIMENSIONS ##########
 
   dimension: index {
+    hidden: yes
     type: number
     group_label: "Custom Variables"
     label: "Custom Dimension XX"
@@ -19,6 +17,7 @@ view: custom_dimensions {
   }
 
   dimension: value {
+    hidden: yes
     description: "The value of the custom dimension for the specified index."
     type: string
     sql: ${TABLE}.value ;;

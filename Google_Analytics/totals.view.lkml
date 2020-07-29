@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Defines the fields within the totals struct in google analytics. Is extending into ga_sessions.view.lkml
 #          and should not be joined into GA sessions explore as an independent view file.
 #############################################################################################################
@@ -23,12 +20,14 @@ view: totals {
     description: "The length (returned as a string) of a session measured in seconds and reported in second increments."
     type: tier
     sql: ${TABLE}.totals.timeonsite ;;
-    tiers: [0,15,30,60,120,180,240,300,600]
+    tiers: [10,30,60,120,180,240,300,600]
     style: integer
   }
 
   dimension: has_transaction {
-    view_label: "Conversions"
+    view_label: "Goals"
+    group_label: "Transactions"
+    description: "True if at least one transaction was completed in session."
     type: yesno
     sql: ${TABLE}.totals.transactions >= 1 ;;
   }
@@ -45,15 +44,14 @@ view: totals {
   measure: bounces_total {
     group_label: "Session"
     label: "Bounces"
-    type: sum_distinct
-    sql_distinct_key: ${id} ;;
+    type: sum
     sql: ${TABLE}.totals.bounces ;;
   }
 
-  measure: hits_average_per_session {
+  measure: hits_per_session {
     group_label: "Session"
-    label: "Average Hits per Session"
-    description: "(Total Hits) / (Total Sessions)"
+    label: "Hits / Session"
+    description: "The average number of hits per session. Includes both PAGE and EVENT hits."
     type: number
     sql: ${hits_total} / NULLIF(${visits_total},0);;
     value_format_name: decimal_2
@@ -110,7 +108,7 @@ view: totals {
     description: "Total duration of users' sessions."
     type: sum
     sql: ${TABLE}.totals.timeOnSite / 86400;;
-    value_format: "[h]:mm:ss"
+    value_format_name: hour_format
   }
 
   measure: timeonsite_average_per_session {
@@ -118,14 +116,8 @@ view: totals {
     label: "Avg. Session Duration"
     description: "Total duration of users' sessions."
     type: number
-    sql: ROUND(${time_on_site_total} / NULLIF(${visits_total},0), 0);;
-    # Ideal situation would use value_format: "[h]:mm:ss" as I did above, but it was not rendering correctly.
-    # Used logic from: https://app.getguru.com/card/TBbG5zac/Converting-seconds-to-mmss-format to build liquid format below.
-    html:
-      {% assign seconds=value | modulo: 60 %}
-      {% assign minutes=value | divided_by: 60 | modulo: 60 | floor %}
-      {% assign hour=value | divided_by: 3600 | floor %}
-      {{ hour }}:{% if minutes < 10 %}0{% endif %}{{ minutes }}:{% if seconds < 10 %}0{% endif %}{{ seconds }} ;;
+    sql: (${timeonsite_total_formatted} / NULLIF(${visits_total},0));;
+    value_format_name: hour_format
   }
 
   measure: time_on_screen_total{
@@ -138,24 +130,26 @@ view: totals {
   }
 
   measure: transactions_count {
-    group_label: "Session"
+    view_label: "Goals"
+    group_label: "Transactions"
     label: "Transactions"
     description: "Total number of ecommerce transactions within the session."
-    type: sum_distinct
-    sql_distinct_key: ${id};;
+    type: sum
     sql: ${TABLE}.totals.transactions ;;
   }
 
   measure: transaction_conversion_rate {
+    view_label: "Goals"
+    group_label: "Transactions"
     type: number
-    group_label: "Rates"
     sql: 1.0 * (${transactions_count}/NULLIF(${visits_total},0)) ;;
     value_format_name: percent_2
   }
 
   measure: transaction_revenue_total {
-    group_label: "Session"
     label: "Transaction Revenue Total"
+    view_label: "Goals"
+    group_label: "Transactions"
     description: "Total transaction revenue, expressed as the value passed to Analytics multiplied by 10^6 (e.g., 2.40 would be given as 2400000)."
     type: sum
     sql: (${TABLE}.totals.totalTransactionRevenue/1000000) ;;
@@ -170,7 +164,7 @@ view: totals {
     type: sum
     sql: ${TABLE}.totals.visits;;
 
-    drill_fields: [source_medium, country, visits_total, new_visits_total, hits.page_count, bounces_rate, timeonsite_average_per_session]
+    drill_fields: [source_medium, visits_total, new_visits_total, hits.page_count, bounces_rate, timeonsite_average_per_session]
   }
 
   measure: unique_screen_views_total {

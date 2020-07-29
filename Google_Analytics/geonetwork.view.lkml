@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Defines the fields within the geonetwork struct in google analytics. Is extending into ga_sessions.view.lkml
 #          and should not be joined into GA sessions explore as an independent view file.
 #############################################################################################################
@@ -60,7 +57,7 @@ view: geonetwork {
     description: "The approximate latitude of users' city, derived from their IP addresses or Geographical IDs. Locations north of the equator have positive latitudes and locations south of the equator have negative latitudes."
     type: number
     hidden: yes
-    sql: CAST(${TABLE}.geoNetwork.latitude as FLOAT64);;
+    sql: SAFE_CAST(${TABLE}.geoNetwork.latitude as FLOAT64);;
   }
 
   dimension: location {
@@ -78,7 +75,7 @@ view: geonetwork {
     description: "The approximate longitude of users' city, derived from their IP addresses or Geographical IDs. Locations east of the prime meridian have positive longitudes and locations west of the prime meridian have negative longitudes."
     type: number
     hidden: yes
-    sql: CAST(${TABLE}.geoNetwork.longitude as FLOAT64);;
+    sql: SAFE_CAST(${TABLE}.geoNetwork.longitude as FLOAT64);;
   }
 
   dimension: metro {

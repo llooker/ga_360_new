@@ -23,7 +23,17 @@ constant: GA360_TABLE_NAME {
 }
 
 constant: CONFIG_PROJECT_NAME {
-  value: "block-ga360-config"
+  value: "ga_360_config"
+  export: override_required
+}
+
+constant: PARTITION_DATE_PDT_FILTER {
+  value: "last 1500 days"
+  export: override_required
+}
+
+constant: PARTITION_DATE_DEFAULT_EXPLORE_FILTER {
+  value: "last 1500 days"
   export: override_required
 }
 

@@ -1,12 +1,10 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Defines the fields within the hits struct in google analytics. Is joined to the ga_sessions explore
 #          by unnesting the values.
 #############################################################################################################
-
+include: "Custom_Funnels/goals.view.lkml"
 view: hits {
+  extends: [goals]
   view_label: "Hits"
   ########## PRIMARY KEYS ##########
 
@@ -79,6 +77,19 @@ view: hits {
     drill_fields: [event_action, event_category, event_label]
   }
 
+  dimension: full_event {
+    view_label: "Behavior"
+    group_label: "Event Tracking"
+    description: "Concatenation of Event Category, Event Label, Event Action, and Page. Each are only included if there is a value."
+    type: string
+    sql: CONCAT(
+          IF(${event_category} IS NOT NULL, CONCAT(${event_category}, ": "), "")
+          , IF(${event_action} IS NOT NULL, CONCAT(${event_action}, " "), "")
+          , IF(${event_label} IS NOT NULL, CONCAT(${event_label}, " "), "")
+          , IF(${page_path_formatted} IS NOT NULL, CONCAT("on ", ${page_path_formatted}), "")
+        );;
+  }
+
   dimension: full_page_url {
     view_label: "Behavior"
     group_label: "Pages"
@@ -141,45 +152,6 @@ view: hits {
     sql: ${TABLE}.hour ;;
   }
 
-  filter: event_goal_selection {
-    label: "Event Action"
-    view_label: "Conversions"
-    group_label: "Goal Selection"
-    description: "Enter Event Action to be used with Total Conversion measures."
-    type: string
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.hits_event
-  }
-
-  filter: page_goal_selection {
-    label: "Page"
-    view_label: "Conversions"
-    group_label: "Goal Selection"
-    description: "Enter Page Path for the confirmation page to be used with Total Conversion measures (format should be: /<page>)."
-    type: string
-    suggest_explore: top_pages
-    suggest_dimension:  top_pages.page_path
-  }
-
-  dimension: has_completed_goal {
-    view_label: "Conversions"
-    description: "A session that resulted in a conversion (i.e. resulted in reaching successful point on website defined in 'Goal Selection' field)."
-    hidden: no
-    type: yesno
-    sql: CASE
-          WHEN {{ event_goal_selection._in_query }} AND {{ page_goal_selection._in_query }}
-            THEN (
-              {% condition event_goal_selection %} ${event_action} {% endcondition %}
-              AND {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
-            )
-          WHEN {{ page_goal_selection._in_query }}
-            THEN {% condition page_goal_selection %} ${page_path_formatted} {% endcondition %}
-          WHEN {{ event_goal_selection._in_query }}
-            THEN {% condition event_goal_selection %} ${event_action} {% endcondition %}
-          ELSE FALSE
-        END;;
-  }
-
   dimension: is_entrance {
     view_label: "Behavior"
     group_label: "Page Filters"
@@ -219,11 +191,6 @@ view: hits {
     label: "Page"
     description: "A page on the website specified by path and/or query parameters. Use this with hostname to get the page's full URL."
     sql: ${TABLE}.page.pagePath ;;
-
-    link: {
-      label: "Go To Link"
-      url: "https://{{host_name._value }}{{ value }}"
-    }
   }
 
   dimension: page_path_formatted {
@@ -339,6 +306,7 @@ view: hits {
 
   dimension: time {
     label: "Time Elapsed Since Session Start"
+    group_label: "Hit Date"
     description: "The time elapsed since the Session Start Date when this hit was registered. The first hit in a session has a value of 0"
     type: number
     sql: ${TABLE}.time ;;
@@ -362,7 +330,7 @@ view: hits {
 
   measure: count {
     group_label: "Hits"
-    label: "Hit Count"
+    label: "Hits"
     description: "Total number of hits within the session."
     type: count
     drill_fields: [detail*]
@@ -446,10 +414,11 @@ view: hits {
     drill_fields: [ga_sessions.visit_start_date, unique_page_count, entrance_pageviews_total, exit_pageviews_total, time_on_page.average_time_on_page]
   }
 
-  measure: percent_sessions_with_event {
-    group_label: "Hits"
-    label: "Events / Sessions with Events"
-    description: "The average number of web events per session with web event."
+  measure: events_per_session {
+    view_label: "Session"
+    group_label: "Session"
+    label: "Events / Sessions"
+    description: "The average number of web events per session (with web event)."
     type: number
     sql: ${event_count}/NULLIF(${sessions_with_events},0);;
     drill_fields: [detail*]

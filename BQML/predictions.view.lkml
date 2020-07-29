@@ -5,9 +5,9 @@ view: training_input {
   derived_table: {
     sql:
 {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'START_DATE',"'2016-08-01 12:00:00'"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"900"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2017-01-31 14:00:00'"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
@@ -18,9 +18,9 @@ view: testing_input {
   extends: [user_facts]
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'START_DATE',"'2017-02-01 12:00:00'"  %}
+     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"900"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2017-08-01 14:00:00'"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
      /*updated_end_date*/
     {{updated_sql}}
      ;;
@@ -41,7 +41,7 @@ view: future_purchase_model {
     --, CLASS_WEIGHTS=[('1',1), ('0',0.05)] -- Consider adding class weights or downsampling if you have imbalanced classes
     ) AS
     SELECT
-    * EXCEPT(fullVisitorId)
+    * EXCEPT(clientId)
     FROM ${training_input.SQL_TABLE_NAME};;
   }
 }
@@ -81,7 +81,7 @@ view: roc_curve {
     type: number
     link: {
       label: "Likely Customers to Purchase"
-      url: "/explore/bqml_ga_demo/ga_sessions?fields=ga_sessions.fullVisitorId,future_purchase_prediction.max_predicted_score&f[future_purchase_prediction.predicted_will_purchase_in_future]=%3E%3D{{value}}"
+      url: "/explore/bqml_ga_demo/ga_sessions?fields=ga_sessions.clientId,future_purchase_prediction.max_predicted_score&f[future_purchase_prediction.predicted_will_purchase_in_future]=%3E%3D{{value}}"
       icon_url: "http://www.looker.com/favicon.ico"
     }
   }
@@ -152,19 +152,129 @@ view: future_input {
   extends: [user_facts]
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'START_DATE',"'2017-02-01 12:00:00'"  %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"30"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'END_DATE',"'2017-08-01 14:00:00'"  %}
-    /*updated_end_date*/
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"31"  %}
+     /*updated_end_date*/
     {{updated_sql}}
     ;;
   }
+  measure: count {
+    type: count
+    drill_fields: [detail*]
+  }
+
+  dimension: client_id {
+    type: string
+    sql: ${TABLE}.clientId ;;
+  }
+
+  dimension: label {
+    type: number
+    sql: ${TABLE}.label ;;
+  }
+
+  dimension: ga_sessions_visit_start_hour_of_day {
+    type: number
+    sql: ${TABLE}.ga_sessions_visit_start_hour_of_day ;;
+  }
+
+  dimension: metro {
+    type: string
+    sql: ${TABLE}.metro ;;
+  }
+
+  dimension: ga_sessions_visit_start_day_of_week {
+    type: string
+    sql: ${TABLE}.ga_sessions_visit_start_day_of_week ;;
+  }
+
+  dimension: ga_sessions_source {
+    type: string
+    sql: ${TABLE}.ga_sessions_source ;;
+  }
+
+  dimension: total_sessions {
+    type: number
+    sql: ${TABLE}.total_sessions ;;
+  }
+
+  dimension: pageviews {
+    type: number
+    sql: ${TABLE}.pageviews ;;
+  }
+
+  dimension: bounce_rate {
+    type: number
+    sql: ${TABLE}.bounce_rate ;;
+  }
+
+  dimension: avg_session_depth {
+    type: number
+    sql: ${TABLE}.avg_session_depth ;;
+  }
+
+  dimension: visits_traffic_source_none {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_none ;;
+  }
+
+  dimension: visits_traffic_source_organic {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_organic ;;
+  }
+
+  dimension: visits_traffic_source_cpc {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_cpc ;;
+  }
+
+  dimension: visits_traffic_source_cpm {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_cpm ;;
+  }
+
+  dimension: visits_traffic_source_affiliate {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_affiliate ;;
+  }
+
+  dimension: visits_traffic_source_referral {
+    type: number
+    sql: ${TABLE}.visits_traffic_source_referral ;;
+  }
+
+  dimension: distinct_dmas {
+    type: number
+    sql: ${TABLE}.distinct_dmas ;;
+  }
+
+  dimension: mobile {
+    type: number
+    sql: ${TABLE}.mobile ;;
+  }
+
+  dimension: chrome {
+    type: number
+    sql: ${TABLE}.chrome ;;
+  }
+
+  dimension: safari {
+    type: number
+    sql: ${TABLE}.safari ;;
+  }
+
+  dimension: browser_other {
+    type: number
+    sql: ${TABLE}.browser_other ;;
+  }
+
 }
 
 
 view: future_purchase_prediction {
   derived_table: {
-    sql: SELECT fullVisitorId,
+    sql: SELECT clientId,
           pred.prob as user_propensity_score,
           NTILE(10) OVER (ORDER BY pred.prob DESC) as user_propensity_decile
         FROM ml.PREDICT(
@@ -176,10 +286,10 @@ view: future_purchase_prediction {
   }
   dimension: user_propensity_score {type: number}
   dimension: user_propensity_decile {type: number}
-  dimension: fullVisitorId {
+  dimension: clientId {
        type: string
       hidden: no
-      sql: TRIM(REPLACE(${TABLE}.fullVisitorId,',','')) ;;
+      sql: TRIM(REPLACE(${TABLE}.clientId,',','')) ;;
       }
   measure: average_user_propensity_score {
     type: average

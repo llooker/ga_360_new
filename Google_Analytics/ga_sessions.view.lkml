@@ -1,7 +1,4 @@
 #############################################################################################################
-# Owner: Marketing Analytics, Connor Sparkman
-# Created by: Paola Renteria
-# Created: September 2019
 # Purpose: Surfaces event data from Google Analytics
 #############################################################################################################
 include: "geonetwork.view.lkml"
@@ -9,6 +6,7 @@ include: "totals.view.lkml"
 include: "traffic_source.view.lkml"
 include: "device.view.lkml"
 include: "calendar.view.lkml"
+# include: "//@{CONFIG_PROJECT_NAME}/views/ga_sessions_config.view.lkml"
 
 view: ga_sessions {
   view_label: "Session"
@@ -36,6 +34,7 @@ view: ga_sessions {
     group_label: "ID"
     description: "The unique visitor ID (also known as client ID)."
     sql: ${TABLE}.fullVisitorId ;;
+    hidden: yes
   }
 
   dimension: user_id {
@@ -52,13 +51,56 @@ view: ga_sessions {
     sql: ${TABLE}.visitId ;;
   }
 
+  dimension: client_id {
+    type: string
+    sql: ${TABLE}.clientId ;;
+  }
+
   dimension: visitor_id {
     hidden: yes
     label: "User ID"
     sql: ${TABLE}.visitorId ;;
   }
 
+  ########## PARAMETERS ############
+
+  parameter: audience_selector {
+    view_label: "Audience"
+    type: string
+    allowed_value: {
+      value: "Device"
+    }
+    allowed_value: {
+      value: "Metro"
+    }
+    allowed_value: {
+      value: "Channel"
+    }
+    allowed_value: {
+      value: "Source Medium"
+    }
+    allowed_value: {
+      value: "Medium"
+    }
+    allowed_value: {
+      value: "Operating System"
+    }
+  }
   ########## DIMENSIONS ############
+
+  dimension: audience_trait {
+    view_label: "Audience"
+    type: string
+    sql: CASE
+              WHEN {% parameter audience_selector %} = 'Channel' THEN ${channel_grouping}
+              WHEN {% parameter audience_selector %} = 'Medium' THEN ${medium}
+              WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${source_medium}
+              WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
+              WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
+              WHEN {% parameter audience_selector %} = 'Operating System' THEN ${operating_system}
+        END;;
+  }
+
   dimension: channel_grouping {
     view_label: "Acquisition"
     group_label: "Traffic Sources"
@@ -67,82 +109,10 @@ view: ga_sessions {
     sql: ${TABLE}.channelGrouping ;;
   }
 
-  dimension: client_id {
-    view_label: "Audience"
-    group_label: "User"
-    description: "Unique ID given to a user that we capture within Salesforce. A user can have multiple Client IDs"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 20) ;;
-  }
-
-  dimension: company_name {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The name of the company (custom dimension index 3)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 3) ;;
-  }
-
-  dimension: company_type {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Type of company e.g. non-profit, education, private, government (custom dimension index 11)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 11) ;;
-  }
-
-  dimension: domain {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Company's domain (custom dimension index 12)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 12) ;;
-  }
-
-  dimension: employees_range {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The range of number of employees (custom dimension index 4)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 4) ;;
-  }
-
   dimension: hits {
     description: "Is used for unnesting the hits struct, should not be used as a standalone dimension"
     hidden: yes
     sql: ${TABLE}.hits ;;
-  }
-
-  dimension: industry {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The industry that the company falls into (custom dimension index 8)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 8) ;;
-  }
-
-  dimension: industry_group {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The industry group (custom dimension index 9)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 9) ;;
-  }
-
-  dimension: industry_tags {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Tags that label the company's industry (custom dimension index 5)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 5) ;;
-  }
-
-  dimension: intellimize {
-    description: "Intellimize (custom dimension index 19)"
-    view_label: "Audience"
-    group_label: "User"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=19) ;;
   }
 
   dimension: is_first_time_visitor {
@@ -151,7 +121,6 @@ view: ga_sessions {
     sql: ${visit_number} = 1 ;;
   }
 
-  # Investigate performance impact below (tech debt)
   dimension: landing_page {
     view_label: "Behavior"
     group_label: "Pages (with Parameters)"
@@ -215,17 +184,37 @@ view: ga_sessions {
 
 
   dimension_group: partition {
+    # Date that is parsed from the table name. Required as a filter to avoid accidental massive queries
+    label: ""
     view_label: "Session"
-    description: "Date that is parsed from the table name. Required as a filter to avoid accidental massive queries."
+    description: "Date based on the day the session was added to the database. Matches date in Google Analytics UI, but may not match 'Session Start Date'."
     type: time
-    sql: PARSE_DATE(
-          '%Y%m%d'
-          , REGEXP_EXTRACT(
-            _TABLE_SUFFIX
-            , r'^\d\d\d\d\d\d\d\d'
+    timeframes: [
+      date,
+      day_of_week,
+      day_of_week_index,
+      day_of_month,
+      day_of_year,
+      fiscal_quarter,
+      fiscal_quarter_of_year,
+      week,
+      month,
+      month_name,
+      month_num,
+      quarter,
+      quarter_of_year,
+      week_of_year,
+      year
+    ]
+    sql: TIMESTAMP(
+          PARSE_DATE(
+            '%Y%m%d'
+            , REGEXP_EXTRACT(
+              _TABLE_SUFFIX
+              , r'^\d\d\d\d\d\d\d\d'
+            )
           )
         );;
-    datatype: date
     convert_tz: no
   }
 
@@ -234,21 +223,6 @@ view: ga_sessions {
     label: "Social Type"
     description: "Engagement type, either 'Socially Engaged' or 'Not Socially Engaged'."
     sql: ${TABLE}.socialEngagementType ;;
-  }
-
-  dimension: sub_industry {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "The sub-industry that the company falls into (custom dimension index 7)"
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 7) ;;
-  }
-
-  dimension: tech_stack {
-    view_label: "Audience"
-    group_label: "Clearbit"
-    description: "Programming langugages, tools and frameworks used (custom dimension index 6)"
-    type: string
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index = 6) ;;
   }
 
   dimension: visit_number {
@@ -292,8 +266,9 @@ view: ga_sessions {
   }
 
   dimension_group: visit_start {
+    # Dimension(s) are labeled with 'Visit' to match column names in database, but relabeled in Explore to match most recent Google Analytics nomenclature (i.e. 'Session' rather than 'Visit')
     label: "Session Start"
-    description: "Timestamp of the start of the Session. References visitStartTime field. Value potentially differs from 'Partition Date'"
+    description: "Timestamp of the start of the Session. References visitStartTime field. Can differ from 'Date' field based on timezone."
     type: time
     timeframes: [
       raw,
@@ -320,41 +295,17 @@ view: ga_sessions {
 
   ########## MEASURES ##############
 
-  measure: total_conversions {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Total Conversions"
-    description: "Hits URL /confirmation/."
-    type: count_distinct
-    sql: ${id} ;;
-    drill_fields: [full_visitor_id, visit_number]
-
-    filters: {
-      field: hits.has_completed_goal
-      value: "Yes"
-    }
-  }
-
-  measure: total_conversions_conversion_rate {
-    view_label: "Conversions"
-    group_label: "Goal Conversions"
-    label: "Total Conversions: Conversion Rate"
-    description: "Percentage of sessions resulting in a conversion to the requested goal number."
-    type: number
-    sql: (1.0*${total_conversions})/NULLIF(${visits_total}, 0) ;;
-    value_format_name: percent_1
-  }
-
   measure: first_time_sessions {
     group_label: "Session"
     label: "New Sessions"
-    description: "The total number of uessions for the requested time period where the visitNumber equals 1."
+    description: "The total number of sessions for the requested time period where the visitNumber equals 1."
     type: count_distinct
     sql: ${id} ;;
     filters: {
       field: visit_number
       value: "1"
     }
+    drill_fields: [source_medium, first_time_sessions]
   }
 
   measure: first_time_visitors {
@@ -368,6 +319,7 @@ view: ga_sessions {
       field: visit_number
       value: "1"
     }
+    drill_fields: [source_medium, first_time_visitors]
   }
 
   measure: percent_new_sessions {
@@ -378,6 +330,7 @@ view: ga_sessions {
     type: number
     sql: ${first_time_visitors}/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
+    drill_fields: [source_medium,first_time_visitors, visits_total]
   }
 
   measure: returning_visitors {
@@ -391,10 +344,10 @@ view: ga_sessions {
       field: visit_number
       value: "<> 1"
     }
+    drill_fields: [source_medium, returning_visitors]
   }
 
   measure: sessions_per_user {
-    alias: [average_sessions_per_visitor]
     view_label: "Audience"
     group_label: "User"
     label: "Average Sessions per User"
@@ -411,7 +364,8 @@ view: ga_sessions {
     description: "The total number of users for the requested time period."
     type: count_distinct
     sql: ${full_visitor_id} ;;
-    drill_fields: [person.person_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
+
+    drill_fields: [client_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
   }
 
 
