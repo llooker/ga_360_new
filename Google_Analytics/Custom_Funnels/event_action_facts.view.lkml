@@ -1,3 +1,4 @@
+explore: event_action_facts {}
 view: event_action_facts {
   derived_table: {
     explore_source: ga_sessions {
@@ -18,6 +19,10 @@ view: event_action_facts {
       filters: [hits.event_action: "-NULL", ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
     }
     persist_for: "24 hours"
+  }
+
+  measure: count {
+    type: count
   }
   dimension: hit_number {
     description: "The sequenced hit number. For the first hit of each session, this is set to 1."
@@ -56,7 +61,7 @@ view: event_action_facts {
 
   dimension: hit_sequence_number {
     type: number
-    hidden: yes
+    hidden: no
   }
 
   dimension: current_event_minus_1  {}

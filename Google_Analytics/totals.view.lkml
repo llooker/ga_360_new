@@ -108,7 +108,7 @@ view: totals {
     description: "Total duration of users' sessions."
     type: sum
     sql: ${TABLE}.totals.timeOnSite / 86400;;
-    value_format: "[h]:mm:ss"
+    value_format_name: hour_format
   }
 
   measure: timeonsite_average_per_session {
@@ -117,7 +117,7 @@ view: totals {
     description: "Total duration of users' sessions."
     type: number
     sql: (${timeonsite_total_formatted} / NULLIF(${visits_total},0));;
-    value_format: "[h]:mm:ss"
+    value_format_name: hour_format
   }
 
   measure: time_on_screen_total{
@@ -164,7 +164,7 @@ view: totals {
     type: sum
     sql: ${TABLE}.totals.visits;;
 
-    drill_fields: [source_medium, country, visits_total, new_visits_total, hits.page_count, bounces_rate, timeonsite_average_per_session]
+    drill_fields: [source_medium, visits_total, new_visits_total, hits.page_count, bounces_rate, timeonsite_average_per_session]
   }
 
   measure: unique_screen_views_total {

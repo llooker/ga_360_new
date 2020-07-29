@@ -101,6 +101,7 @@ view: goals {
       field: has_completed_goal
       value: "Yes"
     }
+    drill_fields: []
   }
 
   measure: sessions_with_conversions {
@@ -110,7 +111,7 @@ view: goals {
     description: "Sessions that result in a conversion based on 'Goal Selection' filters."
     type: count_distinct
     sql: ${ga_sessions.id} ;;
-    drill_fields: [full_visitor_id, visit_number]
+    drill_fields: [client_id, visit_number, sessions_with_conversions]
 
     filters: {
       field: has_completed_goal
@@ -126,5 +127,7 @@ view: goals {
     type: number
     sql: (1.0*${sessions_with_conversions})/NULLIF(${ga_sessions.visits_total}, 0) ;;
     value_format_name: percent_1
+    drill_fields: []
   }
+
 }

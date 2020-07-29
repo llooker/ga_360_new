@@ -248,6 +248,7 @@ view: ga_sessions {
       field: visit_number
       value: "1"
     }
+    drill_fields: [source_medium, first_time_sessions]
   }
 
   measure: first_time_visitors {
@@ -261,6 +262,7 @@ view: ga_sessions {
       field: visit_number
       value: "1"
     }
+    drill_fields: [source_medium, first_time_visitors]
   }
 
   measure: percent_new_sessions {
@@ -271,6 +273,7 @@ view: ga_sessions {
     type: number
     sql: ${first_time_visitors}/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
+    drill_fields: [source_medium,first_time_visitors, visits_total]
   }
 
   measure: returning_visitors {
@@ -284,6 +287,7 @@ view: ga_sessions {
       field: visit_number
       value: "<> 1"
     }
+    drill_fields: [source_medium, returning_visitors]
   }
 
   measure: sessions_per_user {
@@ -304,7 +308,7 @@ view: ga_sessions {
     description: "The total number of users for the requested time period."
     type: count_distinct
     sql: ${full_visitor_id} ;;
-    drill_fields: [person.person_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
+    drill_fields: [client_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
   }
 
 

@@ -92,7 +92,7 @@ view: time_on_page {
     description: "Time user spent on page. If it was the last page they visited before exiting, then time from when they entered and their last event on the page"
     type: number
     sql: ${TABLE}.time_on_page;;
-    value_format: "[h]:mm:ss"
+    value_format_name: hour_format
   }
 
   ########## MEASURES ##########
@@ -103,7 +103,7 @@ view: time_on_page {
     description: "Avg time a user spent on a specific page."
     type: number
     sql: (${total_time_on_page} / NULLIF(${total_pages_with_time}, 0));;
-    value_format: "[h]:mm:ss"
+    value_format_name: hour_format
   }
 
   measure: total_time_on_page {
@@ -111,7 +111,7 @@ view: time_on_page {
     description: "Total Time spent on page."
     type: sum
     sql: ${time_on_page};;
-    value_format: "[h]:mm:ss"
+    value_format_name: hour_format
   }
 
   measure: total_pages_with_time {

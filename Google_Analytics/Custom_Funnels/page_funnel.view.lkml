@@ -1,23 +1,23 @@
 view: page_funnel {
  derived_table: {
    sql: SELECT event1.full_visitor_id as full_vistor_id,
-               event1.hit_sequence_number as event1_hit_sequence_number, event1.hit_time as event1_hit_time, event1.page_path as event1_page, event1.hit_id as event1_hit_id, event1.id as event1_session_id,
-               event2.hit_sequence_number as event2_hit_sequence_number, event2.hit_time as event2_time, event2.page_path as event2_page, event2.hit_id as event2_hit_id, event2.id as event2_session_id,
-               event3.hit_sequence_number as event3_hit_sequence_number, event3.hit_time as event3_time, event3.page_path as event3_page,event3.hit_id as event3_hit_id, event3.id as event3_session_id,
-               event4.hit_sequence_number as event4_hit_sequence_number, event4.hit_time as event4_time, event4.page_path as event4_page,event4.hit_id as event4_hit_id, event4.id as event4_session_id,
-               event5.hit_sequence_number as event5_hit_sequence_number, event5.hit_time as event5_time, event5.page_path as event5_page,event5.hit_id as event5_hit_id, event5.id as event5_session_id,
-               event6.hit_sequence_number as event6_hit_sequence_number, event6.hit_time as event6_time, event6.page_path as event6_page,event6.hit_id as event6_hit_id, event6.id as event6_session_id
+               event1.page_sequence_number as event1_hit_sequence_number, event1.hit_time as event1_hit_time, event1.page_path as event1_page, event1.hit_id as event1_hit_id, event1.id as event1_session_id,
+               event2.page_sequence_number as event2_hit_sequence_number, event2.hit_time as event2_time, event2.page_path as event2_page, event2.hit_id as event2_hit_id, event2.id as event2_session_id,
+               event3.page_sequence_number as event3_hit_sequence_number, event3.hit_time as event3_time, event3.page_path as event3_page,event3.hit_id as event3_hit_id, event3.id as event3_session_id,
+               event4.page_sequence_number as event4_hit_sequence_number, event4.hit_time as event4_time, event4.page_path as event4_page,event4.hit_id as event4_hit_id, event4.id as event4_session_id,
+               event5.page_sequence_number as event5_hit_sequence_number, event5.hit_time as event5_time, event5.page_path as event5_page,event5.hit_id as event5_hit_id, event5.id as event5_session_id,
+               event6.page_sequence_number as event6_hit_sequence_number, event6.hit_time as event6_time, event6.page_path as event6_page,event6.hit_id as event6_hit_id, event6.id as event6_session_id
         FROM ${page_facts.SQL_TABLE_NAME} event1
         LEFT JOIN ${page_facts.SQL_TABLE_NAME} event2
-        ON event1.full_visitor_id = event2.full_visitor_id AND event1.hit_sequence_number + 1 = event2.hit_sequence_number
+        ON event1.full_visitor_id = event2.full_visitor_id AND event1.page_sequence_number + 1 = event2.page_sequence_number
          LEFT JOIN ${page_facts.SQL_TABLE_NAME} event3
-        ON event1.full_visitor_id = event3.full_visitor_id AND event1.hit_sequence_number + 2 = event3.hit_sequence_number
+        ON event1.full_visitor_id = event3.full_visitor_id AND event1.page_sequence_number + 2 = event3.page_sequence_number
          LEFT JOIN ${page_facts.SQL_TABLE_NAME} event4
-        ON event1.full_visitor_id = event4.full_visitor_id AND event1.hit_sequence_number + 3 = event4.hit_sequence_number
+        ON event1.full_visitor_id = event4.full_visitor_id AND event1.page_sequence_number + 3 = event4.page_sequence_number
          LEFT JOIN ${page_facts.SQL_TABLE_NAME} event5
-        ON event1.full_visitor_id = event5.full_visitor_id AND event1.hit_sequence_number + 4 = event5.hit_sequence_number
+        ON event1.full_visitor_id = event5.full_visitor_id AND event1.page_sequence_number + 4 = event5.page_sequence_number
          LEFT JOIN ${page_facts.SQL_TABLE_NAME} event6
-        ON event1.full_visitor_id = event6.full_visitor_id AND event1.hit_sequence_number + 5 = event6.hit_sequence_number
+        ON event1.full_visitor_id = event6.full_visitor_id AND event1.page_sequence_number + 5 = event6.page_sequence_number
         ;;
         persist_for: "24 hours"
  }
