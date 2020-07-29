@@ -66,6 +66,7 @@ view: ga_sessions {
 
   parameter: audience_selector {
     view_label: "Audience"
+    description: "Use to set 'Audience Trait' field to dynamically choose a user cohort."
     type: string
     allowed_value: {
       value: "Device"
@@ -92,6 +93,7 @@ view: ga_sessions {
   ########## DIMENSIONS ############
 
   dimension: audience_trait {
+    description: "Dynamic cohort field based on value set in 'Audience Selector' filter."
     view_label: "Audience"
     type: string
     sql: CASE
