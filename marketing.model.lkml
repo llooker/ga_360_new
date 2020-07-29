@@ -44,7 +44,7 @@ explore: ga_sessions {
 
   join: page_funnel {
     type: left_outer
-    sql_on: ${page_funnel.event1_hit_id} = ${hits.id} ;;
+    sql_on: ${page_funnel.page1_hit_id} = ${hits.id} ;;
     relationship: one_to_one
   }
 
@@ -93,6 +93,12 @@ explore: ga_sessions {
     type: left_outer
     sql_on: ${hits.id} = ${time_on_page.hit_id} ;;
     relationship: one_to_one
+  }
+
+  join: user_segment {
+    type: left_outer
+    sql_on: ${ga_sessions.full_visitor_id} = ${user_segment.full_visitor_id} ;;
+    relationship: many_to_one
   }
 
 }

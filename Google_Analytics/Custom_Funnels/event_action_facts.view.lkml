@@ -7,7 +7,7 @@ view: event_action_facts {
       column: full_visitor_id {}
       column: id {}
       column: event_action { field: hits.event_action }
-      derived_column: hit_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
+      derived_column: event_sequence_Number {sql:  ROW_NUMBER() OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
       derived_column: hit_id {sql:CONCAT(id,'|',FORMAT('%05d',hit_number));;}
       derived_column: next_event_hit_number {sql: LEAD(hit_number) OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
       derived_column: current_event_minus_1 {sql: LAG(event_action) OVER (PARTITION BY id ORDER BY hit_time) ;;}
@@ -21,22 +21,23 @@ view: event_action_facts {
     persist_for: "24 hours"
   }
 
-  measure: count {
-    type: count
-  }
-  dimension: hit_number {
-    description: "The sequenced hit number. For the first hit of each session, this is set to 1."
+
+  ########## PRIMARY KEY ##########
+
+  dimension: hit_id {
     type: number
     hidden: yes
+    primary_key: yes
+    sql: ${TABLE}.hit_id ;;
   }
-  dimension: hit_time {
-    type: date_time
-    hidden: yes
-  }
+
+  ########## FOREIGN KEY ##########
+
   dimension: full_visitor_id {
     label: "Session Full User ID"
     description: "The unique visitor ID (also known as client ID)."
     hidden: yes
+    sql: ${TABLE}.full_visitor_id ;;
   }
   dimension: session_id {
     label: "Session User/Session ID"
@@ -45,10 +46,20 @@ view: event_action_facts {
     sql: ${TABLE}.id ;;
   }
 
-  dimension: hit_id {
+  ########## DIMENSIONS ##########
+
+  dimension: hit_number {
+    description: "The sequenced hit number. For the first hit of each session, this is set to 1."
     type: number
     hidden: yes
-
+    sql: ${TABLE}.hit_number ;;
+  }
+  dimension_group: hit_time {
+    description: "The time at which the hit occurred"
+    type: time
+    hidden: yes
+    datatype: datetime
+    sql: ${TABLE}.hit_time ;;
   }
 
   dimension: next_event_hit_number {
@@ -59,18 +70,35 @@ view: event_action_facts {
     label: "Goal Event"
   }
 
-  dimension: hit_sequence_number {
+  dimension: event_sequence_number {
     type: number
-    hidden: no
+    hidden: yes
+
   }
 
-  dimension: current_event_minus_1  {}
-  dimension: current_event_minus_2  {}
-  dimension: current_event_minus_3  {}
-  dimension: current_event_minus_4  {}
-  dimension: current_event_minus_5  {}
-  dimension: current_event_minus_6  {}
-
-
+  dimension: current_event_minus_1  {
+    type: string
+    sql: ${TABLE}.current_event_minus_1 ;;
+  }
+  dimension: current_event_minus_2  {
+    type: string
+    sql: ${TABLE}.current_event_minus_2 ;;
+  }
+  dimension: current_event_minus_3  {
+    type: string
+    sql: ${TABLE}.current_event_minus_3 ;;
+  }
+  dimension: current_event_minus_4  {
+    type: string
+    sql: ${TABLE}.current_event_minus_4 ;;
+  }
+  dimension: current_event_minus_5  {
+    type: string
+    sql: ${TABLE}.current_event_minus_5 ;;
+  }
+  dimension: current_event_minus_6  {
+    type: string
+    sql: ${TABLE}.current_event_minus_6 ;;
+  }
 
 }
