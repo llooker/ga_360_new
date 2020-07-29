@@ -72,26 +72,33 @@ view: event_action_facts {
 
   dimension: event_sequence_number {
     type: number
-    hidden: no
+    hidden: yes
+
   }
 
-  dimension: current_event_minus_1  {}
-  dimension: current_event_minus_2  {}
-  dimension: current_event_minus_3  {}
-  dimension: current_event_minus_4  {}
-  dimension: current_event_minus_5  {}
-  dimension: current_event_minus_6  {}
-
-
-
-
-
-
-  ########## MEASURES ##########
-
-
-
-
-
+  dimension: current_event_minus_1  {
+    type: string
+    sql: ${TABLE}.current_event_minus_1 ;;
+  }
+  dimension: current_event_minus_2  {
+    type: string
+    sql: ${TABLE}.current_event_minus_2 ;;
+  }
+  dimension: current_event_minus_3  {
+    type: string
+    sql: ${TABLE}.current_event_minus_3 ;;
+  }
+  dimension: current_event_minus_4  {
+    type: string
+    sql: ${TABLE}.current_event_minus_4 ;;
+  }
+  dimension: current_event_minus_5  {
+    type: string
+    sql: ${TABLE}.current_event_minus_5 ;;
+  }
+  dimension: current_event_minus_6  {
+    type: string
+    sql: ${TABLE}.current_event_minus_6 ;;
+  }
 
 }

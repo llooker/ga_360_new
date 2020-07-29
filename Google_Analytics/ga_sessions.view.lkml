@@ -330,7 +330,7 @@ view: ga_sessions {
     type: number
     sql: ${first_time_visitors}/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
-    drill_fields: [source_medium,first_time_visitors, visits_total]
+    drill_fields: [source_medium,first_time_visitors, visits_total, percent_new_sessions]
   }
 
   measure: returning_visitors {
@@ -355,6 +355,7 @@ view: ga_sessions {
     type: number
     sql: ${visits_total}/NULLIF(${unique_visitors}, 0) ;;
     value_format_name: decimal_2
+    drill_fields: [source_medium, visits_total, unique_visitors, sessions_per_user]
   }
 
   measure: unique_visitors {
