@@ -93,8 +93,9 @@ view: ga_sessions {
   ########## DIMENSIONS ############
 
   dimension: audience_trait {
-    description: "Dynamic cohort field based on value set in 'Audience Selector' filter."
     view_label: "Audience"
+    group_label: "Audience Cohorts"
+    description: "Dynamic cohort field based on value set in 'Audience Selector' filter."
     type: string
     sql: CASE
               WHEN {% parameter audience_selector %} = 'Channel' THEN ${channel_grouping}
@@ -337,6 +338,17 @@ view: ga_sessions {
     sql: ${first_time_visitors}/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
     drill_fields: [source_medium,first_time_visitors, visits_total, percent_new_sessions]
+  }
+
+  measure: percent_returning_visitors {
+    view_label: "Audience"
+    group_label: "User"
+    label: "% Returning Users"
+    description: "The total number of users for the requested time period where the visitNumber is not 1."
+    type: number
+    sql: ${returning_visitors} / ${unique_visitors};;
+    value_format_name: percent_1
+    drill_fields: [source_medium, returning_visitors]
   }
 
   measure: returning_visitors {

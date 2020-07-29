@@ -35,6 +35,11 @@ explore: ga_sessions {
     }
   }
 
+  join: audience_cohorts {
+    type: left_outer
+    sql_on: ${ga_sessions.audience_trait} = ${audience_cohorts.audience_trait} ;;
+    relationship: many_to_one
+  }
 
   join: hits {
     type: left_outer
