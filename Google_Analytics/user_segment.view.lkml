@@ -56,14 +56,14 @@ view: user_segment {
 
   measure: segment_sessions {
     group_label: "In Selected Timeframe"
-    type:sum
+    type: sum
     sql: ${visits} ;;
     value_format_name: decimal_0
   }
 
   measure: segment_transaction_revenue {
     group_label: "In Selected Timeframe"
-    type:sum
+    type: sum
     sql: ${transaction_revenue} ;;
     value_format_name: usd_0
   }
@@ -77,7 +77,7 @@ view: user_segment {
 
   measure: segment_transaction_count {
     group_label: "In Selected Timeframe"
-    type:sum
+    type: sum
     sql: ${transaction_count} ;;
     value_format_name: decimal_0
   }

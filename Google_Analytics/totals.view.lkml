@@ -157,6 +157,17 @@ view: totals {
     drill_fields: [transactions_count, transaction_revenue_total]
   }
 
+  measure: transaction_revenue_per_user {
+    label: "Transaction Revenue Per User"
+    view_label: "Goals"
+    group_label: "Transactions"
+    description: "Total transaction revenue, expressed as the value passed to Analytics multiplied by 10^6 (e.g., 2.40 would be given as 2400000), per unique visitor ID."
+    type: number
+    sql: ${transaction_revenue_total}/NULLIF(${ga_sessions.unique_visitors},0);;
+    value_format_name: usd_0
+    drill_fields: [transactions_count, transaction_revenue_total, transaction_revenue_per_user]
+  }
+
   measure: visits_total {
     group_label: "Session"
     label: "Sessions"
