@@ -1,8 +1,9 @@
 #############################################################################################################
-# Purpose: Defines the fields within the hits struct in google analytics. Is joined to the ga_sessions explore
-#          by unnesting the values.
+# Purpose: Defines the fields within the hits struct in google analytics. A hit can be either a Page View or Event that occurs on a page.
+# This view is joined to the ga_sessions explore by unnesting this view.
+# See documentation on Nested fields in BigQuery here: https://cloud.google.com/bigquery/docs/reference/standard-sql/arrays#querying_nested_arrays
 #############################################################################################################
-include: "Custom_Funnels/goals.view.lkml"
+include: "Custom_Views/goals.view.lkml"
 view: hits {
   extends: [goals]
   view_label: "Hits"

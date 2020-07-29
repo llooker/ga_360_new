@@ -2,7 +2,7 @@ connection: "ga_generated"
 
 # include: "/datagroups.lkml"
 include: "/*/*.view.lkml"
-include: "/Google_Analytics/Custom_Funnels/*.view.lkml"
+include: "/Google_Analytics/Custom_Views/*.view.lkml"
 include: "/Dashboards/*.dashboard"
 
 datagroup: bqml_datagroup {
