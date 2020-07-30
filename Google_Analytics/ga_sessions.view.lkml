@@ -339,8 +339,8 @@ view: ga_sessions {
   }
 
   measure: percent_new_sessions {
-    view_label: "Sessions"
-    group_label: "Sessions"
+    view_label: "Session"
+    group_label: "Session"
     label: "% New Sessions"
     description: "The percentage of sessions by users who had never visited the property before."
     type: number
