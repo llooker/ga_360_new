@@ -125,5 +125,5 @@ named_value_format: hour_format {
 }
 
 named_value_format: formatted_number {
-  value_format:"[<999950]0.0,\" K\";[<999950000]0.0,,\" M\";0.0,,,\" B\""
+  value_format:"[<999950]0.00,\" K\";[<999950000]0.00,,\" M\";0.00,,,\" B\""
 }
