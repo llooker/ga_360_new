@@ -339,14 +339,26 @@ view: ga_sessions {
   }
 
   measure: percent_new_sessions {
-    view_label: "Audience"
-    group_label: "User"
+    view_label: "Sessions"
+    group_label: "Sessions"
     label: "% New Sessions"
     description: "The percentage of sessions by users who had never visited the property before."
     type: number
-    sql: ${first_time_visitors}/NULLIF(${visits_total}, 0) ;;
+    sql: ${first_time_sessions}/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
     drill_fields: [source_medium,first_time_visitors, visits_total, percent_new_sessions]
+  }
+
+  measure: percent_new_visitors {
+    view_label: "Audience"
+    group_label: "User"
+    label: "% New Users"
+    description: "The total number of users for the requested time period where the visitNumber is not 1."
+    type: number
+    sql: ${first_time_sessions} / ${unique_visitors};;
+
+    value_format_name: percent_1
+    drill_fields: [source_medium, returning_visitors]
   }
 
   measure: percent_returning_visitors {
