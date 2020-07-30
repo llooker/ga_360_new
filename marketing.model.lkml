@@ -123,3 +123,7 @@ explore: future_input {
 named_value_format: hour_format {
   value_format: "[h]:mm:ss"
 }
+
+named_value_format: formatted_number {
+  value_format:"[<999950]0.0,\" K\";[<999950000]0.0,,\" M\";0.0,,,\" B\""
+}

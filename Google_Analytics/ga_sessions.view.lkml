@@ -37,6 +37,7 @@ view: ga_sessions {
     hidden: yes
   }
 
+
   dimension: user_id {
     hidden: yes
     label: "User ID"
