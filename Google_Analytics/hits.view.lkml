@@ -334,6 +334,8 @@ view: hits {
     label: "Hits"
     description: "Total number of hits within the session."
     type: count
+
+    value_format_name: formatted_number
     drill_fields: [detail*]
   }
 
@@ -344,11 +346,14 @@ view: hits {
     description: "The number of entrances to the property measured as the first pageview in a session, typically used with landingPagePath."
     type: count_distinct
     sql: ${id} ;;
-    drill_fields: [detail*]
+
     filters: {
       field: is_entrance
       value: "Yes"
     }
+
+    value_format_name: formatted_number
+    drill_fields: [detail*]
   }
   measure: entrance_rate {
     view_label: "Behavior"
@@ -372,6 +377,7 @@ view: hits {
       value: "EVENT"
     }
 
+    value_format_name: formatted_number
     drill_fields: [event_category, event_action, event_label, event_value, event_count, unique_event_count]
   }
 
@@ -382,11 +388,14 @@ view: hits {
     description: "The number of exits from the property."
     type: count_distinct
     sql: ${id} ;;
-    drill_fields: [detail*]
+
     filters: {
       field: is_exit
       value: "Yes"
     }
+
+    value_format_name: formatted_number
+    drill_fields: [detail*]
   }
 
   measure: exit_rate {
@@ -396,6 +405,7 @@ view: hits {
     description: "Exit is (number of exits) / (number of pageviews) for the page or set of pages. It indicates how often users exit from that page or set of pages when they view the page(s)."
     type: number
     sql: ${exit_pageviews_total}/NULLIF(${page_count}, 0) ;;
+
     value_format_name: percent_2
   }
 
@@ -412,6 +422,7 @@ view: hits {
       value: "PAGE"
     }
 
+    value_format_name: formatted_number
     drill_fields: [ga_sessions.visit_start_date, unique_page_count, entrance_pageviews_total, exit_pageviews_total, time_on_page.average_time_on_page]
   }
 
@@ -422,8 +433,9 @@ view: hits {
     description: "The average number of web events per session (with web event)."
     type: number
     sql: ${event_count}/NULLIF(${sessions_with_events},0);;
-    drill_fields: [detail*]
+
     value_format_name: decimal_2
+    drill_fields: [detail*]
   }
 
   measure: sessions_with_events {
@@ -432,11 +444,14 @@ view: hits {
     description: "The total number of sessions with web events."
     type: count_distinct
     sql: ${ga_sessions.id} ;;
-    drill_fields: [detail*]
+
     filters: {
       field: type
       value: "EVENT"
     }
+
+    value_format_name: formatted_number
+    drill_fields: [detail*]
   }
 
   measure: unique_page_count {
@@ -452,6 +467,7 @@ view: hits {
       value: "PAGE"
     }
 
+    value_format_name: formatted_number
     drill_fields: [event_category, event_action, event_label, event_value, event_count, unique_event_count]
   }
 
@@ -468,6 +484,7 @@ view: hits {
       value: "EVENT"
     }
 
+    value_format_name: formatted_number
     drill_fields: [detail*]
   }
 

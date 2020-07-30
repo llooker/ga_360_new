@@ -6,12 +6,14 @@ include: "totals.view.lkml"
 include: "traffic_source.view.lkml"
 include: "device.view.lkml"
 include: "calendar.view.lkml"
+include: "Custom_Views/custom_nav_bar.view.lkml"
 # include: "//@{CONFIG_PROJECT_NAME}/views/ga_sessions_config.view.lkml"
 
 view: ga_sessions {
   view_label: "Session"
   sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
-  extends: [calendar, geonetwork, totals, traffic_source, device]
+  extends: [calendar, geonetwork, totals, traffic_source, device, custom_nav_bar]
+
 
   ########## PRIMARY KEYS ##########
   dimension: id {
@@ -309,10 +311,13 @@ view: ga_sessions {
     description: "The total number of sessions for the requested time period where the visitNumber equals 1."
     type: count_distinct
     sql: ${id} ;;
+
     filters: {
       field: visit_number
       value: "1"
     }
+
+    value_format_name: formatted_number
     drill_fields: [source_medium, first_time_sessions]
   }
 
@@ -323,10 +328,13 @@ view: ga_sessions {
     description: "The total number of users for the requested time period where the visitNumber equals 1."
     type: count_distinct
     sql: ${full_visitor_id} ;;
+
     filters: {
       field: visit_number
       value: "1"
     }
+
+    value_format_name: formatted_number
     drill_fields: [source_medium, first_time_visitors]
   }
 
@@ -348,6 +356,7 @@ view: ga_sessions {
     description: "The total number of users for the requested time period where the visitNumber is not 1."
     type: number
     sql: ${returning_visitors} / ${unique_visitors};;
+
     value_format_name: percent_1
     drill_fields: [source_medium, returning_visitors]
   }
@@ -359,10 +368,13 @@ view: ga_sessions {
     description: "The total number of users for the requested time period where the visitNumber is not 1."
     type: count_distinct
     sql: ${full_visitor_id};;
+
     filters: {
       field: visit_number
       value: "<> 1"
     }
+
+    value_format_name: formatted_number
     drill_fields: [source_medium, returning_visitors]
   }
 
@@ -373,6 +385,7 @@ view: ga_sessions {
     description: "(Total Sessions / Unique Visitors). Should only be used at the session-level."
     type: number
     sql: ${visits_total}/NULLIF(${unique_visitors}, 0) ;;
+
     value_format_name: decimal_2
     drill_fields: [source_medium, visits_total, unique_visitors, sessions_per_user]
   }
@@ -385,6 +398,7 @@ view: ga_sessions {
     type: count_distinct
     sql: ${full_visitor_id} ;;
 
+    value_format_name: formatted_number
     drill_fields: [client_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
   }
 
