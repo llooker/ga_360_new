@@ -63,12 +63,6 @@ view: ga_sessions {
     sql: ${TABLE}.visitorId ;;
   }
 
-  dimension: test {
-    type: number
-    sql: 1000000000 ;;
-    value_format_name: formatted_number
-  }
-
   ########## PARAMETERS ############
 
   parameter: audience_selector {
