@@ -1,8 +1,8 @@
-view: custom_nav_bar {
+view: custom_navigation_buttons {
   extension: required
 
   parameter: dashboard_type {
-    view_label: "Dashboard Navigation"
+    group_label: "Dashboard Navigation"
     type: string
     allowed_value: {
       label: "Audience"
@@ -23,7 +23,7 @@ view: custom_nav_bar {
   }
 
   measure: single_dashboard_button {
-    view_label: "Dashboard Navigation"
+    group_label: "Dashboard Navigation"
     label: "Single Button"
     type: string
     sql: {% parameter dashboard_type %};;
@@ -34,7 +34,7 @@ view: custom_nav_bar {
   }
 
   measure: dash_nav {
-    view_label: "Dashboard Navigation"
+    group_label: "Dashboard Navigation"
     label: "Navigation Bar"
     type: string
     sql: "";;
