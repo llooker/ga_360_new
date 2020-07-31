@@ -210,6 +210,16 @@ view: ga_sessions {
         ) ;;
   }
 
+  dimension: partition_date_filter {
+    type: string
+    sql: CONCAT('This data is from the ','@{PARTITION_DATE_PDT_FILTER}') ;;
+    hidden: no
+    html: <div class="vis">
+    <div style="white-space: normal; word-wrap: break-word;width:100%; font-size:50%;"> {{value}}.</strong>
+    </div>
+    </div> ;;
+  }
+
 
   dimension_group: partition {
     # Date that is parsed from the table name. Required as a filter to avoid accidental massive queries
