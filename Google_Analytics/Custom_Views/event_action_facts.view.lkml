@@ -1,4 +1,3 @@
-explore: event_action_facts {}
 view: event_action_facts {
   derived_table: {
     explore_source: ga_sessions {
@@ -16,6 +15,12 @@ view: event_action_facts {
       derived_column: current_event_minus_4 {sql: LAG(event_action,4) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: current_event_minus_5 {sql: LAG(event_action,5) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: current_event_minus_6 {sql: LAG(event_action,6) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_event_plus_1 {sql: LEAD(event_action) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_event_plus_2 {sql: LEAD(event_action,2) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_event_plus_3 {sql: LEAD(event_action,3) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_event_plus_4 {sql: LEAD(event_action,4) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_event_plus_5 {sql: LEAD(event_action,5) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_event_plus_6 {sql: LEAD(event_action,6) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       filters: [hits.event_action: "-NULL", ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
     }
     persist_for: "24 hours"
@@ -79,26 +84,73 @@ view: event_action_facts {
   dimension: current_event_minus_1  {
     type: string
     sql: ${TABLE}.current_event_minus_1 ;;
+    group_label: "Reverse Event Flow"
   }
   dimension: current_event_minus_2  {
     type: string
     sql: ${TABLE}.current_event_minus_2 ;;
+    group_label: "Reverse Event Flow"
   }
   dimension: current_event_minus_3  {
     type: string
     sql: ${TABLE}.current_event_minus_3 ;;
+    group_label: "Reverse Event Flow"
   }
   dimension: current_event_minus_4  {
     type: string
     sql: ${TABLE}.current_event_minus_4 ;;
+    group_label: "Reverse Event Flow"
   }
   dimension: current_event_minus_5  {
     type: string
     sql: ${TABLE}.current_event_minus_5 ;;
+    group_label: "Reverse Event Flow"
   }
   dimension: current_event_minus_6  {
     type: string
     sql: ${TABLE}.current_event_minus_6 ;;
+    group_label: "Reverse Event Flow"
   }
+
+  dimension: current_event_plus_1  {
+    type: string
+    sql: ${TABLE}.current_event_plus_1 ;;
+    group_label: "Event Flow"
+  }
+
+  dimension: current_event_plus_2  {
+    type: string
+    sql: ${TABLE}.current_event_plus_2 ;;
+    group_label: "Event Flow"
+  }
+
+
+  dimension: current_event_plus_3  {
+    type: string
+    sql: ${TABLE}.current_event_plus_3 ;;
+    group_label: "Event Flow"
+  }
+
+
+  dimension: current_event_plus_4  {
+    type: string
+    sql: ${TABLE}.current_event_plus_4 ;;
+    group_label: "Event Flow"
+  }
+
+
+  dimension: current_event_plus_5  {
+    type: string
+    sql: ${TABLE}.current_event_plus_5 ;;
+    group_label: "Event Flow"
+  }
+
+
+  dimension: current_event_plus_6  {
+    type: string
+    sql: ${TABLE}.current_event_plus_6 ;;
+    group_label: "Event Flow"
+  }
+
 
 }
