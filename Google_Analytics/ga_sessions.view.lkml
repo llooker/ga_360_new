@@ -75,8 +75,22 @@ view: ga_sessions {
       value: "Device"
     }
     allowed_value: {
+      value: "Operating System"
+    }
+    allowed_value: {
+      value: "Browser"
+    }
+
+    allowed_value: {
+      value: "Country"
+    }
+    allowed_value: {
+      value: "Continent"
+    }
+    allowed_value: {
       value: "Metro"
     }
+
     allowed_value: {
       value: "Channel"
     }
@@ -88,9 +102,6 @@ view: ga_sessions {
     }
     allowed_value: {
       value: "Source Medium"
-    }
-    allowed_value: {
-      value: "Operating System"
     }
   }
   ########## DIMENSIONS ############
@@ -106,7 +117,10 @@ view: ga_sessions {
               WHEN {% parameter audience_selector %} = 'Source' THEN ${source}
               WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${source_medium}
               WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
+              WHEN {% parameter audience_selector %} = 'Browser' THEN ${browser}
               WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
+              WHEN {% parameter audience_selector %} = 'Country' THEN ${country}
+              WHEN {% parameter audience_selector %} = 'Continent' THEN ${continent}
               WHEN {% parameter audience_selector %} = 'Operating System' THEN ${operating_system}
         END;;
   }
