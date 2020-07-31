@@ -6,12 +6,14 @@ include: "totals.view.lkml"
 include: "traffic_source.view.lkml"
 include: "device.view.lkml"
 include: "calendar.view.lkml"
+include: "Custom_Views/custom_navigation_buttons.view.lkml"
 # include: "//@{CONFIG_PROJECT_NAME}/views/ga_sessions_config.view.lkml"
 
 view: ga_sessions {
   view_label: "Session"
   sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
-  extends: [calendar, geonetwork, totals, traffic_source, device]
+  extends: [calendar, geonetwork, totals, traffic_source, device, custom_navigation_buttons]
+
 
   ########## PRIMARY KEYS ##########
   dimension: id {
@@ -73,8 +75,22 @@ view: ga_sessions {
       value: "Device"
     }
     allowed_value: {
+      value: "Operating System"
+    }
+    allowed_value: {
+      value: "Browser"
+    }
+
+    allowed_value: {
+      value: "Country"
+    }
+    allowed_value: {
+      value: "Continent"
+    }
+    allowed_value: {
       value: "Metro"
     }
+
     allowed_value: {
       value: "Channel"
     }
@@ -86,9 +102,6 @@ view: ga_sessions {
     }
     allowed_value: {
       value: "Source Medium"
-    }
-    allowed_value: {
-      value: "Operating System"
     }
   }
   ########## DIMENSIONS ############
@@ -104,7 +117,10 @@ view: ga_sessions {
               WHEN {% parameter audience_selector %} = 'Source' THEN ${source}
               WHEN {% parameter audience_selector %} = 'Source Medium' THEN ${source_medium}
               WHEN {% parameter audience_selector %} = 'Device' THEN ${device_category}
+              WHEN {% parameter audience_selector %} = 'Browser' THEN ${browser}
               WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
+              WHEN {% parameter audience_selector %} = 'Country' THEN ${country}
+              WHEN {% parameter audience_selector %} = 'Continent' THEN ${continent}
               WHEN {% parameter audience_selector %} = 'Operating System' THEN ${operating_system}
         END;;
   }
@@ -309,10 +325,13 @@ view: ga_sessions {
     description: "The total number of sessions for the requested time period where the visitNumber equals 1."
     type: count_distinct
     sql: ${id} ;;
+
     filters: {
       field: visit_number
       value: "1"
     }
+
+    value_format_name: formatted_number
     drill_fields: [source_medium, first_time_sessions]
   }
 
@@ -323,22 +342,37 @@ view: ga_sessions {
     description: "The total number of users for the requested time period where the visitNumber equals 1."
     type: count_distinct
     sql: ${full_visitor_id} ;;
+
     filters: {
       field: visit_number
       value: "1"
     }
+
+    value_format_name: formatted_number
     drill_fields: [source_medium, first_time_visitors]
   }
 
   measure: percent_new_sessions {
-    view_label: "Audience"
-    group_label: "User"
+    view_label: "Session"
+    group_label: "Session"
     label: "% New Sessions"
     description: "The percentage of sessions by users who had never visited the property before."
     type: number
-    sql: ${first_time_visitors}/NULLIF(${visits_total}, 0) ;;
+    sql: ${first_time_sessions}/NULLIF(${visits_total}, 0) ;;
     value_format_name: percent_1
     drill_fields: [source_medium,first_time_visitors, visits_total, percent_new_sessions]
+  }
+
+  measure: percent_new_visitors {
+    view_label: "Audience"
+    group_label: "User"
+    label: "% New Users"
+    description: "The total number of users for the requested time period where the visitNumber is not 1."
+    type: number
+    sql: ${first_time_sessions} / ${unique_visitors};;
+
+    value_format_name: percent_1
+    drill_fields: [source_medium, returning_visitors]
   }
 
   measure: percent_returning_visitors {
@@ -348,6 +382,7 @@ view: ga_sessions {
     description: "The total number of users for the requested time period where the visitNumber is not 1."
     type: number
     sql: ${returning_visitors} / ${unique_visitors};;
+
     value_format_name: percent_1
     drill_fields: [source_medium, returning_visitors]
   }
@@ -359,10 +394,13 @@ view: ga_sessions {
     description: "The total number of users for the requested time period where the visitNumber is not 1."
     type: count_distinct
     sql: ${full_visitor_id};;
+
     filters: {
       field: visit_number
       value: "<> 1"
     }
+
+    value_format_name: formatted_number
     drill_fields: [source_medium, returning_visitors]
   }
 
@@ -373,6 +411,7 @@ view: ga_sessions {
     description: "(Total Sessions / Unique Visitors). Should only be used at the session-level."
     type: number
     sql: ${visits_total}/NULLIF(${unique_visitors}, 0) ;;
+
     value_format_name: decimal_2
     drill_fields: [source_medium, visits_total, unique_visitors, sessions_per_user]
   }
@@ -385,6 +424,7 @@ view: ga_sessions {
     type: count_distinct
     sql: ${full_visitor_id} ;;
 
+    value_format_name: formatted_number
     drill_fields: [client_id, account.id, visit_number, hits_total, page_views_total, time_on_site_total]
   }
 
