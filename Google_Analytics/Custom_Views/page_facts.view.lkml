@@ -4,12 +4,14 @@ view: page_facts {
     explore_source: ga_sessions {
       column: id {}
       column: full_visitor_id {}
+      column: visit_start_date {}
       column: hit_id { field: hits.id }
       column: hit_time { field: hits.hit_time }
       column: hit_number {field:hits.hit_number}
       column: page_path { field: hits.page_path_formatted }
-      derived_column: page_sequence_number {sql: ROW_NUMBER() OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
-      derived_column: next_page_hit_number {sql: LEAD(hit_number) OVER (PARTITION BY id ORDER BY hit_time ASC) ;;}
+      derived_column: page_sequence_number {sql: ROW_NUMBER() OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: previous_visit_start_date {sql: LAG(visit_start_date) OVER(PARTITION BY full_visitor_id ORDER BY visit_start_date);;}
+      derived_column: next_page_hit_number {sql: LEAD(hit_number) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: current_page_minus_1 {sql: LAG(page_path) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: current_page_minus_2 {sql: LAG(page_path,2) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: current_page_minus_3 {sql: LAG(page_path,3) OVER (PARTITION BY id ORDER BY hit_time) ;;}

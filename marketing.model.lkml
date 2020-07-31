@@ -86,9 +86,9 @@ explore: ga_sessions {
     relationship: one_to_one
   }
 
-  join: page_flow {
+  join: session_flow {
     type: left_outer
-    sql_on: ${ga_sessions.id} = ${page_flow.session_id};;
+    sql_on: ${ga_sessions.id} = ${session_flow.session_id};;
     relationship: one_to_one
   }
 

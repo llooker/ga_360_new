@@ -90,6 +90,9 @@ view: ga_sessions {
     allowed_value: {
       value: "Metro"
     }
+    allowed_value: {
+      value: "Language"
+    }
 
     allowed_value: {
       value: "Channel"
@@ -121,6 +124,7 @@ view: ga_sessions {
               WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
               WHEN {% parameter audience_selector %} = 'Country' THEN ${country}
               WHEN {% parameter audience_selector %} = 'Continent' THEN ${continent}
+              WHEN {% parameter audience_selector %} = 'Language' THEN ${language}
               WHEN {% parameter audience_selector %} = 'Operating System' THEN ${operating_system}
         END;;
   }

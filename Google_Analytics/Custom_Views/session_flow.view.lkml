@@ -1,21 +1,23 @@
 #############################################################################################################
-# Purpose: A derived table that extracts the landing page, second page, third page and fourth page for a given visitor
+# Purpose: A derived table that extracts session information such as page flow and time between sessions for each visitor
 #############################################################################################################
 
-view: page_flow {
+view: session_flow {
   derived_table: {
-    sql: SELECT
-           id
-           , count(*) AS pages_visited
-           , MAX(cumulative_page_path) AS full_page_path_history
-           , MAX(IF(page_sequence_number = 1, page_path, NULL)) AS first_page_path
-           , MAX(IF(page_sequence_number = 2, page_path, NULL)) AS second_page_path
-           , MAX(IF(page_sequence_number = 3, page_path, NULL)) AS third_page_path
-           , MAX(IF(page_sequence_number = 4, page_path, NULL)) AS fourth_page_path
-           , MAX(IF(page_sequence_number = 5, page_path, NULL)) AS fifth_page_path
-           , MAX(IF(page_sequence_number = 6, page_path, NULL)) AS sixth_page_path
+    sql:
+        SELECT
+          id
+          , TIMESTAMP_DIFF(visit_start_date, COALESCE(previous_visit_start_date, visit_start_date), DAY) AS prev_visit_start
+          , count(*) AS pages_visited
+          , MAX(cumulative_page_path) AS full_page_path_history
+          , MAX(IF(page_sequence_number = 1, page_path, NULL)) AS first_page_path
+          , MAX(IF(page_sequence_number = 2, page_path, NULL)) AS second_page_path
+          , MAX(IF(page_sequence_number = 3, page_path, NULL)) AS third_page_path
+          , MAX(IF(page_sequence_number = 4, page_path, NULL)) AS fourth_page_path
+          , MAX(IF(page_sequence_number = 5, page_path, NULL)) AS fifth_page_path
+          , MAX(IF(page_sequence_number = 6, page_path, NULL)) AS sixth_page_path
         FROM ${page_facts.SQL_TABLE_NAME} AS page_facts
-        GROUP BY 1
+        GROUP BY 1,2
        ;;
     persist_for: "24 hours"
   }
@@ -100,5 +102,23 @@ view: page_flow {
     description: "Total Pages Visited in Session"
     type: number
     sql: ${TABLE}.pages_visited ;;
+  }
+
+  dimension: days_since_previous_session {
+    view_label: "Audience"
+    group_label: "User"
+    description: "Days since the previous session. 0 if user only has 1 session."
+    type: number
+    sql: COALESCE(${TABLE}.prev_visit_start, 0);;
+  }
+
+  dimension: days_since_previous_session_tier {
+    view_label: "Audience"
+    group_label: "User"
+    description: "Days since the previous session. 0 if user only has 1 session."
+    type: tier
+    style: integer
+    tiers: [1,2,4,8,15,31,61,121,365]
+    sql: ${days_since_previous_session};;
   }
 }
