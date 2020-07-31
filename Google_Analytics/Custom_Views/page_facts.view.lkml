@@ -1,4 +1,3 @@
-explore: page_facts {}
 view: page_facts {
   derived_table: {
     explore_source: ga_sessions {

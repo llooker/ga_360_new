@@ -38,36 +38,42 @@ view: event_action_funnel {
     group_label: "Funnel Events"
     suggest_explore: event_actions
     suggest_dimension: event_actions.event_action
+    description: "Event 1 to be used with Count of Event 1"
   }
 
   filter: event_2 {
     group_label: "Funnel Events"
     suggest_explore: event_actions
     suggest_dimension: event_actions.event_action
+    description: "Event 2 to be used with Count of Event 2"
   }
 
   filter: event_3 {
     group_label: "Funnel Events"
     suggest_explore: event_actions
     suggest_dimension: event_actions.event_action
+    description: "Event 3 to be used with Count of Event 3"
   }
 
   filter: event_4 {
     group_label: "Funnel Events"
     suggest_explore: event_actions
     suggest_dimension: event_actions.event_action
+    description: "Event 4 to be used with Count of Event 4"
   }
 
   filter: event_5 {
     group_label: "Funnel Events"
     suggest_explore: event_actions
     suggest_dimension: event_actions.event_action
+    description: "Event 5 to be used with Count of Event 5"
   }
 
   filter: event_6 {
     group_label: "Funnel Events"
     suggest_explore: event_actions
     suggest_dimension: event_actions.event_action
+    description: "Event 6 to be used with Count of Event 6"
   }
 
   dimension: full_vistor_id {
@@ -344,6 +350,7 @@ view: event_action_funnel {
     {% else %}
     Count of Event 1
     {% endif %}"
+    description: "Count of Event 1 to be used with Event 1 filter, if no filter is selected it shows all events"
   }
 
   measure: count_of_event_2 {
@@ -354,6 +361,7 @@ view: event_action_funnel {
     {% else %}
     Count of Event 2
     {% endif %}"
+    description: "Count of Event 2 to be used with Event 2 filter, if no filter is selected it shows all events"
   }
 
   measure: count_of_event_3 {
@@ -364,6 +372,7 @@ view: event_action_funnel {
     {% else %}
     Count of Event 3
     {% endif %}"
+    description: "Count of Event 3 to be used with Event 3 filter, if no filter is selected it shows all events"
   }
 
   measure: count_of_event_4 {
@@ -374,6 +383,7 @@ view: event_action_funnel {
     {% else %}
     Count of Event 4
     {% endif %}"
+    description: "Count of Event 4 to be used with Event 4 filter, if no filter is selected it shows all events"
   }
 
   measure: count_of_event_5 {
@@ -384,6 +394,7 @@ view: event_action_funnel {
     {% else %}
     Count of Event 5
     {% endif %}"
+    description: "Count of Event 5 to be used with Event 5 filter, if no filter is selected it shows all events"
   }
 
   measure: count_of_event_6 {
@@ -394,6 +405,7 @@ view: event_action_funnel {
     {% else %}
     Count of Event 6
     {% endif %}"
+    description: "Count of Event 6 to be used with Event 6 filter, if no filter is selected it shows all events"
   }
 
 

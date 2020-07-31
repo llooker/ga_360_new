@@ -1,13 +1,20 @@
+#############################################################################################################
+# Purpose: To identify a customer's propensity to make a purchase in the future. This file identifies a date range
+#          for the training, testing, and future input data. You are going to be able to define the date range for
+#          the future input data to ensure that you are looking at the range of data you want to.
+#############################################################################################################
+
 ######################## TRAINING/TESTING INPUTS #############################
 include: "/**/user_facts.view"
 view: training_input {
   extends: [user_facts]
+ ## Uses the SQL from the user facts table and dynamically updates the date range to look 900 days back for 360 days as our training dataset
   derived_table: {
     sql:
 {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"900"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
@@ -16,11 +23,12 @@ view: training_input {
 
 view: testing_input {
   extends: [user_facts]
+  ## Uses the SQL from the user facts table and dynamically updates the date range to look 900 days back for 360 days as our training dataset
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"900"   %}
+     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
      /*updated_end_date*/
     {{updated_sql}}
      ;;
@@ -41,7 +49,7 @@ view: future_purchase_model {
     --, CLASS_WEIGHTS=[('1',1), ('0',0.05)] -- Consider adding class weights or downsampling if you have imbalanced classes
     ) AS
     SELECT
-    * EXCEPT(clientId)
+    * EXCEPT(fullVisitorId)
     FROM ${training_input.SQL_TABLE_NAME};;
   }
 }
@@ -79,11 +87,6 @@ view: roc_curve {
   }
   dimension: threshold {
     type: number
-    link: {
-      label: "Likely Customers to Purchase"
-      url: "/explore/bqml_ga_demo/ga_sessions?fields=ga_sessions.clientId,future_purchase_prediction.max_predicted_score&f[future_purchase_prediction.predicted_will_purchase_in_future]=%3E%3D{{value}}"
-      icon_url: "http://www.looker.com/favicon.ico"
-    }
   }
   dimension: recall {type: number value_format_name: percent_2}
   dimension: false_positive_rate {type: number}
@@ -152,121 +155,187 @@ view: future_input {
   extends: [user_facts]
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"30"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"31"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
   }
-  measure: count {
-    type: count
-    drill_fields: [detail*]
+
+  parameter: audience_selector {
+    type: string
+    allowed_value: {
+      value: "Metro"
+    }
+    allowed_value: {
+      value: "Traffic Source"
+    }
+    allowed_value: {
+      value: "Browser"
+    }
+    allowed_value: {
+      value: "Day of Week"
+    }
   }
 
-  dimension: client_id {
+  dimension: audience_trait {
     type: string
-    sql: ${TABLE}.clientId ;;
+    sql: CASE WHEN {% parameter audience_selector %} = 'Metro' THEN ${metro}
+              WHEN {% parameter audience_selector %} = 'Traffic Source' THEN ${traffic_source}
+              WHEN {% parameter audience_selector %} = 'Browser' THEN ${browser}
+              WHEN {% parameter audience_selector %} = 'Day of Week' THEN ${ga_sessions_visit_start_day_of_week}
+              ELSE NULL END;;
+  }
+
+  dimension: full_visitor_id {
+    type: string
+    sql: ${TABLE}.fullVisitorId ;;
+    primary_key: yes
   }
 
   dimension: label {
     type: number
     sql: ${TABLE}.label ;;
+    hidden: yes
   }
 
   dimension: ga_sessions_visit_start_hour_of_day {
+    label: "Start Hour of the Day"
     type: number
     sql: ${TABLE}.ga_sessions_visit_start_hour_of_day ;;
+    hidden: no
   }
 
   dimension: metro {
     type: string
     sql: ${TABLE}.metro ;;
+    hidden: no
   }
 
   dimension: ga_sessions_visit_start_day_of_week {
+    label: "Start Day of the Week"
     type: string
     sql: ${TABLE}.ga_sessions_visit_start_day_of_week ;;
+    hidden: no
   }
 
   dimension: ga_sessions_source {
+    label: "Source"
     type: string
     sql: ${TABLE}.ga_sessions_source ;;
+    hidden: no
   }
 
   dimension: total_sessions {
     type: number
     sql: ${TABLE}.total_sessions ;;
+    hidden: no
   }
 
-  dimension: pageviews {
+  dimension: total_pageviews {
     type: number
     sql: ${TABLE}.pageviews ;;
+    hidden: no
   }
 
   dimension: bounce_rate {
     type: number
     sql: ${TABLE}.bounce_rate ;;
+    value_format_name: percent_2
+    hidden: no
   }
 
-  dimension: avg_session_depth {
+  dimension: average_session_depth {
     type: number
     sql: ${TABLE}.avg_session_depth ;;
+    hidden: no
+
+  }
+
+  dimension: traffic_source {
+    type: string
+    sql: CASE WHEN ${visits_traffic_source_none} = 1 THEN 'None'
+              WHEN ${visits_traffic_source_organic} = 1 THEN 'Organic'
+              WHEN ${visits_traffic_source_cpc} = 1 THEN 'CPC'
+              WHEN ${visits_traffic_source_cpm} = 1 THEN 'CPM'
+              WHEN ${visits_traffic_source_affiliate} = 1  THEN 'Affiliate'
+              WHEN ${visits_traffic_source_referral} = 1 THEN 'Referral'
+              ELSE NULL END;;
   }
 
   dimension: visits_traffic_source_none {
     type: number
     sql: ${TABLE}.visits_traffic_source_none ;;
+    hidden: yes
   }
 
   dimension: visits_traffic_source_organic {
     type: number
     sql: ${TABLE}.visits_traffic_source_organic ;;
+    hidden: yes
   }
 
   dimension: visits_traffic_source_cpc {
     type: number
     sql: ${TABLE}.visits_traffic_source_cpc ;;
+    hidden: yes
   }
 
   dimension: visits_traffic_source_cpm {
     type: number
     sql: ${TABLE}.visits_traffic_source_cpm ;;
+    hidden: yes
   }
 
   dimension: visits_traffic_source_affiliate {
     type: number
     sql: ${TABLE}.visits_traffic_source_affiliate ;;
+    hidden: yes
   }
 
   dimension: visits_traffic_source_referral {
     type: number
     sql: ${TABLE}.visits_traffic_source_referral ;;
+    hidden: yes
   }
 
   dimension: distinct_dmas {
     type: number
     sql: ${TABLE}.distinct_dmas ;;
+    hidden: no
   }
 
-  dimension: mobile {
-    type: number
-    sql: ${TABLE}.mobile ;;
+  dimension: is_mobile {
+    type: yesno
+    sql: ${TABLE}.mobile = 1 ;;
+    hidden: no
+  }
+
+  dimension: browser {
+    type: string
+    sql: CASE WHEN ${chrome} = 1 THEN 'Chrome'
+              WHEN ${safari} = 1 THEN 'Safari'
+              WHEN ${browser_other} = 1 THEN 'Other'
+              ELSE NULL END;;
   }
 
   dimension: chrome {
     type: number
     sql: ${TABLE}.chrome ;;
+    hidden: yes
   }
 
   dimension: safari {
     type: number
     sql: ${TABLE}.safari ;;
+    hidden: yes
   }
 
   dimension: browser_other {
     type: number
     sql: ${TABLE}.browser_other ;;
+    hidden: yes
   }
 
 }
@@ -274,7 +343,7 @@ view: future_input {
 
 view: future_purchase_prediction {
   derived_table: {
-    sql: SELECT clientId,
+    sql: SELECT fullVisitorId,
           pred.prob as user_propensity_score,
           NTILE(10) OVER (ORDER BY pred.prob DESC) as user_propensity_decile
         FROM ml.PREDICT(
@@ -284,19 +353,39 @@ view: future_purchase_prediction {
         WHERE pred.label = 1
        ;;
   }
-  dimension: user_propensity_score {type: number}
-  dimension: user_propensity_decile {type: number}
-  dimension: clientId {
-       type: string
-      hidden: no
-      sql: TRIM(REPLACE(${TABLE}.clientId,',','')) ;;
-      }
+  dimension: user_propensity_score {
+    type: number
+    sql: ${TABLE}.user_propensity_score ;;
+    value_format_name: percent_2
+  }
+  dimension: user_propensity_decile {
+    type: number
+    sql: ${TABLE}.user_propensity_decile ;;
+    value_format_name: decimal_2
+  }
+  dimension: fullVisitorId {
+    type: string
+    hidden: yes
+    sql: TRIM(REPLACE(${TABLE}.fullVisitorId,',','')) ;;
+  }
+
   measure: average_user_propensity_score {
     type: average
     sql: ${user_propensity_score} ;;
+    value_format_name: percent_2
+    drill_fields: [fullVisitorId, user_propensity_score]
+  }
+
+  measure: median_user_propensity_score {
+    type: median
+    sql: ${user_propensity_score} ;;
+    value_format_name: percent_2
+    drill_fields: [fullVisitorId, user_propensity_score]
   }
   measure: average_user_propensity_decile {
     type:  average
     sql:  ${user_propensity_decile} ;;
+    value_format_name: decimal_2
+    drill_fields: [fullVisitorId, user_propensity_score]
   }
 }
