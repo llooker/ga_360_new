@@ -17,6 +17,12 @@ view: page_facts {
       derived_column: current_page_minus_4 {sql: LAG(page_path,4) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: current_page_minus_5 {sql: LAG(page_path,5) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: current_page_minus_6 {sql: LAG(page_path,6) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_page_plus_1 {sql: LEAD(page_path) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_page_plus_2 {sql: LEAD(page_path,2) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_page_plus_3 {sql: LEAD(page_path,3) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_page_plus_4 {sql: LEAD(page_path,4) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_page_plus_5 {sql: LEAD(page_path,5) OVER (PARTITION BY id ORDER BY hit_time) ;;}
+      derived_column: current_page_plus_6 {sql: LEAD(page_path,6) OVER (PARTITION BY id ORDER BY hit_time) ;;}
       derived_column: cumulative_page_path {sql: STRING_AGG(page_path, " --> ") OVER (PARTITION BY id ORDER BY hit_time);;}
       filters: [hits.type: "PAGE", ga_sessions.partition_date: "@{PARTITION_DATE_PDT_FILTER}"]
     }
@@ -104,8 +110,46 @@ view: page_facts {
     type: string
   }
 
+  dimension: current_page_plus_1 {
+    view_label: "Page Flow"
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came directly before current page."
+    type: string
+  }
+  dimension: current_page_plus_2 {
+    view_label: "Page Flow"
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came 2 pages before current page."
+    type: string
+  }
+  dimension: current_page_plus_3 {
+    view_label: "Page Flow"
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came 3 pages before current page."
+    type: string
+  }
+  dimension: current_page_plus_4 {
+    view_label: "Page Flow"
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came 4 pages before current page."
+    type: string
+  }
+  dimension: current_page_plus_5 {
+    view_label: "Page Flow"
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came 5 pages before current page."
+    type: string
+  }
+  dimension: current_page_plus_6 {
+    view_label: "Page Flow"
+    group_label: "Relative Page Path"
+    description: "Page Path for page that came 6 pages before current page."
+    type: string
+  }
+
   dimension: page_sequence_number {
     view_label: "Page Flow"
+    group_label: "Page Path"
     description: "Sequenced page number in session."
     type: number
   }
