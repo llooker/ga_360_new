@@ -21,22 +21,17 @@ view: user_facts {
     unique_hour_of_day AS(
       (SELECT   ga_sessions_visit_start_hour_of_day, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_visit_start_hour_of_day
       FROM (SELECT ga_sessions.fullvisitorId as fullvisitorId, EXTRACT(HOUR FROM TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) AS ga_sessions_visit_start_hour_of_day, SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions  LEFT JOIN user_label ON ga_sessions.fullvisitorId = user_label.fullvisitorId  @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
+      FROM filtered_base  AS ga_sessions  LEFT JOIN user_label ON ga_sessions.fullvisitorId = user_label.fullvisitorId  WHERE (  (ga_sessions.visitStartTime < IFNULL(event_session, 0)   or event_session is null) )  GROUP BY 1,2)) WHERE row_number = 1)),
       -- findiing the most common metro for the user within the time period
       unique_dma AS(
       (SELECT   metro, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, metro
       FROM (SELECT ga_sessions.fullvisitorId as fullvisitorId, ga_sessions.geoNetwork.metro as metro , SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorId = user_label.fullvisitorId @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
+      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorId = user_label.fullvisitorId WHERE (  (ga_sessions.visitStartTime < IFNULL(event_session, 0)   or event_session is null) )  GROUP BY 1,2)) WHERE row_number = 1)),
       -- finding the most common day of week for the user within the time period
       unique_day_of_week AS(
       (SELECT   ga_sessions_visit_start_day_of_week, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_visit_start_day_of_week
       FROM (SELECT ga_sessions.fullvisitorId as fullvisitorId, FORMAT_TIMESTAMP('%A', TIMESTAMP_SECONDS(ga_sessions.visitStarttime)) AS ga_sessions_visit_start_day_of_week  , SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorId = user_label.fullvisitorId  @{QUERY_FILTER} GROUP BY 1,2)) WHERE row_number = 1)),
-    -- finding the most common traffic source for the user
-      unique_traffic_source AS(
-      (SELECT   ga_sessions_source, fullVisitorId FROM (SELECT ROW_NUMBER () OVER(PARTITION BY fullVisitorId ORDER BY   pageviews) as row_number, fullVisitorId, ga_sessions_source
-      FROM (SELECT ga_sessions.fullvisitorId as fullvisitorId, ga_sessions.trafficsource.medium  AS ga_sessions_source, SUM(ga_sessions.totals.pageviews) as pageviews
-      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorId = user_label.fullvisitorId  @{QUERY_FILTER}  GROUP BY 1,2)) WHERE row_number = 1)),
+      FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullvisitorId = user_label.fullvisitorId  WHERE (  (ga_sessions.visitStartTime < IFNULL(event_session, 0)   or event_session is null) ) GROUP BY 1,2)) WHERE row_number = 1)),
     -- defining aggregated metrics on a per user level and defining their browser and source medium
       agg_metrics AS (  SELECT  ga_sessions.fullVisitorId, count(distinct visitId) as total_sessions,
         sum(totals.pageviews) as pageviews,
@@ -55,17 +50,16 @@ view: user_facts {
     sum(case when trafficSource.medium = 'affiliate' then 1 else 0 end) as visits_traffic_source_affiliate,
     sum(case when trafficSource.medium = 'referral' then 1 else 0 end) as visits_traffic_source_referral
         FROM filtered_base  AS ga_sessions LEFT JOIN user_label ON ga_sessions.fullVisitorId = user_label.fullVisitorId
-        @{QUERY_FILTER}   GROUP BY 1 )
+        WHERE (  (ga_sessions.visitStartTime < IFNULL(event_session, 0)   or event_session is null) )   GROUP BY 1 )
 
 
-      SELECT user_label.fullVisitorId, label,ga_sessions_visit_start_hour_of_day, metro, ga_sessions_visit_start_day_of_week, ga_sessions_source,
+      SELECT user_label.fullVisitorId, label,ga_sessions_visit_start_hour_of_day, metro, ga_sessions_visit_start_day_of_week,
       total_sessions, pageviews, bounce_rate, avg_session_depth, visits_traffic_source_none, visits_traffic_source_organic, visits_traffic_source_cpc,  visits_traffic_source_cpm, visits_traffic_source_affiliate,
       visits_traffic_source_referral, distinct_dmas, mobile, chrome, safari, browser_other
       FROM user_label
       LEFT JOIN unique_hour_of_day ON user_label.fullVisitorId = unique_hour_of_day.fullVisitorId
       LEFT JOIN unique_dma ON user_label.fullvisitorId = unique_dma.fullvisitorId
       LEFT JOIN unique_day_of_week ON user_label.fullvisitorId = unique_day_of_week.fullvisitorId
-      LEFT JOIN unique_traffic_source ON unique_traffic_source.fullvisitorId = user_label.fullvisitorId
       LEFT JOIN agg_metrics ON agg_metrics.fullvisitorId = user_label.fullvisitorId
        ;;
   }
@@ -107,11 +101,6 @@ view: user_facts {
     hidden: yes
   }
 
-  dimension: ga_sessions_source {
-    type: string
-    sql: ${TABLE}.ga_sessions_source ;;
-    hidden: yes
-  }
 
   dimension: total_sessions {
     type: number

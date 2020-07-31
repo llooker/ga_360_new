@@ -6,9 +6,8 @@ include: "/Google_Analytics/Custom_Views/*.view.lkml"
 include: "/Dashboards/*.dashboard"
 
 datagroup: bqml_datagroup {
-  #retrain model every day
-  max_cache_age: "1 hour"
-  sql_trigger: SELECT CURRENT_DATE() ;;
+  #retrain model every month
+  sql_trigger: SELECT EXTRACT(month from CURRENT_DATE()) ;;
 }
 aggregate_awareness: yes
 
