@@ -12,9 +12,9 @@ view: training_input {
   derived_table: {
     sql:
 {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"390"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
@@ -26,9 +26,9 @@ view: testing_input {
   ## Uses the SQL from the user facts table and dynamically updates the date range to look 900 days back for 360 days as our training dataset
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
+     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"390"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
      /*updated_end_date*/
     {{updated_sql}}
      ;;
@@ -155,9 +155,9 @@ view: future_input {
   extends: [user_facts]
   derived_table: {
     sql: {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"30"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"31"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
