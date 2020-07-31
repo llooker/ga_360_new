@@ -10,6 +10,7 @@ view: training_input {
   extends: [user_facts]
  ## Uses the SQL from the user facts table and dynamically updates the date range to look 900 days back for 360 days as our training dataset
   derived_table: {
+    sql_trigger_value: SELECT CURRENT_DATE() ;;
     sql:
 {% assign x  = "${EXTENDED}" %}
     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
@@ -25,6 +26,7 @@ view: testing_input {
   extends: [user_facts]
   ## Uses the SQL from the user facts table and dynamically updates the date range to look 900 days back for 360 days as our training dataset
   derived_table: {
+    sql_trigger_value: SELECT CURRENT_DATE() ;;
     sql: {% assign x  = "${EXTENDED}" %}
      {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
     /*updated_start_date*/
@@ -154,6 +156,7 @@ view: future_purchase_model_training_info {
 view: future_input {
   extends: [user_facts]
   derived_table: {
+    sql_trigger_value: SELECT CURRENT_DATE() ;;
     sql: {% assign x  = "${EXTENDED}" %}
     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
     /*updated_start_date*/
@@ -220,12 +223,6 @@ view: future_input {
     hidden: no
   }
 
-  dimension: ga_sessions_source {
-    label: "Source"
-    type: string
-    sql: ${TABLE}.ga_sessions_source ;;
-    hidden: no
-  }
 
   dimension: total_sessions {
     type: number
