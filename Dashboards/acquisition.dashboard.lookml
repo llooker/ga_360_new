@@ -78,7 +78,6 @@
     note_text: Traffic (i.e. Sessions) based on Audience Trait (based on Audience
       Cohort filter).
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
@@ -87,6 +86,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 7
     col: 0
     width: 8
@@ -164,7 +164,6 @@
     note_text: Unique users sorted by Top Audience Trait based on Web Traffic (i.e.
       Audience Traits by Total Sessions)
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
@@ -173,6 +172,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 7
     col: 8
     width: 8
@@ -253,7 +253,6 @@
     note_text: Page Views by Top Audience Trait based on Web Traffic (i.e. Audience
       Traits by Total Sessions)
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
@@ -262,6 +261,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 7
     col: 16
     width: 8
@@ -353,7 +353,6 @@
     note_text: Traffic (i.e. Sessions) breakdown by Audience Trait (based on Audience
       Cohort filter).
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
@@ -362,6 +361,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 18
     col: 0
     width: 24
@@ -502,7 +502,6 @@
     note_text: Engagement metrics by Audience Trait (based on Audience Cohort filter).
       Sorted by trait with highest traffic (i.e. Sessions).
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
@@ -511,6 +510,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 34
     col: 0
     width: 24
@@ -574,7 +574,6 @@
     note_display: hover
     note_text: Traffic by Week & Audience Trait (based on Audience Cohort filter).
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
@@ -583,6 +582,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 24
     col: 0
     width: 24
@@ -659,7 +659,6 @@
     note_text: Sessions based on all filters. Audience Cohort filter will not affect
       value.
     listen:
-      Date: ga_sessions.partition_date
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -667,6 +666,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 5
     col: 0
     width: 8
@@ -740,7 +740,6 @@
     note_text: Unique users based on filters. Audience Cohort filter will not affect
       value.
     listen:
-      Date: ga_sessions.partition_date
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -748,6 +747,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 5
     col: 8
     width: 8
@@ -824,7 +824,6 @@
     note_text: Page Views based on filters. Audience Cohort filter will not affect
       value.
     listen:
-      Date: ga_sessions.partition_date
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -832,6 +831,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 5
     col: 16
     width: 8
@@ -842,8 +842,7 @@
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     limit: 500
     column_limit: 50
     custom_color_enabled: true
@@ -869,7 +868,8 @@
     rows_font_size: 12
     defaults_version: 1
     series_types: {}
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 0
     col: 0
     width: 24
@@ -968,11 +968,11 @@
       Source / Medium filters do not affect this tile.
     defaults_version: 1
     listen:
-      Date: ga_sessions.partition_date
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
+      Date: ga_sessions.partition_date
     row: 48
     col: 0
     width: 12
@@ -1059,7 +1059,6 @@
     note_text: Traffic by Landing page (i.e. Sessions)
     defaults_version: 1
     listen:
-      Date: ga_sessions.partition_date
       Landing Hostname [Optional]: ga_sessions.landing_page_hostname
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -1067,6 +1066,7 @@
       Source [Optional]: ga_sessions.source
       Medium [Optional]: ga_sessions.medium
       Source / Medium [Optional]: ga_sessions.source_medium
+      Date: ga_sessions.partition_date
     row: 48
     col: 12
     width: 12
@@ -1078,6 +1078,10 @@
     default_value: 6 years
     allow_multiple_values: true
     required: false
+    ui_config:
+      type: advanced
+      display: popover
+      options: []
     model: marketing
     explore: ga_sessions
     listens_to_filters: []

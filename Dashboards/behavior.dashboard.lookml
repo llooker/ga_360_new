@@ -135,6 +135,7 @@
     defaults_version: 1
     listen:
       Date: ga_sessions.partition_date
+      Host name: hits.host_name
     row: 16
     col: 0
     width: 24
@@ -196,6 +197,7 @@
     series_types: {}
     listen:
       Date: ga_sessions.partition_date
+      Host name: hits.host_name
     row: 5
     col: 10
     width: 14
@@ -206,8 +208,7 @@
     explore: ga_sessions
     type: single_value
     fields: [hits.page_count, hits.unique_page_count]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     limit: 500
     column_limit: 50
     custom_color_enabled: true
@@ -244,6 +245,9 @@
     header_font_size: 12
     rows_font_size: 12
     defaults_version: 1
+    listen:
+      Date: ga_sessions.partition_date
+      Host name: hits.host_name
     row: 2
     col: 0
     width: 24
@@ -254,8 +258,7 @@
     explore: ga_sessions
     type: looker_bar
     fields: [hits.page_count, hits.unique_page_count, hits.page_path_formatted]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     sorts: [hits.page_count desc]
     limit: 500
     column_limit: 50
@@ -334,6 +337,9 @@
     header_font_size: 12
     rows_font_size: 12
     defaults_version: 1
+    listen:
+      Date: ga_sessions.partition_date
+      Host name: hits.host_name
     row: 5
     col: 0
     width: 10
@@ -344,8 +350,7 @@
     explore: ga_sessions
     type: single_value
     fields: [time_on_page.average_time_on_page]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     limit: 500
     column_limit: 50
     custom_color_enabled: true
@@ -363,6 +368,9 @@
         bold: false, italic: false, strikethrough: false, fields: !!null ''}]
     series_types: {}
     defaults_version: 1
+    listen:
+      Date: ga_sessions.partition_date
+      Host name: hits.host_name
     row: 28
     col: 0
     width: 12
@@ -373,8 +381,7 @@
     explore: ga_sessions
     type: looker_bar
     fields: [hits.page_count, time_on_page.average_time_on_page, hits.page_path_formatted]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     sorts: [hits.page_count desc]
     limit: 500
     column_limit: 50
@@ -445,6 +452,9 @@
     header_font_size: 12
     rows_font_size: 12
     defaults_version: 1
+    listen:
+      Date: ga_sessions.partition_date
+      Host name: hits.host_name
     row: 31
     col: 0
     width: 12
@@ -455,8 +465,7 @@
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     limit: 500
     query_timezone: America/Los_Angeles
     custom_color_enabled: true
@@ -482,6 +491,9 @@
     rows_font_size: 12
     defaults_version: 1
     series_types: {}
+    listen:
+      Date: ga_sessions.partition_date
+      Host name: hits.host_name
     row: 0
     col: 0
     width: 24

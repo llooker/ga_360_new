@@ -83,11 +83,11 @@
     note_text: Total Sessions, Sessions with Conversions, and Session Avg 7-day Conversion
       rate by day based on all filters.
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 10
     col: 0
     width: 14
@@ -123,11 +123,11 @@
       Each session will only be counted once, even if there are multiple converting
       hits/events.
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 8
     col: 14
     width: 5
@@ -162,11 +162,11 @@
     note_text: Total sessions within timeframe (includes sessions without a converting
       hit/event).
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 8
     col: 0
     width: 14
@@ -200,11 +200,11 @@
     note_display: hover
     note_text: "(Sessions with Conversion / Total Sessions in timeframe)"
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 8
     col: 19
     width: 5
@@ -312,11 +312,11 @@
     note_text: Total conversions (based on filters) by Unique Events (concatenates
       Event Category, Event Action, Event Label, and Event Page).
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 26
     col: 12
     width: 12
@@ -403,11 +403,11 @@
     note_text: Sessions with Conversion by Goal Completion Page (Location) with all
       page paths that led to that page.
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 49
     col: 0
     width: 12
@@ -531,11 +531,11 @@
     note_text: Total Conversions (based on filters) by Page the conversion occurred
       on. If the conversion is a page, then there will only be one row.
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 26
     col: 0
     width: 12
@@ -570,11 +570,11 @@
     note_text: Total Pages or Events (conversions) in timeframe that match filter
       input. Aggregates multiple conversions within the same session.
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 24
     col: 0
     width: 24
@@ -591,7 +591,7 @@
       \ of <b>Event Action</b>, <b>Event Label</b>, <b>Event Category</b> and/or <b>Page</b>\
       \ filters at the top to select your goal(s). Then click <b>Reload Data</b> button\
       \ at the top right.\n </font>\n<br>\n<br>\n<font size=3px><b>Optional</b>: Update\
-      \ <b>Audience Cohort</b> filter to update the <em>Conversion Rate by Audience\
+      \ <b>Audience Selector</b> filter to update the <em>Conversion Rate by Audience\
       \ Cohort</em> tile\n</font>\n </center>"
     row: 2
     col: 0
@@ -660,11 +660,11 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': event_action_facts.event_action
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 49
     col: 12
     width: 12
@@ -818,12 +818,12 @@
     note_text: Total Conversions (based on filters) by Page the conversion occurred
       on. If the conversion is a page, then there will only be one row.
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
       Audience Selector: ga_sessions.audience_selector
+      Date: ga_sessions.partition_date
     row: 10
     col: 14
     width: 10
@@ -915,11 +915,11 @@
     defaults_version: 1
     series_types: {}
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': event_action_facts.event_action
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 43
     col: 12
     width: 12
@@ -1005,11 +1005,11 @@
     note_text: Sessions with Conversion by Goal Completion Page (Location) with all
       page paths that led to that page.
     listen:
-      Date: ga_sessions.partition_date
       'Goal: Event Action': hits.event_action_goal_selection
       'Goal: Event Label': hits.event_label_goal_selection
       'Goal: Event Category': hits.event_category_goal_selection
       'Goal: Page': hits.page_goal_selection
+      Date: ga_sessions.partition_date
     row: 43
     col: 0
     width: 12
@@ -1020,8 +1020,7 @@
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     limit: 500
     query_timezone: America/Los_Angeles
     custom_color_enabled: true
@@ -1047,6 +1046,8 @@
     rows_font_size: 12
     defaults_version: 1
     series_types: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 0
     col: 0
     width: 24
@@ -1058,6 +1059,10 @@
     default_value: 1500 days
     allow_multiple_values: true
     required: false
+    ui_config:
+      type: advanced
+      display: popover
+      options: []
     model: marketing
     explore: ga_sessions
     listens_to_filters: []

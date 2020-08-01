@@ -1084,8 +1084,7 @@
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
-    filters:
-      ga_sessions.partition_date: 1500 days
+    filters: {}
     limit: 500
     query_timezone: America/Los_Angeles
     custom_color_enabled: true
@@ -1111,7 +1110,8 @@
     rows_font_size: 12
     defaults_version: 1
     series_types: {}
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 0
     col: 0
     width: 24
