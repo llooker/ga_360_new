@@ -98,8 +98,8 @@
     hidden_fields: [ga_sessions.visits_total]
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 21
     col: 9
     width: 7
@@ -177,8 +177,8 @@
     note_text: Entrances to Looker websites based on web properties
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 6
     col: 0
     width: 16
@@ -258,8 +258,8 @@
       https://support.google.com/analytics/answer/3297892?hl=en
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 38
     col: 0
     width: 12
@@ -308,8 +308,8 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 4
     col: 0
     width: 8
@@ -358,8 +358,8 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 19
     col: 0
     width: 24
@@ -407,8 +407,8 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 4
     col: 16
     width: 8
@@ -504,8 +504,8 @@
     note_text: Top 10 Landing pages based on Sessions within timeframe
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 38
     col: 12
     width: 12
@@ -614,8 +614,8 @@
     hidden_fields: [ga_sessions.visits_total]
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 21
     col: 16
     width: 8
@@ -708,8 +708,8 @@
     hidden_fields:
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 21
     col: 0
     width: 9
@@ -767,8 +767,8 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 4
     col: 8
     width: 8
@@ -846,8 +846,8 @@
     value_labels: legend
     label_type: labPer
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 6
     col: 16
     width: 8
@@ -896,8 +896,8 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 53
     col: 0
     width: 12
@@ -980,8 +980,8 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 55
     col: 12
     width: 12
@@ -1072,8 +1072,8 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 55
     col: 0
     width: 12
@@ -1190,8 +1190,8 @@
       https://support.google.com/analytics/answer/3297892?hl=en
     defaults_version: 1
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 32
     col: 0
     width: 24
@@ -1224,8 +1224,8 @@
     note_display: hover
     note_text: Avg time spent on each page in session
     listen:
-      Partition Date: ga_sessions.partition_date
       Landing Page Hostname: ga_sessions.landing_page_hostname
+      Date: ga_sessions.partition_date
     row: 53
     col: 12
     width: 12
@@ -1240,7 +1240,7 @@
     width: 24
     height: 2
   filters:
-  - name: Partition Date
+  - name: Date
     title: Partition Date
     type: field_filter
     default_value: 5 years

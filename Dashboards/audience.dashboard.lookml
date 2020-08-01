@@ -74,14 +74,14 @@
       ga_sessions.all_confirmations_conversion_rate, audience_cohorts.rank]
     defaults_version: 1
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 7
     col: 0
     width: 8
@@ -159,14 +159,14 @@
     note_text: Unique users sorted by Top Audience Trait based on Web Traffic (i.e.
       Audience Traits by Total Sessions)
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 7
     col: 8
     width: 8
@@ -247,14 +247,14 @@
     note_text: Page Views by Top Audience Trait based on Web Traffic (i.e. Audience
       Traits by Total Sessions)
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 7
     col: 16
     width: 8
@@ -342,14 +342,14 @@
       ga_sessions.all_confirmations_conversion_rate]
     defaults_version: 1
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 18
     col: 0
     width: 24
@@ -410,14 +410,14 @@
     hidden_fields: [ga_sessions.all_confirmation_completions]
     defaults_version: 1
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 23
     col: 0
     width: 24
@@ -493,14 +493,14 @@
     note_display: hover
     note_text: Sessions based on filters
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 5
     col: 0
     width: 8
@@ -573,14 +573,14 @@
     note_display: hover
     note_text: Unique users based on filters
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 5
     col: 8
     width: 8
@@ -656,14 +656,14 @@
     note_display: hover
     note_text: Page Views based on filters
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
+      Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
-      Audience Cohort [Required]: ga_sessions.audience_selector
     row: 5
     col: 16
     width: 8
@@ -1129,7 +1129,7 @@
     defaults_version: 1
     series_types: {}
     listen:
-      Partition Date [Required]: ga_sessions.partition_date
+      Date: ga_sessions.partition_date
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
@@ -1651,6 +1651,20 @@
     width: 12
     height: 6
   filters:
+  - name: Date
+    title: Date
+    type: field_filter
+    default_value: 6 years
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+      options: []
+    model: marketing
+    explore: ga_sessions
+    listens_to_filters: []
+    field: ga_sessions.partition_date
   - name: Audience Cohort [Required]
     title: Audience Cohort [Required]
     type: field_filter
@@ -1672,16 +1686,6 @@
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.audience_selector
-  - name: Partition Date [Required]
-    title: Partition Date [Required]
-    type: field_filter
-    default_value: 6 years
-    allow_multiple_values: true
-    required: false
-    model: marketing
-    explore: ga_sessions
-    listens_to_filters: []
-    field: ga_sessions.partition_date
   - name: Country [Optional]
     title: Country [Optional]
     type: field_filter
