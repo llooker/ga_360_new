@@ -41,10 +41,3 @@ constant: PARTITION_DATE_DEFAULT_EXPLORE_FILTER {
   value: "last 1500 days"
   export: override_required
 }
-
-
-constant: QUERY_FILTER {
-  value: " WHERE (
- (ga_sessions.visitStartTime < IFNULL(event_session, 0)
-  or event_session is null) )"
-}
