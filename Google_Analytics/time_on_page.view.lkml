@@ -28,7 +28,7 @@ view: time_on_page {
                 , 0
               )
             ) OVER (PARTITION BY fullVisitorId, visitStartTime) AS last_event
-        FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` AS ga_sessions
+        FROM ${ga_sessions.SQL_TABLE_NAME} AS ga_sessions
         LEFT JOIN UNNEST(ga_sessions.hits) AS hits
         WHERE {% condition ga_sessions.partition_date %} TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d'))) {% endcondition %}
       )

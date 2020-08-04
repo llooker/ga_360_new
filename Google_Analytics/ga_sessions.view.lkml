@@ -152,7 +152,7 @@ view: ga_sessions {
   dimension: landing_page {
     view_label: "Behavior"
     group_label: "Pages (with Parameters)"
-    label: "Landing Page"
+    label: "Landing Page (with Parameters)"
     description: "Landing page for session."
     sql: (
           SELECT
@@ -212,12 +212,10 @@ view: ga_sessions {
 
   dimension: partition_date_filter {
     type: string
-    sql: CONCAT('This data is from the ','@{PARTITION_DATE_PDT_FILTER}') ;;
+    sql: CONCAT('This data is from the ','@{PDT_DATE_FILTER} ') ;;
     hidden: no
-    html: <div class="vis">
-    <div style="white-space: normal; word-wrap: break-word;width:100%; font-size:50%;"> {{value}}.</strong>
-    </div>
-    </div> ;;
+    html:  <a style="background: #FFF;float: center; padding:15px; font-weight: bold;font-size: 30%;">{{value}}  </a></strong>
+   ;;
   }
 
 

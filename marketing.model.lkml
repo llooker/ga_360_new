@@ -20,7 +20,7 @@ explore: ga_sessions {
   always_filter: {
     filters: {
       field: partition_date
-      value: "@{PARTITION_DATE_DEFAULT_EXPLORE_FILTER}"
+      value: "@{EXPLORE_DATE_FILTER}"
     }
   }
 
@@ -56,18 +56,6 @@ explore: ga_sessions {
     type: left_outer
     sql_on: ${event_action_funnel.event1_hit_id} = ${hits.id} ;;
     relationship: one_to_one
-  }
-
-  join: custom_dimensions {
-    type: left_outer
-    sql: LEFT JOIN UNNEST(${hits.custom_dimensions}) AS custom_dimensions ;;
-    relationship: one_to_many
-  }
-
-  join: custom_variables {
-    type: left_outer
-    sql: LEFT JOIN UNNEST(${hits.custom_variables}) AS custom_variables ;;
-    relationship: one_to_many
   }
 
   join: event_action_facts {
