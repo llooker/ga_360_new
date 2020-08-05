@@ -1,4 +1,11 @@
+include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/calendar.view.lkml"
+
 view: calendar {
+  extends: [calendar_config]
+}
+
+
+view: calendar_core {
   view_label: "Session"
   extension: required
 
