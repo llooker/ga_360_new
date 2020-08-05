@@ -22,11 +22,6 @@ constant: GA360_TABLE_NAME {
   export: override_required
 }
 
-constant: MODEL_NAME {
-  value: "marketing"
-  export: override_required
-}
-
 constant: CONFIG_PROJECT_NAME {
   value: "ga_360_config"
   export: override_required
