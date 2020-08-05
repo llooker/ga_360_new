@@ -1,4 +1,4 @@
-project_name: "block_ga360"
+project_name: "block-ga360"
 
 
 ################ Constants ################
@@ -8,8 +8,6 @@ constant: CONNECTION_NAME {
   value: "ga_generated"
   export: override_required
 }
-
-
 
 # Used in ga_sessions.view sql_table_name
 constant: SCHEMA_NAME {
@@ -23,7 +21,7 @@ constant: GA360_TABLE_NAME {
 }
 
 constant: CONFIG_PROJECT_NAME {
-  value: "ga_360_config"
+  value: "block-ga360-config"
   export: override_required
 }
 
@@ -35,4 +33,18 @@ constant: PDT_DATE_FILTER {
 constant: EXPLORE_DATE_FILTER {
   value: "last 1500 days"
   export: override_required
+}
+
+################ Dependencies ################
+
+local_dependency: {
+  project: "@{CONFIG_PROJECT_NAME}"
+
+  override_constant: GA360_TABLE_NAME {
+    value: "@{GA360_TABLE_NAME}"
+  }
+
+  override_constant: SCHEMA_NAME {
+    value: "@{SCHEMA_NAME}"
+  }
 }

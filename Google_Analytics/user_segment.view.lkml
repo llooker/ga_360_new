@@ -1,4 +1,10 @@
+include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/user_segment.view.lkml"
+
 view: user_segment_filters {
+  extends: [user_segment_filters_config]
+}
+
+view: user_segment_filters_core {
   extension: required
   filter: user_segment_timeframe {
     type: date
@@ -15,6 +21,11 @@ view: user_segment_filters {
 }
 
 view: user_segment {
+  extends: [user_segment_config]
+}
+
+view: user_segment_core {
+  extension: required
   label: "User Segment Evolution"
   derived_table: {
     explore_source: ga_sessions {
