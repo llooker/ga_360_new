@@ -5,7 +5,7 @@
   elements:
   - title: Top US States
     name: Top US States
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_geo_choropleth
     fields: [ga_sessions.visits_total, ga_sessions.region]
@@ -106,7 +106,7 @@
     height: 8
   - title: Traffic
     name: Traffic
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visit_start_week, ga_sessions.visits_total, ga_sessions.bounce_rate,
@@ -185,7 +185,7 @@
     height: 10
   - title: Top Referrers
     name: Top Referrers
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.visits_total, ga_sessions.source]
@@ -266,7 +266,7 @@
     height: 12
   - title: Sessions
     name: Sessions
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.visits_total, ga_sessions.percent_new_sessions]
@@ -316,7 +316,7 @@
     height: 2
   - title: Users
     name: Users
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.unique_visitors, ga_sessions.percent_returning_visitors]
@@ -366,7 +366,7 @@
     height: 2
   - title: Avg Session Duration
     name: Avg Session Duration
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.timeonsite_average_per_session]
@@ -424,7 +424,7 @@
     height: 3
   - title: Top Landing Pages
     name: Top Landing Pages
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.landing_page_formatted, ga_sessions.visits_total]
@@ -521,7 +521,7 @@
     height: 3
   - title: Top Countries (Non-US)
     name: Top Countries (Non-US)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_geo_choropleth
     fields: [ga_sessions.country, ga_sessions.visits_total]
@@ -622,7 +622,7 @@
     height: 8
   - title: Sessions by Continent
     name: Sessions by Continent
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_area
     fields: [ga_sessions.visits_total, ga_sessions.continent, ga_sessions.visit_start_month]
@@ -725,7 +725,7 @@
     height: 3
   - title: Bounces
     name: Bounces
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.bounces_total, ga_sessions.bounce_rate]
@@ -775,7 +775,7 @@
     height: 2
   - title: Session Duration
     name: Session Duration
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visits_total, ga_sessions.time_on_site_tier]
@@ -854,7 +854,7 @@
     height: 10
   - title: Page Views
     name: Page Views
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [hits.page_count, hits.unique_page_count]
@@ -904,7 +904,7 @@
     height: 2
   - title: Avg Time on Page
     name: Avg Time on Page
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [hits.page_count, time_on_page.average_time_on_page, hits.page_path_formatted]
@@ -988,7 +988,7 @@
     height: 11
   - title: Top Pages
     name: Top Pages
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [hits.page_count, hits.unique_page_count, hits.page_path_formatted]
@@ -1080,7 +1080,7 @@
     height: 11
   - title: Navigation Bar
     name: Navigation Bar
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
@@ -1118,7 +1118,7 @@
     height: 2
   - title: Sessions by Source Channel
     name: Sessions by Source Channel
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.visits_total, ga_sessions.audience_trait, audience_cohorts.rank]
@@ -1198,7 +1198,7 @@
     height: 6
   - title: Avg Time on Page
     name: Avg Time on Page (2)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [time_on_page.average_time_on_page]
@@ -1250,7 +1250,7 @@
       type: advanced
       display: inline
       options: []
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date

@@ -13,7 +13,7 @@
   elements:
   - title: Custom Goal Conversion Rate
     name: Custom Goal Conversion Rate
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visit_start_date, ga_sessions.visits_total, hits.has_completed_goal]
@@ -94,7 +94,7 @@
     height: 11
   - title: Converting Sessions
     name: Converting Sessions
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [hits.sessions_with_conversions]
@@ -134,7 +134,7 @@
     height: 2
   - title: Total Sessions
     name: Total Sessions
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.visits_total]
@@ -173,7 +173,7 @@
     height: 2
   - title: Session CNV Rate
     name: Session CNV Rate
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [hits.session_conversion_rate]
@@ -211,7 +211,7 @@
     height: 2
   - title: Top Events
     name: Top Events
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [hits.conversion_count, hits.full_event]
@@ -323,7 +323,7 @@
     height: 11
   - title: Reverse Goal Path
     name: Reverse Goal Path
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: sankey
     fields: [page_facts.current_page_minus_3, page_facts.current_page_minus_2, page_facts.current_page_minus_1,
@@ -414,7 +414,7 @@
     height: 11
   - title: Top Goal Completion Page(s)
     name: Top Goal Completion Page(s)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [hits.conversion_count, hits.page_path_formatted, hits.session_conversion_rate]
@@ -542,7 +542,7 @@
     height: 11
   - title: Total Conversions
     name: Total Conversions
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [hits.conversion_count]
@@ -599,7 +599,7 @@
     height: 4
   - title: Reverse Event Action Path
     name: Reverse Event Action Path
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: sankey
     fields: [event_action_facts.current_event_minus_3, event_action_facts.current_event_minus_2,
@@ -691,7 +691,7 @@
     height: 3
   - title: Session Conversion Rate by Audience Cohort
     name: Session Conversion Rate by Audience Cohort
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.audience_trait, hits.sessions_with_conversions, hits.session_conversion_rate]
@@ -845,7 +845,7 @@
     height: 6
   - title: Reverse Event Action Path
     name: Reverse Event Action Path (2)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_grid
     fields: [event_action_facts.current_event_minus_3, event_action_facts.current_event_minus_2,
@@ -926,7 +926,7 @@
     height: 6
   - title: Reverse Goal Path
     name: Reverse Goal Path (2)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_grid
     fields: [page_facts.current_page_minus_3, page_facts.current_page_minus_2, page_facts.current_page_minus_1,
@@ -1016,7 +1016,7 @@
     height: 6
   - title: Navigation Bar
     name: Navigation Bar
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
@@ -1063,7 +1063,7 @@
       type: advanced
       display: popover
       options: []
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date
@@ -1073,7 +1073,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: hits.event_action_goal_selection
@@ -1083,7 +1083,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: hits.event_label_goal_selection
@@ -1093,7 +1093,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: hits.event_category_goal_selection
@@ -1103,7 +1103,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: hits.page_goal_selection
@@ -1116,7 +1116,7 @@
     ui_config:
       type: dropdown_menu
       display: inline
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.audience_selector

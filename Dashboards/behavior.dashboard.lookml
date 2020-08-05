@@ -5,7 +5,7 @@
   elements:
   - title: Landing Page Detail
     name: Landing Page Detail
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: table
     fields: [ga_sessions.landing_page_formatted, ga_sessions.visits_total, ga_sessions.transaction_revenue_total,
@@ -142,7 +142,7 @@
     height: 12
   - title: Top Pages
     name: Top Pages
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_grid
     fields: [hits.page_path, ga_sessions.page_views_total, hits.unique_page_count,
@@ -204,7 +204,7 @@
     height: 11
   - title: Page Views
     name: Page Views
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [hits.page_count, hits.unique_page_count]
@@ -254,7 +254,7 @@
     height: 3
   - title: Top Pages
     name: Top Pages (2)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [hits.page_count, hits.unique_page_count, hits.page_path_formatted]
@@ -346,7 +346,7 @@
     height: 11
   - title: Avg Time on Page
     name: Avg Time on Page
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [time_on_page.average_time_on_page]
@@ -377,7 +377,7 @@
     height: 3
   - title: Avg Time on Top Pages
     name: Avg Time on Top Pages
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [hits.page_count, time_on_page.average_time_on_page, hits.page_path_formatted]
@@ -461,7 +461,7 @@
     height: 10
   - title: Navigation Bar
     name: Navigation Bar
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
@@ -509,7 +509,7 @@
       type: advanced
       display: inline
       options: []
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date
@@ -526,7 +526,7 @@
       - hostname
       - " head"
       - tet
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: hits.host_name
