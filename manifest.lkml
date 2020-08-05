@@ -1,4 +1,4 @@
-project_name: "ga_360_new"
+project_name: "block_ga360"
 
 
 ################ Constants ################
@@ -22,22 +22,17 @@ constant: GA360_TABLE_NAME {
   export: override_required
 }
 
-constant: MODEL_NAME {
-  value: "marketing"
-  export: override_required
-}
-
 constant: CONFIG_PROJECT_NAME {
   value: "ga_360_config"
   export: override_required
 }
 
-constant: PARTITION_DATE_PDT_FILTER {
+constant: PDT_DATE_FILTER {
   value: "last 1500 days"
   export: override_required
 }
 
-constant: PARTITION_DATE_DEFAULT_EXPLORE_FILTER {
+constant: EXPLORE_DATE_FILTER {
   value: "last 1500 days"
   export: override_required
 }

@@ -5,7 +5,7 @@
   elements:
   - title: Sessions
     name: Sessions
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [audience_cohorts.rank, ga_sessions.audience_trait, ga_sessions.visits_total]
@@ -88,7 +88,7 @@
     height: 11
   - title: Users
     name: Users
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [audience_cohorts.rank, ga_sessions.audience_trait, ga_sessions.unique_visitors]
@@ -173,7 +173,7 @@
     height: 11
   - title: Pageviews
     name: Pageviews
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [audience_cohorts.rank, ga_sessions.audience_trait, hits.page_count]
@@ -261,7 +261,7 @@
     height: 11
   - title: Session Breakdown
     name: Session Breakdown
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.visits_total, ga_sessions.audience_trait, audience_cohorts.rank]
@@ -356,7 +356,7 @@
     height: 5
   - title: Sessions by Week
     name: Sessions by Week
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visits_total, ga_sessions.partition_week, ga_sessions.audience_trait,
@@ -424,7 +424,7 @@
     height: 10
   - title: Sessions
     name: Sessions (2)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.visits_total]
@@ -507,7 +507,7 @@
     height: 2
   - title: Users
     name: Users (2)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.unique_visitors]
@@ -587,7 +587,7 @@
     height: 2
   - title: Pageviews
     name: Pageviews (2)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [hits.page_count]
@@ -670,7 +670,7 @@
     height: 2
   - title: When are People Visiting?
     name: When are People Visiting?
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_grid
     fields: [ga_sessions.visit_start_hour_of_day, ga_sessions.visit_start_day_of_week,
@@ -773,7 +773,7 @@
     height: 14
   - title: United States Traffic
     name: United States Traffic
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_map
     fields: [ga_sessions.visits_total, ga_sessions.region]
@@ -877,7 +877,7 @@
     height: 9
   - title: Non-US Traffic
     name: Non-US Traffic
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_map
     fields: [ga_sessions.country, ga_sessions.visits_total]
@@ -982,7 +982,7 @@
     height: 9
   - title: How many people return?
     name: How many people return?
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_funnel
     fields: [ga_sessions.unique_visitors, ga_sessions.visit_number_tier]
@@ -1098,7 +1098,7 @@
     height: 12
   - title: Navigation Bar
     name: Navigation Bar
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
@@ -1151,7 +1151,7 @@
     height: 2
   - title: Session Duration Tiers (Seconds)
     name: Session Duration Tiers (Seconds)
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visits_total, ga_sessions.time_on_site_tier]
@@ -1234,7 +1234,7 @@
     height: 9
   - title: Days since Previous Session
     name: Days since Previous Session
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visits_total, session_flow.days_since_previous_session_tier]
@@ -1322,7 +1322,7 @@
     height: 12
   - title: Pages Visited in Session
     name: Pages Visited in Session
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visits_total, session_flow.pages_visited]
@@ -1418,7 +1418,7 @@
     height: 3
   - title: Language
     name: Language
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.visits_total, ga_sessions.audience_trait, audience_cohorts.rank]
@@ -1549,7 +1549,7 @@
     height: 3
   - title: Sub Continent
     name: Sub Continent
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.visits_total, ga_sessions.continent]
@@ -1661,7 +1661,7 @@
       type: advanced
       display: popover
       options: []
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date
@@ -1682,7 +1682,7 @@
       - Continent
       - Browser
       - Language
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.audience_selector
@@ -1692,7 +1692,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.country
@@ -1702,7 +1702,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.continent
@@ -1712,7 +1712,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.source
@@ -1722,7 +1722,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.source_medium
@@ -1732,7 +1732,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.medium
@@ -1742,7 +1742,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: marketing
+    model: google_analytics_360
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.channel_grouping

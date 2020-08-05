@@ -108,7 +108,7 @@ view: hits {
   dimension: full_page_url_parameters {
     view_label: "Behavior"
     group_label: "Pages (with Parameters)"
-    label: "Full Page URL"
+    label: "Full Page URL (with Parameters)"
     description: "The full URL including the hostname and path."
     type: string
     sql: CONCAT(${host_name}, ${page_path});;
@@ -189,7 +189,7 @@ view: hits {
   dimension: page_path {
     view_label: "Behavior"
     group_label: "Pages (with Parameters)"
-    label: "Page"
+    label: "Page (with Parameters)"
     description: "A page on the website specified by path and/or query parameters. Use this with hostname to get the page's full URL."
     sql: ${TABLE}.page.pagePath ;;
   }

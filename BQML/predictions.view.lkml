@@ -13,9 +13,9 @@ view: training_input {
     sql_trigger_value: SELECT CURRENT_DATE() ;;
     sql:
 {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"390"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
@@ -28,9 +28,9 @@ view: testing_input {
   derived_table: {
     sql_trigger_value: SELECT CURRENT_DATE() ;;
     sql: {% assign x  = "${EXTENDED}" %}
-     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
+     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"390"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"360"  %}
      /*updated_end_date*/
     {{updated_sql}}
      ;;
@@ -51,7 +51,7 @@ view: future_purchase_model {
     --, CLASS_WEIGHTS=[('1',1), ('0',0.05)] -- Consider adding class weights or downsampling if you have imbalanced classes
     ) AS
     SELECT
-    * EXCEPT(fullVisitorId)
+    * EXCEPT(clientId)
     FROM ${training_input.SQL_TABLE_NAME};;
   }
 }
@@ -158,9 +158,9 @@ view: future_input {
   derived_table: {
     sql_trigger_value: SELECT CURRENT_DATE() ;;
     sql: {% assign x  = "${EXTENDED}" %}
-    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"1500"   %}
+    {% assign updated_start_sql = x | replace: 'DAYS_BACK',"30"   %}
     /*updated_start_date*/
-    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"200"  %}
+    {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"31"  %}
      /*updated_end_date*/
     {{updated_sql}}
     ;;
@@ -191,9 +191,9 @@ view: future_input {
               ELSE NULL END;;
   }
 
-  dimension: full_visitor_id {
+  dimension: client_id {
     type: string
-    sql: ${TABLE}.fullVisitorId ;;
+    sql: ${TABLE}.clientId ;;
     primary_key: yes
   }
 
@@ -340,7 +340,7 @@ view: future_input {
 
 view: future_purchase_prediction {
   derived_table: {
-    sql: SELECT fullVisitorId,
+    sql: SELECT clientId,
           pred.prob as user_propensity_score,
           NTILE(10) OVER (ORDER BY pred.prob DESC) as user_propensity_decile
         FROM ml.PREDICT(
@@ -360,29 +360,29 @@ view: future_purchase_prediction {
     sql: ${TABLE}.user_propensity_decile ;;
     value_format_name: decimal_2
   }
-  dimension: fullVisitorId {
+  dimension: clientId {
     type: string
     hidden: yes
-    sql: TRIM(REPLACE(${TABLE}.fullVisitorId,',','')) ;;
+    sql: TRIM(REPLACE(${TABLE}.clientId,',','')) ;;
   }
 
   measure: average_user_propensity_score {
     type: average
     sql: ${user_propensity_score} ;;
     value_format_name: percent_2
-    drill_fields: [fullVisitorId, user_propensity_score]
+    drill_fields: [clientId, user_propensity_score]
   }
 
   measure: median_user_propensity_score {
     type: median
     sql: ${user_propensity_score} ;;
     value_format_name: percent_2
-    drill_fields: [fullVisitorId, user_propensity_score]
+    drill_fields: [clientId, user_propensity_score]
   }
   measure: average_user_propensity_decile {
     type:  average
     sql:  ${user_propensity_decile} ;;
     value_format_name: decimal_2
-    drill_fields: [fullVisitorId, user_propensity_score]
+    drill_fields: [clientId, user_propensity_score]
   }
 }
