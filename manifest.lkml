@@ -1,4 +1,4 @@
-project_name: "ga_360_new"
+project_name: "block_ga360"
 
 
 ################ Constants ################
