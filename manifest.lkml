@@ -5,7 +5,7 @@ project_name: "block-ga360"
 
 # Used in google_analytics_block.model connection param
 constant: CONNECTION_NAME {
-  value: "ga_generated"
+  value: "ga-generated"
   export: override_required
 }
 

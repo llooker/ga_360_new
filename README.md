@@ -41,7 +41,7 @@ Custom Views
 We have created a few tables to enable you to move beyond what is available in the GA UI. The event and page fact and funnel tables allow you to create your custom pathing within the dashboards.
 The goals view is what allows you to be able to view the custom goals over a historical period of time. If you do want to bake any of these goals into the model as a field you can reference the ga_sessions_config table where we have created some sample goals you can create.
 
-BQML model consists of two main files user_facts along with the predictions table.
+BQML model consists of two main files user_facts along with the predictions table. Note you need have over 1 year of data to be able to leverage the model.
 
   The user_facts table is where we are creating an input table for our model that identifies customers who have made a purchase alongside other common factors associated with that user that we can use in our predictive model.
 

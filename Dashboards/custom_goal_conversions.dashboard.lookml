@@ -1056,7 +1056,7 @@
   - name: Date
     title: Date
     type: field_filter
-    default_value: 1500 days
+    default_value: 7 day
     allow_multiple_values: true
     required: false
     ui_config:
