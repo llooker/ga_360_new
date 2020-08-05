@@ -28,11 +28,11 @@ constant: CONFIG_PROJECT_NAME {
 }
 
 constant: PDT_DATE_FILTER {
-  value: "last 1500 days"
+  value: "last 30 days"
   export: override_required
 }
 
 constant: EXPLORE_DATE_FILTER {
-  value: "last 1500 days"
+  value: "last 7 days"
   export: override_required
 }
