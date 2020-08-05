@@ -2,7 +2,7 @@
   "label": "Google Analytics 360",
   "category_label": "Models",
   "branding": {
-    "image_uri": "https://marketplace-api.looker.com/block-icons/google-analytics.png",
+    "image_uri": "https://marketplace-api.looker.com/block-icons/icon-google-analytics-new.png",
     "tagline": "Understand how your users are engaging with your product or webpage with Looker's Block for Google Analytics 360"
   },
 
@@ -39,7 +39,7 @@
   "auxiliary_projects": [
     {
       "git_uri": "git://github.com/looker/block-ga360-config.git",
-      "git_ref": "e9dc7c26551bff0119e5b9ad5719d59e418a73bf",
+      "git_ref": "e5a51ae3a54f5db868fd5918d094d5331e393b36",
       "label": "Google Analytics 360 Config",
       "constant_name": "CONFIG_PROJECT_NAME"
     }
