@@ -1243,7 +1243,7 @@
   - name: Date
     title: Partition Date
     type: field_filter
-    default_value: 5 years
+    default_value: 7 day
     allow_multiple_values: true
     required: false
     ui_config:
