@@ -12,7 +12,7 @@ view: traffic_source {
     view_label: "Acquisition"
     group_label: "Advertising"
     label: "Ad Content"
-    description: "For manual campaign tracking, it is the value of the utm_content campaign tracking parameter. For AdWords autotagging, it is the first line of the text for the online Ad campaign. If you use mad libs for the AdWords content, it contains the keywords you provided for the mad libs keyword match. If you use none of the above, its value is (not set)."
+    description: "The ad content of the traffic source. Can be set by the utm_content URL parameter."
     sql: ${TABLE}.trafficsource.adContent ;;
 
     drill_fields: [campaign, keyword, source, source_medium]
@@ -21,7 +21,7 @@ view: traffic_source {
   dimension: campaign {
     view_label: "Acquisition"
     group_label: "Advertising"
-    description: "For manual campaign tracking, it is the value of the utm_campaign campaign tracking parameter. For AdWords autotagging, it is the name(s) of the online ad campaign(s) you use for the property. If you use neither, its value is (not set)."
+    description: "The campaign value. Usually set by the utm_campaign URL parameter."
     type: string
     sql: ${TABLE}.trafficsource.campaign ;;
     drill_fields: [ad_content, keyword, source, source_medium]
@@ -32,7 +32,7 @@ view: traffic_source {
     view_label: "Acquisition"
     group_label: "Advertising"
     label: "Campaign Code"
-    description: "For manual campaign tracking, it is the value of the utm_id campaign tracking parameter."
+    description: "Value of the utm_id campaign tracking parameter, used for manual campaign tracking."
     type: string
     sql: ${TABLE}.trafficsource.campaignCode ;;
   }
@@ -43,16 +43,13 @@ view: traffic_source {
     group_label: "Traffic Sources"
     description: "The full referring URL including the hostname and path."
     type: string
-    sql:
-      CASE
-        WHEN ${medium} = "referral" THEN CONCAT(${source}, ${referralpath})
-      END;;
+    sql:IF(${medium} = "referral", CONCAT(${source}, ${referralpath}), NULL);;
   }
 
   dimension: keyword {
     view_label: "Acquisition"
     group_label: "Advertising"
-    description: "For manual campaign tracking, it is the value of the utm_term campaign tracking parameter. For AdWords traffic, it contains the best matching targeting criteria. For the display network, where multiple targeting criteria could have caused the ad to show up, it returns the best matching targeting criteria as selected by Ads. This could be display_keyword, site placement, boomuserlist, user_interest, age, or gender. Otherwise its value is (not set)."
+    description: "The keyword of the traffic source, usually set when the trafficSource.medium is 'organic' or 'cpc'. Can be set by the utm_term URL parameter."
     type: string
     sql: ${TABLE}.trafficsource.keyword ;;
 
@@ -62,7 +59,7 @@ view: traffic_source {
   dimension: medium {
     view_label: "Acquisition"
     group_label: "Traffic Sources"
-    description: "The type of referrals. For manual campaign tracking, it is the value of the utm_medium campaign tracking parameter. For AdWords autotagging, it is cpc. If users came from a search engine detected by Google Analytics, it is organic. If the referrer is not a search engine, it is referral. If users came directly to the property and document.referrer is empty, its value is (none)."
+    description: "The medium of the traffic source. Could be 'organic', 'cpc', 'referral', or the value of the utm_medium URL parameter."
     type: string
     sql: ${TABLE}.trafficsource.medium ;;
 
@@ -73,7 +70,7 @@ view: traffic_source {
     label: "Referral Path"
     view_label: "Acquisition"
     group_label: "Traffic Sources"
-    description: "The path of the referring URL (e.g., document.referrer). If someone places on their webpage a link to the property, this is the path of the page containing the referring link."
+    description: "If medium is 'referral', then this is set to the path of the referrer. (The host name of the referrer is in source.)"
     sql: ${TABLE}.trafficsource.referralPath ;;
 
     drill_fields: [source]
@@ -82,7 +79,7 @@ view: traffic_source {
   dimension: source {
     view_label: "Acquisition"
     group_label: "Traffic Sources"
-    description: "The source of referrals. For manual campaign tracking, it is the value of the utm_source campaign tracking parameter. For AdWords autotagging, it is google. If you use neither, it is the domain of the source (e.g., document.referrer) referring the users. It may also contain a port address. If users arrived without a referrer, its value is (direct)."
+    description: "The source of the traffic source. Could be the name of the search engine, the referring hostname, or a value of the utm_source URL parameter."
     type: string
     sql: ${TABLE}.trafficsource.source ;;
 
@@ -93,7 +90,7 @@ view: traffic_source {
     view_label: "Acquisition"
     group_label: "Traffic Sources"
     label: "Source / Medium"
-    description: "Combined values of ga:source and ga:medium."
+    description: "Combined values of source and medium."
     type: string
     sql: CONCAT(${source}, ' / ', ${medium}) ;;
 
