@@ -2,8 +2,10 @@ connection: "ga_generated"
 
 # include: "/datagroups.lkml"
 include: "/*/*.view.lkml"
+include: "/Google_Analytics/*.view.lkml"
 include: "/Google_Analytics/Custom_Views/*.view.lkml"
 include: "/Dashboards/*.dashboard"
+include: "//@{CONFIG_PROJECT_NAME}/block_ga360_config.model"
 
 datagroup: bqml_datagroup {
   #retrain model every month
@@ -11,9 +13,12 @@ datagroup: bqml_datagroup {
 }
 aggregate_awareness: yes
 
-
-
 explore: ga_sessions {
+  extends: [ga_sessions_config]
+}
+
+explore: ga_sessions_core {
+  extension: required
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions  data."
 
@@ -96,6 +101,11 @@ explore: ga_sessions {
 }
 
 explore: future_input {
+  extends: [future_input_config]
+}
+
+explore: future_input_core {
+  extension: required
   view_label: "Audience Traits"
   label: "BQML Customer Likelihood to Purchase"
   description: "This explore allows you to slice and dice likeliness to purchase scores by different customer traits to see how they differ. The default range of data you are looking at is in the past 30 days"

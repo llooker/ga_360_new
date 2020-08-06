@@ -2,8 +2,14 @@
 # Purpose: Defines the fields within the totals struct in google analytics. Is extending into ga_sessions.view.lkml
 #          and should not be joined into GA sessions explore as an independent view file.
 #############################################################################################################
+include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/totals.view.lkml"
 
 view: totals {
+  extends: [totals_config]
+}
+
+
+view: totals_core {
   extension: required
 
   ########## DIMENSIONS ############

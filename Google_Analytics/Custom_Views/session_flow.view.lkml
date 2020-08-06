@@ -1,8 +1,14 @@
 #############################################################################################################
 # Purpose: A derived table that extracts session information such as page flow and time between sessions for each visitor
 #############################################################################################################
+include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/session_flow.view.lkml"
 
 view: session_flow {
+  extends: [session_flow_config]
+}
+
+view: session_flow_core {
+  extension: required
   derived_table: {
     sql:
         SELECT

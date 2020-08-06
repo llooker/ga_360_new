@@ -74,7 +74,6 @@
       ga_sessions.all_confirmations_conversion_rate, audience_cohorts.rank]
     defaults_version: 1
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -82,6 +81,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 7
     col: 0
     width: 8
@@ -159,7 +159,6 @@
     note_text: Unique users sorted by Top Audience Trait based on Web Traffic (i.e.
       Audience Traits by Total Sessions)
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -167,6 +166,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 7
     col: 8
     width: 8
@@ -247,7 +247,6 @@
     note_text: Page Views by Top Audience Trait based on Web Traffic (i.e. Audience
       Traits by Total Sessions)
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -255,6 +254,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 7
     col: 16
     width: 8
@@ -342,7 +342,6 @@
       ga_sessions.all_confirmations_conversion_rate]
     defaults_version: 1
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -350,6 +349,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 18
     col: 0
     width: 24
@@ -410,7 +410,6 @@
     hidden_fields: [ga_sessions.all_confirmation_completions]
     defaults_version: 1
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -418,6 +417,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 23
     col: 0
     width: 24
@@ -493,7 +493,6 @@
     note_display: hover
     note_text: Sessions based on filters
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -501,6 +500,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 5
     col: 0
     width: 8
@@ -573,7 +573,6 @@
     note_display: hover
     note_text: Unique users based on filters
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -581,6 +580,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 5
     col: 8
     width: 8
@@ -656,7 +656,6 @@
     note_display: hover
     note_text: Page Views based on filters
     listen:
-      Date: ga_sessions.partition_date
       Audience Cohort [Required]: ga_sessions.audience_selector
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
@@ -664,6 +663,7 @@
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 5
     col: 16
     width: 8
@@ -679,7 +679,6 @@
     fill_fields: [ga_sessions.visit_start_hour_of_day]
     filters:
       ga_sessions.landing_page_hostname: ''
-      ga_sessions.partition_date: 1500 days
     sorts: [ga_sessions.visit_start_day_of_week, ga_sessions.visit_start_hour_of_day
         0]
     limit: 500
@@ -766,7 +765,8 @@
     hidden_fields: [ga_sessions.visits_total]
     series_column_widths:
       ga_sessions.visit_start_hour_of_day: 133
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 62
     col: 0
     width: 24
@@ -780,7 +780,6 @@
     filters:
       ga_sessions.country: United States
       ga_sessions.landing_page_hostname: ''
-      ga_sessions.partition_date: 1500 days
     sorts: [ga_sessions.visits_total desc]
     limit: 500
     column_limit: 50
@@ -870,7 +869,8 @@
     note_state: collapsed
     note_display: hover
     note_text: Traffic by Region (i.e. State) for United States
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 85
     col: 12
     width: 12
@@ -882,7 +882,6 @@
     type: looker_map
     fields: [ga_sessions.country, ga_sessions.visits_total]
     filters:
-      ga_sessions.partition_date: 5 years
       ga_sessions.landing_page_hostname: ''
       ga_sessions.country: "-United States"
     sorts: [ga_sessions.visits_total desc]
@@ -975,7 +974,8 @@
     note_state: collapsed
     note_display: hover
     note_text: Traffic by country (excludes United States)
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 85
     col: 0
     width: 12
@@ -988,7 +988,6 @@
     fields: [ga_sessions.unique_visitors, ga_sessions.visit_number_tier]
     fill_fields: [ga_sessions.visit_number_tier]
     filters:
-      ga_sessions.partition_date: ''
       ga_sessions.landing_page_hostname: ''
       ga_sessions.audience_selector: Device
     sorts: [ga_sessions.visit_number_tier]
@@ -1091,7 +1090,8 @@
     hide_row_totals: false
     defaults_version: 1
     hidden_fields: []
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 38
     col: 0
     width: 12
@@ -1129,13 +1129,13 @@
     defaults_version: 1
     series_types: {}
     listen:
-      Date: ga_sessions.partition_date
       Country [Optional]: ga_sessions.country
       Continent [Optional]: ga_sessions.continent
       Source [Optional]: ga_sessions.source
       Source / Medium [Optional]: ga_sessions.source_medium
       Medium [Optional]: ga_sessions.medium
       Channel [Optional]: ga_sessions.channel_grouping
+      Date: ga_sessions.partition_date
     row: 0
     col: 0
     width: 24
@@ -1156,7 +1156,6 @@
     type: looker_column
     fields: [ga_sessions.visits_total, ga_sessions.time_on_site_tier]
     filters:
-      ga_sessions.partition_date: 1500 days
       ga_sessions.time_on_site_tier: "-Undefined"
     sorts: [ga_sessions.time_on_site_tier]
     limit: 500
@@ -1227,7 +1226,8 @@
     defaults_version: 1
     value_labels: legend
     label_type: labPer
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 53
     col: 0
     width: 12
@@ -1240,7 +1240,6 @@
     fields: [ga_sessions.visits_total, session_flow.days_since_previous_session_tier]
     fill_fields: [session_flow.days_since_previous_session_tier]
     filters:
-      ga_sessions.partition_date: 1500 days
       ga_sessions.visit_number: ">1"
     sorts: [session_flow.days_since_previous_session_tier]
     limit: 500
@@ -1315,7 +1314,8 @@
     defaults_version: 1
     value_labels: legend
     label_type: labPer
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 38
     col: 12
     width: 12
@@ -1327,7 +1327,6 @@
     type: looker_column
     fields: [ga_sessions.visits_total, session_flow.pages_visited]
     filters:
-      ga_sessions.partition_date: 1500 days
       session_flow.pages_visited: NOT NULL
     sorts: [session_flow.pages_visited]
     limit: 500
@@ -1402,7 +1401,8 @@
     defaults_version: 1
     value_labels: legend
     label_type: labPer
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 53
     col: 12
     width: 12
@@ -1425,7 +1425,6 @@
     pivots: [audience_cohorts.rank, ga_sessions.audience_trait]
     filters:
       ga_sessions.landing_page_hostname: ''
-      ga_sessions.partition_date: 1500 days
       ga_sessions.audience_selector: Language
     sorts: [ga_sessions.visits_total desc 0, audience_cohorts.rank, ga_sessions.audience_trait]
     limit: 500
@@ -1513,7 +1512,8 @@
     interpolation: linear
     hidden_fields: [ga_sessions.visits_total]
     defaults_version: 1
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 79
     col: 12
     width: 12
@@ -1556,7 +1556,6 @@
     pivots: [ga_sessions.continent]
     filters:
       ga_sessions.landing_page_hostname: ''
-      ga_sessions.partition_date: 1500 days
       ga_sessions.continent: "-(not set)"
     sorts: [ga_sessions.visits_total desc 0, ga_sessions.continent]
     limit: 500
@@ -1645,7 +1644,8 @@
     interpolation: linear
     hidden_fields: []
     defaults_version: 1
-    listen: {}
+    listen:
+      Date: ga_sessions.partition_date
     row: 79
     col: 0
     width: 12
@@ -1654,7 +1654,7 @@
   - name: Date
     title: Date
     type: field_filter
-    default_value: 6 years
+    default_value: 7 day
     allow_multiple_values: true
     required: false
     ui_config:

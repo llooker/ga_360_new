@@ -1,3 +1,5 @@
+include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/user_segment.view.lkml"
+
 view: user_segment_filters {
   extension: required
   filter: user_segment_timeframe {
