@@ -1,4 +1,4 @@
-project_name: "block-ga360"
+project_name: "block-ga-360"
 
 
 ################ Constants ################
@@ -21,7 +21,7 @@ constant: GA360_TABLE_NAME {
 }
 
 constant: CONFIG_PROJECT_NAME {
-  value: "block-ga360-config"
+  value: "block-ga-360-config"
   export: override_required
 }
 

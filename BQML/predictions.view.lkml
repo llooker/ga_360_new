@@ -69,12 +69,15 @@ view: future_purchase_model_core {
 ######################## TRAINING INFORMATION #############################
 explore:  future_purchase_model_evaluation {
   hidden: yes
+  extension: required
 }
 explore: future_purchase_model_training_info {
   hidden: yes
+  extension: required
 }
 explore: roc_curve {
   hidden: yes
+  extension: required
 }
 
 # VIEWS:

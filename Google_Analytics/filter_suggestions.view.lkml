@@ -2,10 +2,6 @@
 include: "ga_sessions.view.lkml"
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/filter_suggestions.view.lkml"
 
-explore: event_actions {
-  hidden: yes
-}
-
 view: event_actions {
   extends: [event_actions_config]
 }
@@ -23,15 +19,6 @@ view: event_actions_core {
 
   dimension: event_action {
   }
-}
-
-explore: event_labels {
-  extends: [event_labels_config]
-}
-
-explore: event_labels_core {
-  hidden: yes
-  extension: required
 }
 
 view: event_labels {
@@ -53,16 +40,6 @@ view: event_labels_core {
   }
 }
 
-explore: event_categories {
-  extends: [event_categories_config]
-  extension: required
-}
-
-explore: event_categories_core {
-  hidden: yes
-  extension: required
-}
-
 view: event_categories {
   extends: [event_categories_config]
 }
@@ -81,14 +58,6 @@ view: event_categories_core {
   }
 }
 
-explore: top_pages {
-  extends: [top_pages_config]
-}
-
-explore: top_pages_core {
-  hidden: yes
-  extension: required
-}
 view: top_pages {
   extends: [top_pages_config]
 }
@@ -108,4 +77,39 @@ view: top_pages_core {
 
   dimension: page_path {
   }
+}
+
+explore: event_categories {
+  extends: [event_categories_config]
+  extension: required
+}
+
+explore: event_categories_core {
+  hidden: yes
+  extension: required
+}
+
+explore: event_labels {
+  extends: [event_labels_config]
+  extension: required
+}
+
+explore: event_labels_core {
+  hidden: yes
+  extension: required
+}
+
+explore: top_pages {
+  extends: [top_pages_config]
+  extension: required
+}
+
+explore: top_pages_core {
+  hidden: yes
+  extension: required
+}
+
+explore: event_actions {
+  hidden: yes
+  extension: required
 }
