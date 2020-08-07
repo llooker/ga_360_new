@@ -40,7 +40,7 @@
   "auxiliary_projects": [
     {
       "git_uri": "git://github.com/looker/block-ga360-config.git",
-      "git_ref": "b67ab596fc62ca5e251eab420248d20dc5ac35db",
+      "git_ref": "8cd8db8c0e7796e88cf85c44e5aafca428de6ee2",
       "label": "New Google Analytics 360 Config",
       "constant_name": "CONFIG_PROJECT_NAME"
     }
