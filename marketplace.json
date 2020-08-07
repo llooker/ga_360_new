@@ -4,7 +4,7 @@
   "branding": {
     "badge": "Beta",
     "image_uri": "https://marketplace-api.looker.com/block-icons/icon-google-analytics-new.png",
-    "tagline": "Understand how your users are engaging with your product or webpage with Looker's Block for Google Analytics 360"
+    "tagline": "Understand how your users are engaging with your product or webpage with Looker's Block for Google Analytics 360. (Beta)"
   },
 
   "constants": {
