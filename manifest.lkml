@@ -5,7 +5,7 @@ project_name: "block-ga360"
 
 # Used in google_analytics_block.model connection param
 constant: CONNECTION_NAME {
-  value: "ga-generated"
+  value: "ga_generated"
   export: override_required
 }
 
@@ -26,7 +26,7 @@ constant: CONFIG_PROJECT_NAME {
 }
 
 constant: PDT_DATE_FILTER {
-  value: "last 30 days"
+  value: "last 1500 days"
   export: override_required
 }
 

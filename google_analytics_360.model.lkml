@@ -1,4 +1,4 @@
-connection: "ga_generated"
+connection: "@{CONNECTION_NAME}"
 
 # include: "/datagroups.lkml"
 include: "/*/*.view.lkml"
