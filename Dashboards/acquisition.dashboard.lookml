@@ -1,7 +1,7 @@
 - dashboard: acquisition
   title: Acquisition
   layout: newspaper
-  preferred_viewer: dashboards-next
+  preferred_viewer: dashboards
   elements:
   - title: Sessions
     name: Sessions

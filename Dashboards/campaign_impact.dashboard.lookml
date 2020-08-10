@@ -1,7 +1,7 @@
 - dashboard: campaign_impact
   title: Campaign Impact
   layout: newspaper
-  preferred_viewer: dashboards-next
+  preferred_viewer: dashboards
   elements:
   - title: Users saw the campaign page
     name: Users saw the campaign page

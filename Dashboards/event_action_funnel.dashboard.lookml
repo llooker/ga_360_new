@@ -1,7 +1,7 @@
 - dashboard: event_action_funnel
   title: Event Action Funnel
   layout: newspaper
-  preferred_viewer: dashboards-next
+  preferred_viewer: dashboards
   elements:
   - title: Event Action Funnel
     name: Event Action Funnel

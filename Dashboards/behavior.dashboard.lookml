@@ -1,7 +1,7 @@
 - dashboard: behavior
   title: Behavior
   layout: newspaper
-  preferred_viewer: dashboards-next
+  preferred_viewer: dashboards
   elements:
   - title: Landing Page Detail
     name: Landing Page Detail

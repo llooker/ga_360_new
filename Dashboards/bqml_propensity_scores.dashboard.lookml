@@ -1,7 +1,7 @@
 - dashboard: bqml_propensity_scores
   title: BQML Propensity Scores
   layout: newspaper
-  preferred_viewer: dashboards-next
+  preferred_viewer: dashboards
   elements:
   - title: Propensity Scores by Audience Traits
     name: Propensity Scores by Audience Traits
