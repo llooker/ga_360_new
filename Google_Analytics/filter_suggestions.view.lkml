@@ -110,6 +110,11 @@ explore: top_pages_core {
 }
 
 explore: event_actions {
+  extends: [event_actions_config]
+  extension: required
+}
+
+explore: event_actions_core {
   hidden: yes
   extension: required
 }
