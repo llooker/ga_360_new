@@ -48,3 +48,11 @@ local_dependency: {
     value: "@{SCHEMA_NAME}"
   }
 }
+
+# Reference in LookML dashboard using tile
+# type: block-ga-360::block-ga-360-sankey
+visualization: {
+  id: "block-ga-360-sankey"
+  url: "https://looker-custom-viz-a.lookercdn.com/master/sankey.js"
+  label: ""
+}
