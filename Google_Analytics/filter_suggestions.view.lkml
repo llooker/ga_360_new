@@ -81,7 +81,6 @@ view: top_pages_core {
 
 explore: event_categories {
   extends: [event_categories_config]
-  extension: required
 }
 
 explore: event_categories_core {
@@ -91,7 +90,6 @@ explore: event_categories_core {
 
 explore: event_labels {
   extends: [event_labels_config]
-  extension: required
 }
 
 explore: event_labels_core {
@@ -101,7 +99,6 @@ explore: event_labels_core {
 
 explore: top_pages {
   extends: [top_pages_config]
-  extension: required
 }
 
 explore: top_pages_core {
@@ -111,7 +108,6 @@ explore: top_pages_core {
 
 explore: event_actions {
   extends: [event_actions_config]
-  extension: required
 }
 
 explore: event_actions_core {
