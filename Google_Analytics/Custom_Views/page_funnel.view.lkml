@@ -350,7 +350,7 @@ view: page_funnel_core {
             {% endif %}"
     link: {
       label: "Event Dashboard"
-      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_1']}}"
+      url: "/dashboards/google_analytics_360::event_action_funnel?Page={{_filters['page_funnel.page_1']}}"
     }
   }
 
@@ -365,7 +365,7 @@ view: page_funnel_core {
     {% endif %}"
     link: {
       label: "Event Dashboard"
-      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_2']}}"
+      url: "/dashboards/google_analytics_360::event_action_funnel?Page={{_filters['page_funnel.page_2']}}"
     }
   }
 
@@ -380,7 +380,7 @@ view: page_funnel_core {
     {% endif %}"
     link: {
       label: "Event Dashboard"
-      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_3']}}"
+      url: "/dashboards/google_analytics_360::event_action_funnel?Page={{_filters['page_funnel.page_3']}}"
     }
   }
 
@@ -395,7 +395,7 @@ view: page_funnel_core {
     {% endif %}"
     link: {
       label: "Event Dashboard"
-      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_4']}}"
+      url: "/dashboards/google_analytics_360::event_action_funnel?Page={{_filters['page_funnel.page_4']}}"
     }
   }
 
@@ -410,7 +410,7 @@ view: page_funnel_core {
     {% endif %}"
     link: {
       label: "Event Dashboard"
-      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_5']}}"
+      url: "/dashboards/google_analytics_360::event_action_funnel?Page={{_filters['page_funnel.page_5']}}"
     }
   }
 
@@ -425,7 +425,7 @@ view: page_funnel_core {
     {% endif %}"
     link: {
       label: "Event Dashboard"
-      url: "https://googlemarscisandbox.cloud.looker.com/dashboards/28?Page={{_filters['page_funnel.page_6']}}"
+      url: "/dashboards/google_analytics_360::event_action_funnel?Page={{_filters['page_funnel.page_6']}}"
     }
   }
 
