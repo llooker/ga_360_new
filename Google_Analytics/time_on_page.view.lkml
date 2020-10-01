@@ -125,6 +125,7 @@ view: time_on_page_core {
     hidden: yes
     description: "Total pages with a time on page calculated"
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${hit_id};;
 
     filters: [has_time_on_page: "yes"]

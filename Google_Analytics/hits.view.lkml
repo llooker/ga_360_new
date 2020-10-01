@@ -341,6 +341,7 @@ view: hits_core {
     label: "Hits"
     description: "Total number of hits within the session."
     type: count
+    allow_approximate_optimization: yes
 
     value_format_name: formatted_number
     drill_fields: [detail*]
@@ -352,6 +353,7 @@ view: hits_core {
     label: "Entrances"
     description: "The number of entrances to the property measured as the first pageview in a session, typically used with landingPagePath."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${id} ;;
 
     filters: {
@@ -377,6 +379,7 @@ view: hits_core {
     label: "Total Events"
     description: "The total number of web events for the event."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${id} ;;
 
     filters: {
@@ -394,6 +397,7 @@ view: hits_core {
     label: "Exits"
     description: "The number of exits from the property."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${id} ;;
 
     filters: {
@@ -422,6 +426,7 @@ view: hits_core {
     label: "Pageviews"
     description: "The total number of pageviews for the property."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${id} ;;
 
     filters: {
@@ -450,6 +455,7 @@ view: hits_core {
     group_label: "Session"
     description: "The total number of sessions with web events."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${ga_sessions.id} ;;
 
     filters: {
@@ -467,6 +473,7 @@ view: hits_core {
     label: "Unique Pageviews"
     description: "Unique Pageviews are the number of sessions during which the specified page was viewed at least once. A unique pageview is counted for each page URL + page title combination."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: CONCAT(${ga_sessions.id}, ${page_path}, ${page_title});;
 
     filters: {
@@ -484,6 +491,7 @@ view: hits_core {
     label: "Unique Events"
     description: "Unique Events are interactions with content by a single user within a single session that can be tracked separately from pageviews or screenviews."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: CONCAT(${ga_sessions.id}, COALESCE(${event_action},""), COALESCE(${event_category},""), COALESCE(${event_label},"")) ;;
 
     filters: {

@@ -125,3 +125,290 @@ named_value_format: hour_format {
 named_value_format: formatted_number {
   value_format:"[<1000]0;[<1000000]0.0,\"K\";0.0,,\"M\""
 }
+
+
+## Aggregate Tables for LookML Dashboards
+
+# Place in `google_analytics_360` model
+explore: +ga_sessions {
+
+  ## GA360 Overview Dashboard
+
+  aggregate_table: rollup__percent_new_sessions__visits_total {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.landing_page_hostname, ga_sessions.channel_grouping, ga_sessions.medium, ga_sessions.source, ga_sessions.continent, ga_sessions.country]
+      measures: [percent_new_sessions, visits_total]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__bounce_rate__bounces_total {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [bounce_rate, bounces_total]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__timeonsite_average_per_session {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [timeonsite_average_per_session]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__time_on_site_tier {
+    query: {
+      dimensions: [time_on_site_tier, ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [visits_total]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__continent__visit_start_month {
+    query: {
+      dimensions: [continent, ga_sessions.visit_start_month, ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [visits_total]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__region {
+    query: {
+      dimensions: [region, ga_sessions.country, ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [visits_total]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__source {
+    query: {
+      dimensions: [source, ga_sessions.medium, ga_sessions.source_medium, ga_sessions.partition_date, ga_sessions.landing_page_hostname, ga_sessions.continent, ga_sessions.country]
+      measures: [visits_total]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__landing_page_formatted {
+    query: {
+      dimensions: [landing_page_formatted, ga_sessions.landing_page_hostname, ga_sessions.partition_date, ga_sessions.channel_grouping, ga_sessions.medium, ga_sessions.source, ga_sessions.source_medium, ga_sessions.continent, ga_sessions.country]
+      measures: [visits_total, percent_new_sessions]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__hits_page_count__hits_unique_page_count {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [hits.page_count, hits.unique_page_count]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__hits_page_path_formatted {
+    query: {
+      dimensions: [hits.page_path_formatted, ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [hits.page_count, hits.unique_page_count]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  ## End GA360 Dashboard
+
+  ## Acquisition Dashboard
+  aggregate_table: rollup__unique_visitors {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.channel_grouping, ga_sessions.medium, ga_sessions.source, ga_sessions.continent, ga_sessions.country, ga_sessions.landing_page_hostname]
+      measures: [unique_visitors]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__hits_page_count {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.channel_grouping, ga_sessions.medium, ga_sessions.source, ga_sessions.continent, ga_sessions.country, ga_sessions.landing_page_hostname]
+      measures: [hits.page_count]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__audience_trait {
+    query: {
+      dimensions: [audience_trait]
+      measures: [bounce_rate, page_views_session, percent_new_sessions, timeonsite_average_per_session, visits_total]
+      filters: [
+        ga_sessions.audience_selector: "Channel",
+        ga_sessions.partition_date: "7 days"
+      ]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  ## End Acquisition Dashboard
+
+  ## Audience Dashboard
+  aggregate_table: rollup__visits_total {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.channel_grouping, ga_sessions.medium, ga_sessions.source, ga_sessions.source_medium, ga_sessions.continent, ga_sessions.country]
+      measures: [visits_total]
+      filters: [
+        ga_sessions.audience_selector: "Device"
+      ]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__unique_visitors_02 {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.channel_grouping, ga_sessions.medium, ga_sessions.source, ga_sessions.source_medium, ga_sessions.continent, ga_sessions.country]
+      measures: [unique_visitors]
+      filters: [
+        ga_sessions.audience_selector: "Device"
+      ]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+
+  }
+
+  aggregate_table: rollup__hits_page_count_02 {
+    query: {
+      dimensions: [ga_sessions.partition_date, ga_sessions.channel_grouping, ga_sessions.medium, ga_sessions.source, ga_sessions.source_medium, ga_sessions.continent, ga_sessions.country]
+      measures: [hits.page_count]
+      filters: [
+        ga_sessions.audience_selector: "Device"
+      ]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__visit_number_tier {
+    query: {
+      dimensions: [visit_number_tier, ga_sessions.partition_date, ga_sessions.landing_page_hostname]
+      measures: [unique_visitors]
+      filters: [
+        ga_sessions.audience_selector: "Device"
+      ]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__session_flow_days_since_previous_session_tier {
+    query: {
+      dimensions: [session_flow.days_since_previous_session_tier, ga_sessions.partition_date, ga_sessions.visit_number]
+      measures: [visits_total]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  aggregate_table: rollup__session_flow_pages_visited {
+    query: {
+      dimensions: [ga_sessions.partition_date, session_flow.pages_visited]
+      measures: [visits_total]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  ## End Audience Dashboard
+
+  ## Behavior Dashboard
+  aggregate_table: rollup__hits_full_event {
+    query: {
+      dimensions: [hits.full_event, ga_sessions.partition_date, hits.host_name]
+      measures: [hits.event_count, hits.unique_event_count]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  ## End Behavior Dashboard
+
+  ## Custom Page Funnel Dashboard
+  aggregate_table: rollup__top_page_paths {
+    query: {
+      dimensions: [ga_sessions.partition_date,
+        session_flow.page_path_1,
+        session_flow.page_path_2,
+        session_flow.page_path_3,
+        session_flow.page_path_4,
+        session_flow.page_path_5,
+        session_flow.page_path_6
+      ]
+      measures: [visits_total]
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
+
+  ## End Custom Page Funnel Dashboard
+
+}

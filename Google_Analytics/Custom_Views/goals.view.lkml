@@ -101,6 +101,7 @@ view: goals_core {
     label: "Total Conversions"
     description: "Total number of hits (Page or Event) that are identified as converisons based on 'Goal Selection' filters."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${id} ;;
 
     filters: {
@@ -118,6 +119,7 @@ view: goals_core {
     label: "Sessions with Conversion"
     description: "Sessions that result in a conversion based on 'Goal Selection' filters."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${ga_sessions.id} ;;
 
     filters: {

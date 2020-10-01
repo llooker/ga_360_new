@@ -110,6 +110,7 @@ view: traffic_source_core {
     group_label: "Traffic Sources"
     description: "Counts distinct keywords grouped by specified dimension."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${keyword} ;;
     drill_fields: [keyword, totals.hits, totals.pageviews]
   }
@@ -119,6 +120,7 @@ view: traffic_source_core {
     group_label: "Traffic Sources"
     description: "Counts distinct sources grouped by specified dimension."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${source} ;;
     drill_fields: [source, totals.hits, totals.pageviews]
   }

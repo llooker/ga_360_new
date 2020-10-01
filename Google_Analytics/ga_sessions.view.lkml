@@ -346,6 +346,7 @@ view: ga_sessions_core {
     label: "New Sessions"
     description: "The total number of sessions for the requested time period where the visitNumber equals 1."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${id} ;;
 
     filters: {
@@ -363,6 +364,7 @@ view: ga_sessions_core {
     label: "New Users"
     description: "The total number of users for the requested time period where the visitNumber equals 1."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${full_visitor_id} ;;
 
     filters: {
@@ -415,6 +417,7 @@ view: ga_sessions_core {
     label: "Returning Users"
     description: "The total number of users for the requested time period where the visitNumber is not 1."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${full_visitor_id};;
 
     filters: {
@@ -444,6 +447,7 @@ view: ga_sessions_core {
     label: "Users"
     description: "The total number of users for the requested time period."
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${full_visitor_id} ;;
 
     value_format_name: formatted_number

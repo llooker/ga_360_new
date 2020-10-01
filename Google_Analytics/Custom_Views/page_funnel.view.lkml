@@ -341,6 +341,7 @@ view: page_funnel_core {
 
   measure: count_of_page_1 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${page1_session_id_tagged} ;;
     group_label: "Count of pages"
     label: "{% if page_1._in_query %}
@@ -356,6 +357,7 @@ view: page_funnel_core {
 
   measure: count_of_page_2 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${page2_session_id_tagged} ;;
     group_label: "Count of pages"
     label: "{% if page_2._in_query %}
@@ -371,6 +373,7 @@ view: page_funnel_core {
 
   measure: count_of_page_3 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${page3_session_id_tagged} ;;
     group_label: "Count of pages"
     label: "{% if page_3._in_query %}
@@ -386,6 +389,7 @@ view: page_funnel_core {
 
   measure: count_of_page_4 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${page4_session_id_tagged} ;;
     group_label: "Count of pages"
     label: "{% if page_4._in_query %}
@@ -401,6 +405,7 @@ view: page_funnel_core {
 
   measure: count_of_page_5 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${page5_session_id_tagged} ;;
     group_label: "Count of pages"
     label: "{% if page_5._in_query %}
@@ -416,6 +421,7 @@ view: page_funnel_core {
 
   measure: count_of_page_6 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${page6_session_id_tagged} ;;
     group_label: "Count of pages"
     label: "{% if page_6._in_query %}

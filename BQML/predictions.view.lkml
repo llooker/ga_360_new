@@ -155,6 +155,7 @@ view: future_purchase_model_training_info_core {
   dimension: learning_rate {type: number}
   measure: total_iterations {
     type: count
+    allow_approximate_optimization: yes
   }
   measure: loss {
     value_format_name: decimal_2

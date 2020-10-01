@@ -47,6 +47,7 @@ view: user_segment {
   measure: segment_users {
     group_label: "In Selected Timeframe"
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${full_visitor_id} ;;
   }
 

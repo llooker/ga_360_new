@@ -351,6 +351,7 @@ view: event_action_funnel_core {
 
   measure: count_of_event_1 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${event1_session_id_tagged} ;;
     label: "{% if event_1._in_query %}
     {{_filters['event_action_funnel.event_1']}}
@@ -362,6 +363,7 @@ view: event_action_funnel_core {
 
   measure: count_of_event_2 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${event2_session_id_tagged} ;;
     label: "{% if event_2._in_query %}
     {{_filters['event_action_funnel.event_2']}}
@@ -373,6 +375,7 @@ view: event_action_funnel_core {
 
   measure: count_of_event_3 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${event3_session_id_tagged} ;;
     label: "{% if event_3._in_query %}
     {{_filters['event_action_funnel.event_3']}}
@@ -384,6 +387,7 @@ view: event_action_funnel_core {
 
   measure: count_of_event_4 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${event4_session_id_tagged} ;;
     label: "{% if event_4._in_query %}
     {{_filters['event_action_funnel.event_4']}}
@@ -395,6 +399,7 @@ view: event_action_funnel_core {
 
   measure: count_of_event_5 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${event5_session_id_tagged} ;;
     label: "{% if event_5._in_query %}
     {{_filters['event_action_funnel.event_5']}}
@@ -406,6 +411,7 @@ view: event_action_funnel_core {
 
   measure: count_of_event_6 {
     type: count_distinct
+    allow_approximate_optimization: yes
     sql: ${event6_session_id_tagged} ;;
     label: "{% if event_6._in_query %}
     {{_filters['event_action_funnel.event_6']}}
