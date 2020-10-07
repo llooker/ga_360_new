@@ -11,12 +11,11 @@ datagroup: bqml_datagroup {
   sql_trigger: SELECT EXTRACT(month from CURRENT_DATE()) ;;
 }
 aggregate_awareness: yes
-
-explore: ga_sessions {
-  extends: [ga_sessions_config]
-}
+bigquery_datetime_as_timestamp: no
 
 explore: ga_sessions_core {
+  from: ga_sessions_core
+  view_name:  ga_sessions
   extension: required
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions  data."
@@ -99,6 +98,11 @@ explore: ga_sessions_core {
 
 }
 
+explore: ga_sessions {
+  extends: [ga_sessions_config]
+}
+
+
 explore: future_input {
   extends: [future_input_config]
 }
@@ -124,4 +128,20 @@ named_value_format: hour_format {
 
 named_value_format: formatted_number {
   value_format:"[<1000]0;[<1000000]0.0,\"K\";0.0,,\"M\""
+}
+
+
+# Place in `google_analytics_360` model
+explore: +ga_sessions {
+  aggregate_table: rollup__percent_new_sessions__visits_total {
+    query: {
+      measures: [percent_new_sessions, visits_total]
+      filters: [ga_sessions.partition_date: "7 days"]
+      timezone: "America/Los_Angeles"
+    }
+
+    materialization: {
+      persist_for: "24 hours"
+    }
+  }
 }
