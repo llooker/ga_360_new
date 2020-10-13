@@ -1,0 +1,48 @@
+{
+  "label": "Google Analytics 360",
+  "category_label": "Models",
+  "branding": {
+    "badge": "Beta",
+    "image_uri": "https://marketplace-api.looker.com/block-icons/icon-google-analytics-new.png",
+    "tagline": "Understand how your users are engaging with your product or webpage with Looker's Block for Google Analytics 360. (Beta)"
+  },
+
+  "constants": {
+    "CONNECTION_NAME": {
+      "label": "Connection Name",
+      "value_constraint": "connection"
+    },
+    "SCHEMA_NAME": {
+      "label": "Schema Name"
+    },
+    "GA360_TABLE_NAME": {
+      "label": "GA360 Table Name",
+      "description": "The table name of your GA360 data. Note that you should include '_*' at the tail end of your input to account for all date partitioned tables."
+    },
+    "CONFIG_PROJECT_NAME": {
+      "label": "Config Project Name"
+    },
+    "PARTITION_DATE_PDT_FILTER": {
+      "label": "Partition Date PDT Filter",
+      "description": "The date range for the PDTs you are building. You may want to start with 'last 30 days' depending on your size of data to reduce cost."
+    },
+    "PARTITION_DATE_DEFAULT_EXPLORE_FILTER": {
+      "label": "Partition Date Default Explore Filter",
+      "description": "The default date range in the explores for users. You may want to start with the 'last 7 days' for your users to limit query sizes."
+    }
+  },
+  "models": [
+    {
+      "name": "block_ga360",
+      "connection_constant": "CONNECTION_NAME"
+    }
+  ],
+  "auxiliary_projects": [
+    {
+      "git_uri": "git://github.com/looker/block-ga360-config.git",
+      "git_ref": "8cd8db8c0e7796e88cf85c44e5aafca428de6ee2",
+      "label": "New Google Analytics 360 Config",
+      "constant_name": "CONFIG_PROJECT_NAME"
+    }
+  ]
+}
