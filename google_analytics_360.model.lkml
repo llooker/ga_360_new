@@ -11,6 +11,7 @@ datagroup: bqml_datagroup {
   sql_trigger: SELECT EXTRACT(month from CURRENT_DATE()) ;;
 }
 aggregate_awareness: yes
+bigquery_datetime_as_timestamp: no
 
 explore: ga_sessions {
   extends: [ga_sessions_config]
@@ -97,41 +98,7 @@ explore: ga_sessions_core {
     relationship: many_to_one
   }
 
-}
-
-explore: future_input {
-  extends: [future_input_config]
-}
-
-explore: future_input_core {
-  extension: required
-  view_label: "Audience Traits"
-  label: "BQML Customer Likelihood to Purchase"
-  description: "This explore allows you to slice and dice likeliness to purchase scores by different customer traits to see how they differ. The default range of data you are looking at is in the past 30 days"
-  join: future_purchase_prediction {
-    type: left_outer
-    sql_on: ${future_purchase_prediction.clientId} = ${future_input.client_id} ;;
-    relationship: one_to_one
-  }
-}
-
-
-
-
-named_value_format: hour_format {
-  value_format: "[h]:mm:ss"
-}
-
-named_value_format: formatted_number {
-  value_format:"[<1000]0;[<1000000]0.0,\"K\";0.0,,\"M\""
-}
-
-
-## Aggregate Tables for LookML Dashboards
-
-# Place in `google_analytics_360` model
-explore: +ga_sessions {
-
+  ## Aggregate Tables for LookML Dashboards
   ## GA360 Overview Dashboard
 
   aggregate_table: rollup__percent_new_sessions__visits_total {
@@ -411,4 +378,31 @@ explore: +ga_sessions {
 
   ## End Custom Page Funnel Dashboard
 
+}
+
+explore: future_input {
+  extends: [future_input_config]
+}
+
+explore: future_input_core {
+  extension: required
+  view_label: "Audience Traits"
+  label: "BQML Customer Likelihood to Purchase"
+  description: "This explore allows you to slice and dice likeliness to purchase scores by different customer traits to see how they differ. The default range of data you are looking at is in the past 30 days"
+  join: future_purchase_prediction {
+    type: left_outer
+    sql_on: ${future_purchase_prediction.clientId} = ${future_input.client_id} ;;
+    relationship: one_to_one
+  }
+}
+
+
+
+
+named_value_format: hour_format {
+  value_format: "[h]:mm:ss"
+}
+
+named_value_format: formatted_number {
+  value_format:"[<1000]0;[<1000000]0.0,\"K\";0.0,,\"M\""
 }
