@@ -20,14 +20,7 @@ explore: ga_sessions {
 explore: ga_sessions_core {
   extension: required
   label: "Google Analytics Sessions"
-  description: "Explores Google Analytics sessions  data."
-
-  always_filter: {
-    filters: {
-      field: partition_date
-      value: "@{EXPLORE_DATE_FILTER}"
-    }
-  }
+  description: "Explores Google Analytics sessions data."
 
   aggregate_table: sessions_by_session_start_date {
     query: {

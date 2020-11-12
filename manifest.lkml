@@ -47,6 +47,10 @@ local_dependency: {
   override_constant: SCHEMA_NAME {
     value: "@{SCHEMA_NAME}"
   }
+
+  override_constant: EXPLORE_DATE_FILTER {
+    value: "@{EXPLORE_DATE_FILTER}"
+  }
 }
 
 # Reference in LookML dashboard using tile
