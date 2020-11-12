@@ -22,11 +22,11 @@
     "CONFIG_PROJECT_NAME": {
       "label": "Config Project Name"
     },
-    "PARTITION_DATE_PDT_FILTER": {
+    "PDT_DATE_FILTER": {
       "label": "Partition Date PDT Filter",
       "description": "The date range for the PDTs you are building. You may want to start with 'last 30 days' depending on your size of data to reduce cost."
     },
-    "PARTITION_DATE_DEFAULT_EXPLORE_FILTER": {
+    "EXPLORE_DATE_FILTER": {
       "label": "Partition Date Default Explore Filter",
       "description": "The default date range in the explores for users. You may want to start with the 'last 7 days' for your users to limit query sizes."
     }
@@ -40,7 +40,7 @@
   "auxiliary_projects": [
     {
       "git_uri": "git://github.com/looker/block-ga360-config.git",
-      "git_ref": "8cd8db8c0e7796e88cf85c44e5aafca428de6ee2",
+      "git_ref": "0701c2ca06be02a7163e3f51087cc7d21f3d1ad6",
       "label": "New Google Analytics 360 Config",
       "constant_name": "CONFIG_PROJECT_NAME"
     }
