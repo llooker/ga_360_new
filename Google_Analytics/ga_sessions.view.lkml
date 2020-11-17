@@ -252,15 +252,8 @@ view: ga_sessions_core {
       week_of_year,
       year
     ]
-    sql: TIMESTAMP(
-          PARSE_DATE(
-            '%Y%m%d'
-            , REGEXP_EXTRACT(
-              _TABLE_SUFFIX
-              , r'^\d\d\d\d\d\d\d\d'
-            )
-          )
-        );;
+
+    sql: ${TABLE}.partition_suffix ;;
     convert_tz: no
   }
 
