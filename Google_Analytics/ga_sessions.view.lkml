@@ -11,16 +11,7 @@ include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/ga_sessions.view.lkml"
 
 view: ga_sessions {
   extends: [ga_sessions_config]
-}
 
-view: ga_sessions_core {
-  extension: required
-  view_label: "Session"
-  sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
-  extends: [calendar, geonetwork, totals, traffic_source, device, custom_navigation_buttons]
-
-
-  ########## PRIMARY KEYS ##########
   dimension: id {
     primary_key: yes
     label: "User/Session ID"
@@ -31,9 +22,20 @@ view: ga_sessions_core {
           , '|'
           , COALESCE(CAST(${visit_id} AS STRING),'')
           , '|'
-          , CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
+          , CAST(${partition_date} AS STRING)
+          --, CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
         ) ;;
   }
+}
+
+view: ga_sessions_core {
+  extension: required
+  view_label: "Session"
+  sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
+  extends: [calendar, geonetwork, totals, traffic_source, device, custom_navigation_buttons]
+
+
+  ########## PRIMARY KEYS ##########
 
   ########## FOREIGN KEYS ##########
   dimension: full_visitor_id {
@@ -226,35 +228,6 @@ view: ga_sessions_core {
     hidden: no
     html:  <a style="background: #FFF;float: center; padding:15px; font-weight: bold;font-size: 30%;">{{value}}  </a></strong>
    ;;
-  }
-
-
-  dimension_group: partition {
-    # Date that is parsed from the table name. Required as a filter to avoid accidental massive queries
-    label: ""
-    view_label: "Session"
-    description: "Date based on the day the session was added to the database. Matches date in Google Analytics UI, but may not match 'Session Start Date'."
-    type: time
-    timeframes: [
-      date,
-      day_of_week,
-      day_of_week_index,
-      day_of_month,
-      day_of_year,
-      fiscal_quarter,
-      fiscal_quarter_of_year,
-      week,
-      month,
-      month_name,
-      month_num,
-      quarter,
-      quarter_of_year,
-      week_of_year,
-      year
-    ]
-
-    sql: ${TABLE}.partition_suffix ;;
-    convert_tz: no
   }
 
   dimension: social_engagement_type {
