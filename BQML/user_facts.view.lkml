@@ -15,7 +15,7 @@ view: user_facts_core {
     sql:
         --Limiting the table scans to the date ranges identified in the predictions table
         WITH filtered_base AS (
-        SELECT * FROM ${ga_sessions.SQL_TABLE_NAME}
+        SELECT * FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`
         WHERE TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d\d\d\d\d\d\d\d')))  BETWEEN ((TIMESTAMP_ADD(TIMESTAMP_TRUNC( CURRENT_TIMESTAMP(), DAY), INTERVAL -DAYS_BACK DAY))) AND ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY), INTERVAL -DAYS_BACK DAY), INTERVAL DAYS_FROM DAY)))),
       -- labeling customers who have made a purchase as a 1 and customers who have not made a purchas as a 0
     user_label AS (

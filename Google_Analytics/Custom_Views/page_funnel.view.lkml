@@ -33,38 +33,38 @@ view: page_funnel_core {
 
   filter: page_1 {
     group_label: "Funnel Pages"
-    suggest_explore: top_pages
-    suggest_dimension: top_pages.page_path
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.page_path_formatted
   }
 
   filter: page_2 {
     group_label: "Funnel Pages"
-   suggest_explore: top_pages
-    suggest_dimension: top_pages.page_path
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.page_path_formatted
   }
 
   filter: page_3 {
     group_label: "Funnel Pages"
-   suggest_explore: top_pages
-    suggest_dimension: top_pages.page_path
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.page_path_formatted
   }
 
   filter: page_4 {
     group_label: "Funnel Pages"
-    suggest_explore: top_pages
-    suggest_dimension: top_pages.page_path
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.page_path_formatted
   }
 
   filter: page_5 {
     group_label: "Funnel Pages"
-   suggest_explore: top_pages
-    suggest_dimension: top_pages.page_path
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.page_path_formatted
   }
 
   filter: page_6 {
     group_label: "Funnel Pages"
-    suggest_explore: top_pages
-    suggest_dimension: top_pages.page_path
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.page_path_formatted
   }
 
    ########## DIMENSIONS ##########

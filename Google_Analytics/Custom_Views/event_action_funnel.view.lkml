@@ -43,43 +43,43 @@ view: event_action_funnel_core {
 
   filter: event_1 {
     group_label: "Funnel Events"
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
     description: "Event 1 to be used with Count of Event 1"
   }
 
   filter: event_2 {
     group_label: "Funnel Events"
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
     description: "Event 2 to be used with Count of Event 2"
   }
 
   filter: event_3 {
     group_label: "Funnel Events"
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
     description: "Event 3 to be used with Count of Event 3"
   }
 
   filter: event_4 {
     group_label: "Funnel Events"
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
+   suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
     description: "Event 4 to be used with Count of Event 4"
   }
 
   filter: event_5 {
     group_label: "Funnel Events"
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
+   suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
     description: "Event 5 to be used with Count of Event 5"
   }
 
   filter: event_6 {
     group_label: "Funnel Events"
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
+   suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
     description: "Event 6 to be used with Count of Event 6"
   }
 

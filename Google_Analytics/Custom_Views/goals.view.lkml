@@ -16,8 +16,8 @@ view: goals_core {
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
-    suggest_explore: event_actions
-    suggest_dimension: event_actions.event_action
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.event_action
   }
 
   filter: event_label_goal_selection {
@@ -26,8 +26,8 @@ view: goals_core {
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
-    suggest_explore: event_labels
-    suggest_dimension: event_labels.event_label
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.event_label
   }
 
   filter: event_category_goal_selection {
@@ -36,8 +36,8 @@ view: goals_core {
     group_label: "Goal Selection"
     description: "Enter Event Action to be used with Total Conversion measures."
     type: string
-    suggest_explore: event_categories
-    suggest_dimension: event_categories.event_category
+    suggest_explore: ga_sessions
+    suggest_dimension: hits.event_category
   }
 
   filter: page_goal_selection {
@@ -46,8 +46,8 @@ view: goals_core {
     group_label: "Goal Selection"
     description: "Enter Page Path to be used with Conversion measures (format should be: '/<page>'). Should not include Hostname."
     type: string
-    suggest_explore: top_pages
-    suggest_dimension:  top_pages.page_path
+    suggest_explore: ga_sessions
+    suggest_dimension:  hits.page_path_formatted
   }
 
   ########## DIMENSIONS ##########

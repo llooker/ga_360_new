@@ -52,6 +52,8 @@ view: hits_core {
     description: "Action tied to event"
     type: string
     sql: ${TABLE}.eventInfo.eventAction ;;
+    full_suggestions: yes
+    suggest_persist_for: "24 hours"
 
     drill_fields: [event_category, event_label, event_value]
   }
@@ -62,6 +64,8 @@ view: hits_core {
     description: "The event category"
     type: string
     sql: ${TABLE}.eventInfo.eventCategory ;;
+    full_suggestions: yes
+    suggest_persist_for: "24 hours"
 
     drill_fields: [event_action, event_label, event_value]
   }
@@ -72,6 +76,8 @@ view: hits_core {
     description: "Label tied to event"
     type: string
     sql: ${TABLE}.eventInfo.eventLabel ;;
+    full_suggestions: yes
+    suggest_persist_for: "24 hours"
 
     drill_fields: [event_action, event_category, event_value]
   }
@@ -208,6 +214,8 @@ view: hits_core {
     description: "The url of the page."
     type: string
     sql: SPLIT(${page_path}, '?')[OFFSET(0)];;
+    full_suggestions: yes
+    suggest_persist_for: "24 hours"
   }
 
   dimension: page_path_level_1 {

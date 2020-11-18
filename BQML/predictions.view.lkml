@@ -8,6 +8,7 @@
 include: "/**/user_facts.view"
 include: "//@{CONFIG_PROJECT_NAME}/BQML/predictions.view.lkml"
 
+# explore: training_input {}
 view: training_input {
   extends: [training_input_config]
 }
@@ -25,6 +26,9 @@ view: training_input_core {
     {{updated_sql}}
     ;;
   }
+
+  # measure: count {}
+
 }
 
 view: testing_input {
@@ -187,10 +191,11 @@ view: future_input_core {
     {% assign updated_start_sql = x | replace: 'DAYS_BACK',"30"   %}
     /*updated_start_date*/
     {% assign updated_sql = updated_start_sql  | replace: 'DAYS_FROM',"31"  %}
-     /*updated_end_date*/
+    /*updated_end_date*/
     {{updated_sql}}
     ;;
   }
+
 
   parameter: audience_selector {
     type: string

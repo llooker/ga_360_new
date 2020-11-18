@@ -114,6 +114,7 @@ view: ga_sessions_core {
       value: "Source Medium"
     }
   }
+
   ########## DIMENSIONS ############
 
   dimension: trafficSource { # nested field, needs to remain hidden
