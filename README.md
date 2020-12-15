@@ -1,5 +1,7 @@
 # Google Analytics 360
 
+[Jump to Release Notes](#Release)
+
 # What does this Looker Block do for me?
 
 For GA 360 users, this block allows you to move beyond the standard reports offered in the Google UI. There are often limitations in what you can control in the UI limiting your ability to better understand how you can improve your overall web experience.
@@ -75,3 +77,64 @@ Data Discrepency in Session Count Between GA UI and GA in BQ - In the GA UI, ses
 Looker will offer an out of the box data action to enable you to push data back into your GA console.
 
   You can start to create custom dimensions within the GA UI to identify cohorts to retarget via your other GMP products
+
+
+# <a name="Release"></a>Release Notes
+
+
+### v. 4.0.x
+
+- Optimizes filter suggestions to leverage BQ nested fields
+- Adds commented out examples for multi-property scenarios
+
+
+**NOTE** This block will need to be deleted & reinstalled or updated then manually modified if upgrading from v.3.0.0 or older version (The Config project needs to match  [https://github.com/looker/block-ga360-config](https://github.com/looker/block-ga360-config) , or follow the instructions below).
+
+If customizations have already been made to the config project, in order to retain your customizations we recommend manually modifying your lookml. The easiest way to manually update the config project is to do the following:
+
+ Change the always_filter to the following inside the "ga_sessions_config" explore:
+
+```
+always_filter: {
+  filters: {
+    # S1 TODO: For single property use partition_date
+    field: partition_date
+
+    # S2 TODO: For multi property use partition_filter instead of partition_date
+    # field: partition_filter
+    value: "@{EXPLORE_DATE_FILTER}"
+  }
+}
+```
+
+ In the ga_sessions.view.lkml file replace lines 1-64 with [lines 1-136 found here](https://github.com/looker/block-ga360-config/blob/dcf1a9d72e363d45170c6937db793615da831d45/Google_Analytics/ga_sessions.view.lkml)
+
+ (Optional) The filter_suggestions.view.lkml can be deleted and/or commented out
+
+### v. 3.0.x
+
+- Adds filter constant descriptions
+- Adds edit access to always_filter in "ga_sessions_config" explore
+
+
+**NOTE** This block will need to be deleted & reinstalled or manually modified if upgrading from v.2.0.x or older version (Config project needs to match [https://github.com/looker/block-ga360-config](https://github.com/looker/block-ga360-config)). If not reinstalling, the easiest way to manually update the config is to add the following inside the "ga_sessions_config" explore:
+
+```
+always_filter: {
+  filters: {
+    field: partition_date
+    value: "@{EXPLORE_DATE_FILTER}"
+  }
+}
+```
+
+And add the following constant specification to the existing "manifest.lkml" file:
+
+    constant: EXPLORE_DATE_FILTER {
+        value: "last 7 days"
+        export: override_required
+    }
+
+### v. 2.0.x
+
+**NOTE** This block will need to be reinstalled or manually modified if upgrading from v.1.0.x (Older version config project needs to match [https://github.com/looker/block-ga360-config](https://github.com/looker/block-ga360-config)) The easiest way to manually update config is to change the config model name from block_ga360_config.model.lkml to block_google_analytics_360_config.model.lkml
