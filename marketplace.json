@@ -33,7 +33,7 @@
   },
   "models": [
     {
-      "name": "block_ga360",
+      "name": "google_analytics_360",
       "connection_constant": "CONNECTION_NAME"
     }
   ],
