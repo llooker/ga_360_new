@@ -10,8 +10,6 @@ datagroup: bqml_datagroup {
   #retrain model every month
   sql_trigger: SELECT EXTRACT(month from CURRENT_DATE()) ;;
 }
-aggregate_awareness: yes
-bigquery_datetime_as_timestamp: no
 
 explore: ga_sessions {
   extends: [ga_sessions_config]
@@ -89,6 +87,19 @@ explore: ga_sessions_core {
     type: left_outer
     sql_on: ${ga_sessions.full_visitor_id} = ${user_segment.full_visitor_id} ;;
     relationship: many_to_one
+  }
+
+
+  join: custom_dimensions {
+    type: left_outer
+    relationship: one_to_one
+    sql: LEFT JOIN UNNEST(${ga_sessions.custom_dimensions}) AS custom_dimensions ;;
+  }
+
+  join: custom_variables {
+    type: left_outer
+    relationship: one_to_one
+    sql: LEFT JOIN UNNEST(${ga_sessions.custom_variables}) AS custom_variables ;;
   }
 
   ## Aggregate Tables for LookML Dashboards

@@ -278,6 +278,18 @@ view: ga_sessions_core {
     hidden: yes
   }
 
+  dimension: custom_dimensions {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.customdimensions ;;
+  }
+
+  dimension: custom_variables {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.customvariables ;;
+  }
+
   dimension_group: visit_start {
     # Dimension(s) are labeled with 'Visit' to match column names in database, but relabeled in Explore to match most recent Google Analytics nomenclature (i.e. 'Session' rather than 'Visit')
     label: "Session Start"
