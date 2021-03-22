@@ -1,7 +1,7 @@
 - dashboard: custom_goal_conversions
   title: Custom Goal Conversions
   layout: newspaper
-  preferred_viewer: dashboards
+  preferred_viewer: dashboards-next
   load_configuration: wait
   description: "Using the filters, users are able to create a \"conversion\" event\
     \ and see results based on the filters. For example, if I wanted to track how\

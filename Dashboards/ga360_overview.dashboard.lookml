@@ -1,7 +1,7 @@
 - dashboard: ga360_overview
   title: GA360 Overview
   layout: newspaper
-  preferred_viewer: dashboards
+  preferred_viewer: dashboards-next
   elements:
   - title: Top US States
     name: Top US States

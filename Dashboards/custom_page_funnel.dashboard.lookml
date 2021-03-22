@@ -1,7 +1,7 @@
 - dashboard: custom_page_funnel
   title: Custom Page Funnel
   layout: newspaper
-  preferred_viewer: dashboards
+  preferred_viewer: dashboards-next
   elements:
   - title: Top Page Paths
     name: Top Page Paths

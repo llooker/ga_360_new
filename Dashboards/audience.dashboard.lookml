@@ -1,7 +1,7 @@
 - dashboard: audience
   title: Audience
   layout: newspaper
-  preferred_viewer: dashboards
+  preferred_viewer: dashboards-next
   elements:
   - title: Sessions
     name: Sessions
