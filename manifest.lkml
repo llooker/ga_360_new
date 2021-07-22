@@ -26,7 +26,7 @@ constant: CONFIG_PROJECT_NAME {
 }
 
 constant: PDT_DATE_FILTER {
-  value: "last 30 days"
+  value: "last 5 years"
   export: override_required
 }
 
