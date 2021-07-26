@@ -5,7 +5,7 @@ project_name: "block-ga-360"
 
 # Used in google_analytics_block.model connection param
 constant: CONNECTION_NAME {
-  value: "ga_generated"
+  value: "looker-private-demo"
   export: override_required
 }
 
@@ -21,7 +21,7 @@ constant: GA360_TABLE_NAME {
 }
 
 constant: CONFIG_PROJECT_NAME {
-  value: "block-ga-360-config"
+  value: "ga_360_config_dev"
   export: override_required
 }
 
@@ -31,9 +31,11 @@ constant: PDT_DATE_FILTER {
 }
 
 constant: EXPLORE_DATE_FILTER {
-  value: "last 7 days"
+  value: "last 5 years"
   export: override_required
 }
+
+constant: CONFIG_PROJECTNAME {}
 
 ################ Dependencies ################
 
