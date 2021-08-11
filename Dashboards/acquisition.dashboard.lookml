@@ -5,7 +5,7 @@
   elements:
   - title: Sessions
     name: Sessions
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [audience_cohorts.rank, ga_sessions.audience_trait, ga_sessions.visits_total]
@@ -93,7 +93,7 @@
     height: 11
   - title: Users
     name: Users
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [audience_cohorts.rank, ga_sessions.audience_trait, ga_sessions.unique_visitors]
@@ -179,7 +179,7 @@
     height: 11
   - title: Pageviews
     name: Pageviews
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [audience_cohorts.rank, ga_sessions.audience_trait, hits.page_count]
@@ -268,7 +268,7 @@
     height: 11
   - title: Session Breakdown
     name: Session Breakdown
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.visits_total, ga_sessions.audience_trait, audience_cohorts.rank]
@@ -368,7 +368,7 @@
     height: 6
   - title: Engagement
     name: Engagement
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_grid
     fields: [ga_sessions.audience_trait, ga_sessions.visits_total, ga_sessions.percent_new_sessions,
@@ -517,7 +517,7 @@
     height: 11
   - title: Sessions by Week
     name: Sessions by Week
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_column
     fields: [ga_sessions.visits_total, ga_sessions.partition_week, ga_sessions.audience_trait,
@@ -589,7 +589,7 @@
     height: 10
   - title: Sessions
     name: Sessions (2)
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.visits_total]
@@ -673,7 +673,7 @@
     height: 2
   - title: Users
     name: Users (2)
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.unique_visitors]
@@ -754,7 +754,7 @@
     height: 2
   - title: Pageviews
     name: Pageviews (2)
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [hits.page_count]
@@ -838,7 +838,7 @@
     height: 2
   - title: Navigation Bar
     name: Navigation Bar
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
@@ -896,7 +896,7 @@
     height: 3
   - title: Top Referrers
     name: Top Referrers
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.visits_total, ga_sessions.source]
@@ -979,7 +979,7 @@
     height: 11
   - title: Top Landing Pages
     name: Top Landing Pages
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.landing_page_formatted, ga_sessions.visits_total]
@@ -1082,7 +1082,7 @@
       type: advanced
       display: popover
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date
@@ -1100,7 +1100,7 @@
       - Medium
       - Source
       - Source Medium
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.audience_selector
@@ -1110,7 +1110,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.landing_page_hostname
@@ -1120,7 +1120,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.country
@@ -1130,7 +1130,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.continent
@@ -1144,7 +1144,7 @@
       type: advanced
       display: inline
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.channel_grouping
@@ -1158,7 +1158,7 @@
       type: advanced
       display: popover
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.source
@@ -1172,7 +1172,7 @@
       type: advanced
       display: popover
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.medium
@@ -1186,7 +1186,7 @@
       type: advanced
       display: popover
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.source_medium
