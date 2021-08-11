@@ -5,7 +5,7 @@ include: "/*/*.view.lkml"
 include: "/Google_Analytics/*.view.lkml"
 include: "/Google_Analytics/Custom_Views/*.view.lkml"
 include: "/Dashboards/*.dashboard"
-include: "//@{CONFIG_PROJECT_NAME}/block_google_analytics_360_config.model"
+
 datagroup: bqml_datagroup {
   #retrain model every month
   sql_trigger: SELECT EXTRACT(month from CURRENT_DATE()) ;;

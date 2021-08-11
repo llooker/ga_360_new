@@ -1,4 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/event_action_funnel.view.lkml"
+
 
 view: event_action_funnel {
   

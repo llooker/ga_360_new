@@ -1,4 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/custom_navigation_buttons.view.lkml"
+
 
 view: custom_navigation_buttons {
   

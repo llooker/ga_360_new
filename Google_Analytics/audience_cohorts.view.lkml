@@ -1,5 +1,5 @@
 # Purpose: Dynamically rank audience traits based on query filters so field can be used and sorted in pivots.
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/audience_cohorts.view.lkml"
+
 
 view: audience_cohorts {
   derived_table: {

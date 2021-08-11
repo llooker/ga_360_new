@@ -1,4 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/page_funnel.view.lkml"
+
 
 view: page_funnel {
   

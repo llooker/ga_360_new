@@ -4,7 +4,7 @@
 # See documentation on Nested fields in BigQuery here: https://cloud.google.com/bigquery/docs/reference/standard-sql/arrays#querying_nested_arrays
 #############################################################################################################
 include: "Custom_Views/goals.view.lkml"
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/hits.view.lkml"
+
 
 view: hits {
   

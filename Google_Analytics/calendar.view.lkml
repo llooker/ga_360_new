@@ -1,4 +1,4 @@
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/calendar.view.lkml"
+
 
 view: calendar {
   view_label: "Session"

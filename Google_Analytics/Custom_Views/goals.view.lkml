@@ -1,5 +1,5 @@
 #Purpose of this file is to house the fields used to generate Custom Goals. This file is extended into the `hits` view.
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/goals.view.lkml"
+
 
 view: goals {
   

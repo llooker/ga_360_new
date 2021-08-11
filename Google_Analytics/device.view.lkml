@@ -2,7 +2,7 @@
 # Purpose: Defines the fields within the device struct in google analytics. Is extending into ga_sessions.view.lkml
 #          and should not be joined into GA sessions explore as an independent view file.
 #############################################################################################################
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/device.view.lkml"
+
 
 view: device {
   

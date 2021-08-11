@@ -6,7 +6,7 @@
 
 ######################## TRAINING/TESTING INPUTS #############################
 include: "/**/user_facts.view"
-include: "//@{CONFIG_PROJECT_NAME}/BQML/predictions.view.lkml"
+
 
 view: training_input {
   extends: [user_facts]

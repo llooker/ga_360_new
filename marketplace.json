@@ -19,9 +19,6 @@
       "label": "GA360 Table Name",
       "description": "The table name of your GA360 data. Note that you should include '_*' at the tail end of your input to account for all date partitioned tables."
     },
-    "CONFIG_PROJECT_NAME": {
-      "label": "Config Project Name"
-    },
     "PDT_DATE_FILTER": {
       "label": "Partition Date PDT Filter",
       "description": "The date range for the PDTs you are building. You may want to start with 'last 30 days' depending on your size of data to reduce cost."
@@ -33,16 +30,8 @@
   },
   "models": [
     {
-      "name": "google_analytics_360",
+      "name": "google_analytics_360_v2",
       "connection_constant": "CONNECTION_NAME"
-    }
-  ],
-  "auxiliary_projects": [
-    {
-      "git_uri": "git://github.com/looker/block-ga360-config.git",
-      "git_ref": "dcf1a9d72e363d45170c6937db793615da831d45",
-      "label": "New Google Analytics 360 Config",
-      "constant_name": "CONFIG_PROJECT_NAME"
     }
   ]
 }

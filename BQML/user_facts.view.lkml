@@ -3,7 +3,7 @@
 #          to use these metrics as indicators of a users likelihood to make a future purchase. This table is not used but
 #          referenced in the predictions table to create the training, testing, and future input datasets
 #############################################################################################################
-include: "//@{CONFIG_PROJECT_NAME}/BQML/user_facts.view.lkml"
+
 
 view: user_facts {
   derived_table: {

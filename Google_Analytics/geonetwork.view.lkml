@@ -3,7 +3,7 @@
 #          and should not be joined into GA sessions explore as an independent view file.
 #############################################################################################################
 
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/geonetwork.view.lkml"
+
 
 view: geonetwork {
   

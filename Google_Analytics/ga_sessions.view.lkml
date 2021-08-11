@@ -7,7 +7,7 @@ include: "traffic_source.view.lkml"
 include: "device.view.lkml"
 include: "calendar.view.lkml"
 include: "Custom_Views/custom_navigation_buttons.view.lkml"
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/ga_sessions.view.lkml"
+
 
 view: ga_sessions {
   
