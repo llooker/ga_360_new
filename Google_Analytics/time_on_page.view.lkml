@@ -6,12 +6,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/time_on_page.view.lkml"
 
 view: time_on_page {
-  extends: [time_on_page_config]
-}
-
-
-view: time_on_page_core {
-  extension: required
+  
   derived_table: {
     persist_for: "1 hour"
     sql:

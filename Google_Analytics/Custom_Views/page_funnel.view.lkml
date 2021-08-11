@@ -1,11 +1,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/page_funnel.view.lkml"
 
 view: page_funnel {
-  extends: [page_funnel_config]
-}
-
-view: page_funnel_core {
-  extension: required
+  
  derived_table: {
    sql: SELECT page1.full_visitor_id as full_vistor_id,
                page1.page_sequence_number as page1_page_sequence_number, page1.hit_time as page1_hit_time, page1.page_path as page1_page, page1.hit_id as page1_hit_id, page1.id as page1_session_id,

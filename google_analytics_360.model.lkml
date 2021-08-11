@@ -12,11 +12,6 @@ datagroup: bqml_datagroup {
 }
 
 explore: ga_sessions {
-  extends: [ga_sessions_config]
-}
-
-explore: ga_sessions_core {
-  extension: required
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions data."
 
@@ -384,12 +379,7 @@ explore: ga_sessions_core {
 
 }
 
-explore: future_input {
-  extends: [future_input_config]
-}
-
-explore: future_input_core {
-  extension: required
+explore: future_input {  
   view_label: "Audience Traits"
   label: "BQML Customer Likelihood to Purchase"
   description: "This explore allows you to slice and dice likeliness to purchase scores by different customer traits to see how they differ. The default range of data you are looking at is in the past 30 days"

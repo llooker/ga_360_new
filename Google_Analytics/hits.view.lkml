@@ -7,11 +7,7 @@ include: "Custom_Views/goals.view.lkml"
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/hits.view.lkml"
 
 view: hits {
-  extends: [hits_config]
-}
-
-view: hits_core {
-  extension: required
+  
   extends: [goals]
   view_label: "Hits"
   ########## PRIMARY KEYS ##########

@@ -1,11 +1,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/event_action_funnel.view.lkml"
 
 view: event_action_funnel {
-  extends: [event_action_funnel_config]
-}
-
-view: event_action_funnel_core {
-  extension: required
+  
   derived_table: {
     sql: SELECT event1.full_visitor_id as full_vistor_id,
                event1.event_sequence_number as event1_event_sequence_number, event1.hit_time as event1_hit_time, event1.event_action as event1_event_action, event1.hit_id as event1_hit_id, event1.id as event1_session_id,

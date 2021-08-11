@@ -6,11 +6,6 @@
 include: "//@{CONFIG_PROJECT_NAME}/BQML/user_facts.view.lkml"
 
 view: user_facts {
-  extends: [user_facts_config]
-}
-
-view: user_facts_core {
-  extension: required
   derived_table: {
     sql:
         --Limiting the table scans to the date ranges identified in the predictions table

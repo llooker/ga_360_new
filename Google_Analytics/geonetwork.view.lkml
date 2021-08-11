@@ -6,11 +6,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/geonetwork.view.lkml"
 
 view: geonetwork {
-  extends: [geonetwork_config]
-}
-
-view: geonetwork_core {
-  extension: required
+  
 
   ########## DIMENSIONS ##########
 

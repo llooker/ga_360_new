@@ -5,13 +5,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/device.view.lkml"
 
 view: device {
-  extends: [device_config]
-}
-
-
-
-view: device_core {
-  extension: required
+  
 
   ########## DIMENSIONS ############
   dimension: browser {

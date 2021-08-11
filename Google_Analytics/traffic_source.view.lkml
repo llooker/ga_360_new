@@ -5,12 +5,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/traffic_source.view.lkml"
 
 view: traffic_source {
-  extends: [traffic_source_config]
-}
-
-
-view: traffic_source_core {
-  extension: required
+  
 
   ########## DIMENSIONS ############
 

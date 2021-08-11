@@ -5,12 +5,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/custom_dimensions.view.lkml"
 
 view: custom_dimensions {
-  extends: [custom_dimensions_config]
-}
-
-
-view: custom_dimensions_core {
-  extension: required
+  
 
   view_label: "Custom Dimensions"
 

@@ -2,11 +2,7 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/goals.view.lkml"
 
 view: goals {
-  extends: [goals_config]
-}
-
-view: goals_core {
-  extension: required
+  
 
   ########## FILTERS ##########
 

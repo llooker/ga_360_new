@@ -2,10 +2,6 @@
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/audience_cohorts.view.lkml"
 
 view: audience_cohorts {
-  extends: [audience_cohorts_config]
-}
-
-view: audience_cohorts_core {
   derived_table: {
     explore_source: ga_sessions {
       column: audience_trait {}

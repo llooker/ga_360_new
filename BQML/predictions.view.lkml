@@ -8,11 +8,7 @@
 include: "/**/user_facts.view"
 include: "//@{CONFIG_PROJECT_NAME}/BQML/predictions.view.lkml"
 
-# explore: training_input {}
 view: training_input {
-  extends: [training_input_config]
-}
-view: training_input_core {
   extends: [user_facts]
  ## Uses the SQL from the user facts table and dynamically updates the date range to look 900 days back for 360 days as our training dataset
   derived_table: {
@@ -32,9 +28,6 @@ view: training_input_core {
 }
 
 view: testing_input {
-  extends: [testing_input_config]
-}
-view: testing_input_core {
   extends: [user_facts]
   ## Uses the SQL from the user facts table and dynamically updates the date range to look 900 days back for 360 days as our training dataset
   derived_table: {
@@ -49,10 +42,8 @@ view: testing_input_core {
   }
 }
 ######################## MODEL #############################
+
 view: future_purchase_model {
-  extends: [future_purchase_model_config]
-}
-view: future_purchase_model_core {
   derived_table: {
     datagroup_trigger: bqml_datagroup
     sql_create:
@@ -73,22 +64,17 @@ view: future_purchase_model_core {
 ######################## TRAINING INFORMATION #############################
 explore:  future_purchase_model_evaluation {
   hidden: yes
-  extension: required
 }
 explore: future_purchase_model_training_info {
   hidden: yes
-  extension: required
 }
 explore: roc_curve {
   hidden: yes
-  extension: required
 }
 
 # VIEWS:
+
 view: future_purchase_model_evaluation {
-  extends: [future_purchase_model_evaluation_config]
-}
-view: future_purchase_model_evaluation_core {
   derived_table: {
     sql: SELECT * FROM ml.EVALUATE(
           MODEL ${future_purchase_model.SQL_TABLE_NAME},
@@ -102,9 +88,6 @@ view: future_purchase_model_evaluation_core {
 }
 
 view: roc_curve {
-  extends: [roc_curve_config]
-}
-view: roc_curve_core {
   derived_table: {
     sql: SELECT * FROM ml.ROC_CURVE(
         MODEL ${future_purchase_model.SQL_TABLE_NAME},
@@ -145,9 +128,6 @@ view: roc_curve_core {
 }
 
 view: future_purchase_model_training_info {
-  extends: [future_purchase_model_training_info_config]
-}
-view: future_purchase_model_training_info_core {
   derived_table: {
     sql: SELECT  * FROM ml.TRAINING_INFO(MODEL ${future_purchase_model.SQL_TABLE_NAME});;
   }
@@ -180,10 +160,8 @@ view: future_purchase_model_training_info_core {
   }
 }
 ########################################## PREDICT FUTURE ############################
+
 view: future_input {
-  extends: [future_input_config]
-}
-view: future_input_core {
   extends: [user_facts]
   derived_table: {
     sql_trigger_value: SELECT CURRENT_DATE() ;;
@@ -369,9 +347,6 @@ view: future_input_core {
 }
 
 view: future_purchase_prediction {
-  extends: [future_purchase_prediction_config]
-}
-view: future_purchase_prediction_core {
   derived_table: {
     sql: SELECT clientId,
           pred.prob as user_propensity_score,

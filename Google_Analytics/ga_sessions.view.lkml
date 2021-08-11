@@ -10,26 +10,7 @@ include: "Custom_Views/custom_navigation_buttons.view.lkml"
 include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/ga_sessions.view.lkml"
 
 view: ga_sessions {
-  extends: [ga_sessions_config]
-
-  dimension: id {
-    primary_key: yes
-    label: "User/Session ID"
-    group_label: "ID"
-    description: "Unique ID for Session: Full User ID | Session ID | Session Start Date"
-    sql: CONCAT(
-          CAST(${full_visitor_id} AS STRING)
-          , '|'
-          , COALESCE(CAST(${visit_id} AS STRING),'')
-          , '|'
-          , CAST(${partition_date} AS STRING)
-          --, CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
-        ) ;;
-  }
-}
-
-view: ga_sessions_core {
-  extension: required
+  
   view_label: "Session"
   sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
   extends: [calendar, geonetwork, totals, traffic_source, device, custom_navigation_buttons]
