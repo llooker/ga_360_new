@@ -15,8 +15,23 @@ view: ga_sessions {
   sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
   extends: [calendar, geonetwork, totals, traffic_source, device, custom_navigation_buttons]
 
-
   ########## PRIMARY KEYS ##########
+
+  dimension: id {
+    primary_key: yes
+    label: "User/Session ID"
+    group_label: "ID"
+    description: "Unique ID for Session: Full User ID | Session ID | Session Start Date"
+    sql: CONCAT(
+          CAST(${full_visitor_id} AS STRING)
+          , '|'
+          , COALESCE(CAST(${visit_id} AS STRING),'')
+          , '|'
+          , CAST(${partition_date} AS STRING)
+          --, CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
+        ) ;;
+  }
+}
 
   ########## FOREIGN KEYS ##########
   dimension: full_visitor_id {
