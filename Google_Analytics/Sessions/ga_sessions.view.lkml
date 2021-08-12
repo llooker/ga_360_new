@@ -1,16 +1,32 @@
 #############################################################################################################
 # Purpose: Surfaces event data from Google Analytics
 #############################################################################################################
-include: "geonetwork.view.lkml"
-include: "totals.view.lkml"
-include: "traffic_source.view.lkml"
-include: "device.view.lkml"
-include: "calendar.view.lkml"
-include: "Custom_Views/custom_navigation_buttons.view.lkml"
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/ga_sessions.view.lkml"
+include: "/**/geonetwork.view.lkml"
+include: "/**/totals.view.lkml"
+include: "/**/traffic_source.view.lkml"
+include: "/**/device.view.lkml"
+include: "/**/calendar.view.lkml"
+include: "/**/Custom_Views/custom_navigation_buttons.view.lkml"
+
+include: "partition_date.view.lkml"
+include: "session_goals.view.lkml"
+
 
 view: ga_sessions {
-  extends: [ga_sessions_config]
+  view_label: "Session"
+  sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
+  extends: [
+    calendar,
+    geonetwork,
+    totals,
+    traffic_source,
+    device,
+    custom_navigation_buttons,
+    ga_sessions_partition_date,
+
+  ]
+
+  ########## PRIMARY KEYS ##########
 
   dimension: id {
     primary_key: yes
@@ -26,16 +42,6 @@ view: ga_sessions {
           --, CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
         ) ;;
   }
-}
-
-view: ga_sessions_core {
-  extension: required
-  view_label: "Session"
-  sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
-  extends: [calendar, geonetwork, totals, traffic_source, device, custom_navigation_buttons]
-
-
-  ########## PRIMARY KEYS ##########
 
   ########## FOREIGN KEYS ##########
   dimension: full_visitor_id {

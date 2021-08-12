@@ -5,7 +5,7 @@
   elements:
   - title: Top Page Paths
     name: Top Page Paths
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: sankey
     fields: [ga_sessions.visits_total, session_flow.page_path_1, session_flow.page_path_2,
@@ -45,7 +45,7 @@
     height: 12
   - title: Page Path Funnel
     name: Page Path Funnel
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_column
     fields: [page_funnel.count_of_page_1, page_funnel.count_of_page_2, page_funnel.count_of_page_3,
@@ -180,7 +180,7 @@
     height: 4
   - title: Page Path Funnel % of Total
     name: Page Path Funnel % of Total
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_funnel
     fields: [page_funnel.count_of_page_1, page_funnel.count_of_page_2, page_funnel.count_of_page_3,
@@ -278,7 +278,7 @@
     height: 12
   - title: Untitled
     name: Untitled
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.partition_date_filter]
@@ -310,7 +310,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date
@@ -327,7 +327,7 @@
       - hostname
       - " head"
       - tet
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: hits.host_name
@@ -337,7 +337,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: page_funnel.page_1
@@ -351,7 +351,7 @@
       type: advanced
       display: popover
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: page_funnel.page_2
@@ -361,7 +361,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: page_funnel.page_3
@@ -371,7 +371,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: page_funnel.page_4
@@ -381,7 +381,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: page_funnel.page_5
@@ -391,7 +391,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: page_funnel.page_6
@@ -404,7 +404,7 @@
     ui_config:
       type: dropdown_menu
       display: inline
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.audience_selector

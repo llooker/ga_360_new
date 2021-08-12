@@ -5,7 +5,7 @@
   elements:
   - title: Users saw the campaign page
     name: Users saw the campaign page
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.unique_visitors, user_segment.segment_users, user_segment.retention_rate]
@@ -37,7 +37,7 @@
     height: 4
   - title: Users Returned
     name: Users Returned
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.unique_visitors, user_segment.segment_users, user_segment.retention_rate]
@@ -69,7 +69,7 @@
     height: 4
   - title: Transaction Conversion Rate
     name: Transaction Conversion Rate
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.transaction_conversion_rate, user_segment.segment_transaction_conversion_rate]
@@ -103,7 +103,7 @@
     height: 4
   - title: Retained User Transaction Conversion Rate
     name: Retained User Transaction Conversion Rate
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.transaction_conversion_rate, user_segment.segment_transaction_conversion_rate]
@@ -138,7 +138,7 @@
     height: 4
   - title: Revenue per User
     name: Revenue per User
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.transaction_revenue_per_user, user_segment.segment_transaction_revenue_per_user]
@@ -173,7 +173,7 @@
     height: 4
   - title: Revenue per Retained User
     name: Revenue per Retained User
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.transaction_revenue_per_user, user_segment.segment_transaction_revenue_per_user]
@@ -224,7 +224,7 @@
     height: 3
   - title: Impact by Audience
     name: Impact by Audience
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_grid
     fields: [ga_sessions.audience_trait, ga_sessions.unique_visitors, user_segment.segment_users,
@@ -312,7 +312,7 @@
       type: relative_timeframes
       display: inline
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date
@@ -336,7 +336,7 @@
       type: relative_timeframes
       display: inline
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: user_segment.user_segment_timeframe
@@ -349,7 +349,7 @@
     ui_config:
       type: dropdown_menu
       display: inline
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.audience_selector

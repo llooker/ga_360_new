@@ -1,22 +1,9 @@
-connection: "@{CONNECTION_NAME}"
-
-# include: "/datagroups.lkml"
 include: "/*/*.view.lkml"
 include: "/Google_Analytics/*.view.lkml"
+include: "/Google_Analytics/Sessions/*.view.lkml"
 include: "/Google_Analytics/Custom_Views/*.view.lkml"
-include: "/Dashboards/*.dashboard"
-include: "//@{CONFIG_PROJECT_NAME}/block_google_analytics_360_config.model"
-datagroup: bqml_datagroup {
-  #retrain model every month
-  sql_trigger: SELECT EXTRACT(month from CURRENT_DATE()) ;;
-}
 
 explore: ga_sessions {
-  extends: [ga_sessions_config]
-}
-
-explore: ga_sessions_core {
-  extension: required
   label: "Google Analytics Sessions"
   description: "Explores Google Analytics sessions data."
 
@@ -382,31 +369,4 @@ explore: ga_sessions_core {
 
   ## End Custom Page Funnel Dashboard
 
-}
-
-explore: future_input {
-  extends: [future_input_config]
-}
-
-explore: future_input_core {
-  extension: required
-  view_label: "Audience Traits"
-  label: "BQML Customer Likelihood to Purchase"
-  description: "This explore allows you to slice and dice likeliness to purchase scores by different customer traits to see how they differ. The default range of data you are looking at is in the past 30 days"
-  join: future_purchase_prediction {
-    type: left_outer
-    sql_on: ${future_purchase_prediction.clientId} = ${future_input.client_id} ;;
-    relationship: one_to_one
-  }
-}
-
-
-
-
-named_value_format: hour_format {
-  value_format: "[h]:mm:ss"
-}
-
-named_value_format: formatted_number {
-  value_format:"[<1000]0;[<1000000]0.0,\"K\";0.0,,\"M\""
 }

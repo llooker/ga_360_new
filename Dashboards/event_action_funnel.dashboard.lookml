@@ -5,7 +5,7 @@
   elements:
   - title: Event Action Funnel
     name: Event Action Funnel
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_column
     fields: [event_action_funnel.count_of_event_1, event_action_funnel.count_of_event_2,
@@ -86,7 +86,7 @@
     height: 4
   - title: Event Action % of Total Funnel
     name: Event Action % of Total Funnel
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_funnel
     fields: [event_action_funnel.count_of_event_1, event_action_funnel.count_of_event_2,
@@ -158,7 +158,7 @@
     height: 11
   - title: Event Flow
     name: Event Flow
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: sankey
     fields: [event_action_facts.event_action, event_action_facts.current_event_plus_1,
@@ -198,7 +198,7 @@
     height: 15
   - title: Untitled
     name: Untitled
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.partition_date_filter]
@@ -233,7 +233,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: hits.page_path
@@ -243,7 +243,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: event_action_funnel.event_1
@@ -253,7 +253,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: event_action_funnel.event_2
@@ -263,7 +263,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: event_action_funnel.event_3
@@ -273,7 +273,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: event_action_funnel.event_4
@@ -283,7 +283,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: event_action_funnel.event_5
@@ -293,7 +293,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: event_action_funnel.event_6
@@ -303,7 +303,7 @@
     default_value: ''
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: hits.event_action
@@ -313,7 +313,7 @@
     default_value: Device
     allow_multiple_values: true
     required: false
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.audience_selector
