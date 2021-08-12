@@ -6,7 +6,7 @@
 
 
 view: geonetwork {
-  
+  extension: required
 
   ########## DIMENSIONS ##########
 

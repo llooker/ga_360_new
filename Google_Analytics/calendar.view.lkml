@@ -1,8 +1,8 @@
 
 
 view: calendar {
+  extension: required
   view_label: "Session"
-  
 
   dimension_group: current {
     description: "Current Timestamp reference field"

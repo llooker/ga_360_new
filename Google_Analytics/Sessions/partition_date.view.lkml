@@ -1,25 +1,27 @@
 #############################################################################################################
-# Purpose: Use the field definitions in this view to determine a date partition scenario to use. 
+# Purpose: Use the field definitions in this view to determine a date partition scenario to use.
 # Scenario 1 is used by default. To use other scenarios add them to the `refinements.lkml` file as a refinement.
 #  For example, scenario 3 would look like:
-#  
-#   view +ga_sessions {
-#     sql_table_name: `{{ _user_attributes['ga_360_schema'] }}.@{GA360_TABLE_NAME} ;;  
+#
+#   view +ga_sessions_partition_date {
+#     sql_table_name: `{{ _user_attributes['ga_360_schema'] }}.@{GA360_TABLE_NAME} ;;
 #   }
 #
 #############################################################################################################
 
 include: "ga_sessions.view.lkml"
 
-view: +ga_sessions {
+view: ga_sessions_partition_date {
+  extension: required
+
   ############################################################
   #                 Scenario 1 (S1): START                   #
   ############################################################
-  
+
   # Scenario 1 (S1): You are viewing a single GA 360 property
   # Single property
     sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
-  
+
     dimension_group: partition {
       # Date that is parsed from the table name. Required as a filter to avoid accidental massive queries
       label: ""
@@ -57,7 +59,7 @@ view: +ga_sessions {
   ############################################################
   #                 Scenario 1 (S1): END                     #
   ############################################################
-  
+
   ############################################################
   #                 Scenario 2 (S2): START                   #
   ############################################################
@@ -75,14 +77,14 @@ view: +ga_sessions {
   #     FROM `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}`
   #     WHERE {% condition partition_filter %} TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d'))) {% endcondition %}
   #   );;
-  
-  
+
+
   # # S2 TODO: Uncomment field
   #   filter: partition_filter {
   #     type: date
   #     default_value: "@{EXPLORE_DATE_FILTER}"
   #   }
-  
+
   # # S2 TODO: Uncomment field and comment out the partition date above
   #   dimension_group: partition {
   #     # Date that is parsed from the table name. Required as a filter to avoid accidental massive queries
@@ -111,7 +113,7 @@ view: +ga_sessions {
   #     # can_filter: no
   #     convert_tz: no
   #   }
-  
+
   # # S2 TODO: Uncomment out the field and update the property and website names
   #   dimension: property {
   #     hidden: yes
@@ -127,21 +129,20 @@ view: +ga_sessions {
   ############################################################
   #                 Scenario 2 (S2): END                     #
   ############################################################
-  
+
   ############################################################
   #                 Scenario 3 (S3): START                   #
   ############################################################
   # #Scenario 3 (S3): Multiple properties but allow specific users to view their own properties
-  
+
   # # S3 TODO: Create a user attribute ga_360_schema and assign values for each user.
           # Uncomment out the sql_table_name below
-  
+
   # # Single property
     # sql_table_name: `{{ _user_attributes['ga_360_schema'] }}.@{GA360_TABLE_NAME} ;;
-  
+
   ############################################################
   #                 Scenario 3 (S3): END                     #
   ############################################################
-  
+
 }
-  

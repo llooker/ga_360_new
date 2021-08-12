@@ -5,6 +5,7 @@
 
 
 view: traffic_source {
+  extension: required
 
   ########## DIMENSIONS ############
 

@@ -2,6 +2,7 @@
 
 
 view: goals {
+  extension: required
    ########## FILTERS ##########
 
   filter: event_action_goal_selection {

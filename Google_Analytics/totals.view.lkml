@@ -5,6 +5,7 @@
 
 
 view: totals {
+  extension: required
   ########## DIMENSIONS ############
 
   dimension: time_on_screen_total_unique {
