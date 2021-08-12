@@ -31,7 +31,6 @@ view: ga_sessions {
           --, CAST(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')) AS STRING)
         ) ;;
   }
-}
 
   ########## FOREIGN KEYS ##########
   dimension: full_visitor_id {
