@@ -5,7 +5,6 @@
 
 
 view: traffic_source {
-  
 
   ########## DIMENSIONS ############
 

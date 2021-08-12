@@ -10,7 +10,6 @@ include: "Custom_Views/custom_navigation_buttons.view.lkml"
 
 
 view: ga_sessions {
-  
   view_label: "Session"
   sql_table_name: `@{SCHEMA_NAME}.@{GA360_TABLE_NAME}` ;;
   extends: [calendar, geonetwork, totals, traffic_source, device, custom_navigation_buttons]

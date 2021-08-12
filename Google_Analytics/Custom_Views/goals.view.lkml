@@ -2,9 +2,7 @@
 
 
 view: goals {
-  
-
-  ########## FILTERS ##########
+   ########## FILTERS ##########
 
   filter: event_action_goal_selection {
     label: "Event Action"

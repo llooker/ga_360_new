@@ -5,9 +5,7 @@
 #############################################################################################################
 include: "Custom_Views/goals.view.lkml"
 
-
 view: hits {
-  
   extends: [goals]
   view_label: "Hits"
   ########## PRIMARY KEYS ##########
