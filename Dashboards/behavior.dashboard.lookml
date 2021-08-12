@@ -5,7 +5,7 @@
   elements:
   - title: Landing Page Detail
     name: Landing Page Detail
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: table
     fields: [ga_sessions.landing_page_formatted, ga_sessions.visits_total, ga_sessions.transaction_revenue_total,
@@ -142,7 +142,7 @@
     height: 15
   - title: Page Views
     name: Page Views
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [hits.page_count, hits.unique_page_count]
@@ -192,7 +192,7 @@
     height: 3
   - title: Top Pages
     name: Top Pages
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [hits.page_count, hits.unique_page_count, hits.page_path_formatted]
@@ -284,7 +284,7 @@
     height: 11
   - title: Navigation Bar
     name: Navigation Bar
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: single_value
     fields: [ga_sessions.dash_nav]
@@ -323,7 +323,7 @@
     height: 2
   - title: Top Page Detail
     name: Top Page Detail
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_grid
     fields: [hits.page_path_formatted, hits.page_count, hits.unique_page_count, time_on_page.average_time_on_page,
@@ -447,7 +447,7 @@
     height: 11
   - title: Top Landing Page
     name: Top Landing Page
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.landing_page_formatted, ga_sessions.visits_total, ga_sessions.percent_new_sessions]
@@ -544,7 +544,7 @@
     height: 15
   - title: Top Keyword Searches
     name: Top Keyword Searches
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [ga_sessions.keyword, ga_sessions.visits_total]
@@ -638,7 +638,7 @@
     height: 11
   - title: Top Events
     name: Top Events
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     type: looker_bar
     fields: [hits.full_event, hits.event_count, hits.unique_event_count]
@@ -771,7 +771,7 @@
       type: advanced
       display: inline
       options: []
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: ga_sessions.partition_date
@@ -788,7 +788,7 @@
       - hostname
       - " head"
       - tet
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: ga_sessions
     listens_to_filters: []
     field: hits.host_name
