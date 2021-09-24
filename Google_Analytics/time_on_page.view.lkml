@@ -3,15 +3,10 @@
 # Numbers will not match Google Analytics UI because the PDT calculates Time on Page for Exit pages, which GA does not.
 # - Time on the final page of a session is calculated by the difference between start of the final page visit and the last EVENT recorded on the page.
 #############################################################################################################
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/time_on_page.view.lkml"
+
 
 view: time_on_page {
-  extends: [time_on_page_config]
-}
-
-
-view: time_on_page_core {
-  extension: required
+  
   derived_table: {
     persist_for: "1 hour"
     sql:

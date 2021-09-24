@@ -5,7 +5,7 @@
   elements:
   - title: Propensity Scores by Audience Traits
     name: Propensity Scores by Audience Traits
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: future_input
     type: looker_grid
     fields: [future_input.audience_trait, future_purchase_prediction.average_user_propensity_score,
@@ -76,7 +76,7 @@
     ui_config:
       type: dropdown_menu
       display: inline
-    model: google_analytics_360
+    model: google_analytics_360_v2
     explore: future_input
     listens_to_filters: []
     field: future_input.audience_selector

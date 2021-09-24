@@ -1,11 +1,7 @@
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/event_action_facts.view.lkml"
+
 
 view: event_action_facts {
-  extends: [event_action_facts_config]
-}
-
-view: event_action_facts_core {
-  extension: required
+  
   derived_table: {
     explore_source: ga_sessions {
       column: hit_number { field: hits.hit_number }

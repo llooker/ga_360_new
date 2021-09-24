@@ -1,11 +1,7 @@
-include: "//@{CONFIG_PROJECT_NAME}/Google_Analytics/Custom_Views/page_facts.view.lkml"
+
 
 view: page_facts {
-  extends: [page_facts_config]
-}
-
-view: page_facts_core {
-  extension: required
+  
   derived_table: {
     explore_source: ga_sessions {
       column: id {}
